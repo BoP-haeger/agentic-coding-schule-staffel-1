@@ -201,7 +201,7 @@ details.beispiel > summary { cursor: pointer; font-weight: 600; }
   .karte { width: min(calc(100vw - 30rem), 80rem); margin-left: calc(50% - min(50vw - 15rem, 40rem)); }
 }
 </style>
-<script>var TEXTE = {"pruefen-leer": "Wähl zuerst mindestens einen Tag. Weißt du nur noch die Idee, leg sie als eigenen Tag an.", "treffer": "{getroffen} von {erwartet}", "treffer-rest": "erwarteten Einträgen getroffen.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "heruntergeladen": "antworten.json wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei antworten.json ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
+<script>var TEXTE = {"pruefen-leer": "Wähl zuerst mindestens einen Tag. Weißt du nur noch die Idee, leg sie als eigenen Tag an.", "treffer": "{getroffen} von {erwartet}", "treffer-rest": "erwarteten Einträgen getroffen.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
 <script>
 /* Meldungen der Skripte aus rahmen.md (meldungen). build.py setzt davor: var TEXTE = {…};
    TEXT(schluessel, { n: 3 }) setzt {n} ein. Fehlt ein Schlüssel, erscheint er selbst, damit es auffällt. */
@@ -1586,7 +1586,9 @@ var ABRUF = (function () {
      <… data-aufgabe="Kurztitel"> mit [data-feld data-teil="…"] (Freitext) und [data-tagfeld] (Tags)
      <button data-download>, <button data-kopieren>, <button data-loeschen>, <textarea data-vorschau>
    Arbeitet mit TAGFELD (Tags) und ABRUF (Ablauf, gesperrte geprüfte Szenarien) zusammen.
-   Jede Antwort: { aufgabe, antwort (Freitext, darf leer sein), tags: [Name | "eigen: Text"] }. */
+   Jede Antwort: { aufgabe, antwort (Freitext, darf leer sein), tags: [Name | "eigen: Text"] }.
+   Kennung: Zufall, einmal pro Browser erzeugt und für alle Trails gemerkt. Sie macht den Dateinamen
+   einzigartig (antworten-trail-1-k7m2qx.json), damit Abgaben im Upload-Ordner sich nicht überschreiben. */
 var ABGABE = (function () {
   var schluessel;
 
@@ -1596,6 +1598,19 @@ var ABGABE = (function () {
   function schreib(stand) {
     try { localStorage.setItem(schluessel, JSON.stringify(stand)); } catch (e) { /* ohne Speicher geht es auch */ }
   }
+
+  var kennungFallback;
+  function kennung() {
+    var zeichen = "abcdefghjkmnpqrstuvwxyz23456789", k;  // ohne i, l, o, 0, 1
+    try { k = localStorage.getItem("acs-kennung"); } catch (e) { k = kennungFallback; }
+    if (k) return k;
+    var zufall = new Uint8Array(6);
+    (window.crypto || { getRandomValues: function (a) { return a.map(function () { return Math.random() * 256; }); } }).getRandomValues(zufall);
+    k = Array.prototype.map.call(zufall, function (z) { return zeichen[z % zeichen.length]; }).join("");
+    try { localStorage.setItem("acs-kennung", k); } catch (e) { kennungFallback = k; }
+    return k;
+  }
+  function dateiname() { return "antworten-trail-" + document.body.dataset.trail + "-" + kennung() + ".json"; }
 
   function felder() { return document.querySelectorAll("[data-feld]"); }
 
@@ -1661,6 +1676,7 @@ var ABGABE = (function () {
     var dauer = parseInt(wert("dauer"), 10);
     var daten = {
       trail: Number(document.body.dataset.trail),
+      kennung: kennung(),
       datum: heute(),
       dauer_minuten: isNaN(dauer) ? null : dauer,
       studiert: (document.getElementById("phase") || {}).value === "abruf",
@@ -1688,11 +1704,11 @@ var ABGABE = (function () {
     var blob = new Blob([text], { type: "application/json" });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "antworten.json";
+    a.download = dateiname();
     document.body.appendChild(a);
     a.click();
     setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-    zeige(text, TEXT("heruntergeladen"));
+    zeige(text, TEXT("heruntergeladen", { datei: dateiname() }));
   }
 
   function kopiereAlt(text) {
@@ -1709,7 +1725,7 @@ var ABGABE = (function () {
   function kopiere() {
     if (!bereit()) return;
     var text = json();
-    var fertig = function () { zeige(text, TEXT("kopiert")); };
+    var fertig = function () { zeige(text, TEXT("kopiert", { datei: dateiname() })); };
     var vonHand = function () { zeige(text, TEXT("kopieren-von-hand")); };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(fertig, function () { kopiereAlt(text) ? fertig() : vonHand(); });
