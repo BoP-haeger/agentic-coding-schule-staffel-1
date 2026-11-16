@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hausaufgabe Trail 1</title>
 <style>
-/* Gemeinsames Stylesheet aller Lektionen. Ruhig, gut lesbar, druckbar. */
+/* Gemeinsames Stylesheet aller Hausaufgaben. Ruhig, gut lesbar, druckbar. */
 :root {
   --bg: #fffff8;
   --fg: #1d1d1b;
@@ -64,20 +64,18 @@ pre { font-family: var(--mono); font-size: .85rem; background: var(--panel); pad
 pre code { background: none; padding: 0; }
 .klein { font-size: .9rem; color: var(--muted); }
 
-/* Zeitangabe an jeder Aufgabe */
+/* Zeitangabe an Teilen und Abschnitten */
 .zeit { font: 600 .8rem/1 var(--sans); color: var(--accent); border: 1px solid currentColor; border-radius: 999px; padding: .2rem .55rem; margin-left: .4rem; vertical-align: middle; white-space: nowrap; }
 
 /* Tabellen */
 table { border-collapse: collapse; width: 100%; font-size: .95rem; margin: 1rem 0; }
 th, td { text-align: left; padding: .4rem .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { font-family: var(--sans); font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
-.tabelle-scroll { overflow-x: auto; }
 
 /* Hinweiskästen */
 .kasten { background: var(--panel); border-left: 3px solid var(--accent); padding: .75rem 1rem; margin: 1.25rem 0; border-radius: 0 4px 4px 0; }
 .kasten > :first-child { margin-top: 0; }
 .kasten > :last-child { margin-bottom: 0; }
-.werkzeug { font-size: .92rem; }
 
 /* Formulare */
 label { display: block; font: 600 .9rem/1.4 var(--sans); margin: 1rem 0 .3rem; }
@@ -101,7 +99,7 @@ button:disabled { opacity: .5; cursor: default; }
 .thema { position: absolute; top: .6rem; right: .75rem; margin: 0; padding: .3rem .55rem; font-size: .8rem; }
 .status { font: .9rem var(--sans); color: var(--ok); margin-left: .25rem; }
 
-/* Abruf-Widget */
+/* Aufgaben im Rahmen, Abruf-Widget */
 .aufgabe { border: 1px solid var(--line); border-radius: 6px; padding: 1rem 1.1rem 1.1rem; margin: 1.5rem 0; }
 .aufgabe h3 { margin-top: 0; }
 .aufgabe blockquote { margin: .5rem 0 0; font-style: italic; }
@@ -117,12 +115,8 @@ button:disabled { opacity: .5; cursor: default; }
 [hidden] { display: none !important; }
 
 /* Spickzettel */
-.spick dl { margin: 0; }
-.spick dt { font-weight: 600; margin-top: .6rem; }
-.spick dd { margin: 0 0 0 1rem; }
-.spick h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-family: var(--sans); }
 
-/* Schritte in der Übertragung */
+/* Nummerierte Schritte */
 ol.schritte { padding-left: 1.4rem; }
 ol.schritte li { margin: .35rem 0; }
 
@@ -282,14 +276,14 @@ function TEXT(k, werte) {
   </div>
 </div>
 <div class="nicht-drucken">
-  <button type="button" data-download>antworten.json herunterladen</button>
+  <button type="button" data-download>Antworten herunterladen</button>
   <button type="button" class="leise" data-kopieren>Als Text kopieren (Notlösung)</button>
   <span class="status" data-status aria-live="polite"></span>
 </div>
-<textarea data-vorschau readonly hidden aria-label="Inhalt von antworten.json" style="min-height:12rem;margin-top:1rem;font-family:var(--mono);font-size:.8rem"></textarea>
+<textarea data-vorschau readonly hidden aria-label="Inhalt der Antwortdatei" style="min-height:12rem;margin-top:1rem;font-family:var(--mono);font-size:.8rem"></textarea>
 
 <ol class="schritte">
-<li>Lade <code>antworten.json</code> herunter (Knopf oben). Kopiert: Text in eine neue Datei <code>antworten.json</code> einfügen.</li>
+<li>Lade deine Antworten herunter (Knopf oben). Kopiert: Text in eine neue Datei mit dem angezeigten Namen einfügen.</li>
 <li>Lade die Datei <a href="https://kein.tropfenderkessel.de/index.php/s/gswbPWzDmQPF7wS" target="_blank" rel="noopener">hier hoch</a>.</li>
 <li>Nachbessern: Seite im selben Browser öffnen, die Eingaben sind noch da. Neu herunterladen und noch einmal hochladen.</li>
 </ol>
@@ -1430,7 +1424,7 @@ var TAGFELD = (function () {
 })();
 </script>
 <script>
-/* Abruf-Widget: Szenario per Tags beantworten, „Prüfen“ vergleicht exakt mit der Erwartung.
+/* Abruf-Widget: Aufgabe mit „Prüfen“ (Szenario, Befund …) per Tags beantworten, „Prüfen“ vergleicht exakt mit der Erwartung.
    Markup:
      <section data-abruf data-aufgabe="…" data-kern="id id" data-passend="id id">
        <div data-tagfeld …></div> …   (TAGFELD, tagfeld.js)
@@ -1442,7 +1436,7 @@ var TAGFELD = (function () {
 
    Ablauf der Seite (Zustand im versteckten Feld #phase, gespeichert von abgabe.js):
      „lesen“  Teil A zu. Erst nach [data-studiert] (Bestätigung) startet [data-starten] „abruf“.
-     „abruf“  Teil A offen. Sind alle Szenarien in [data-teil-a] geprüft, ist Teil B offen.
+     „abruf“  Alle Teile mit „sichtbar: nach Start“ offen. Teile mit „nach Teil A“ öffnen sich, sobald alle Aufgaben in [data-teil-a] geprüft sind.
    Das Nachschlagewerk ist immer offen.
    Sichtbarkeit: [data-teil-a], [data-vor-start], [data-nach-abruf] (nach Teil A), [data-vor-abruf] (bis Teil A fertig). */
 var ABRUF = (function () {
@@ -1578,14 +1572,14 @@ var ABRUF = (function () {
 })();
 </script>
 <script>
-/* Abgabe-Widget: sammelt alle Antworten in antworten.json (Download, Kopieren als
+/* Abgabe-Widget: sammelt alle Antworten in einer JSON-Datei (Download, Kopieren als
    Notlösung) und merkt sich Eingaben im Browser, damit ein Neuladen nichts kostet.
    Markup:
      <body data-trail="1" data-speicher="…">
      <input id="dauer" data-feld>
      <… data-aufgabe="Kurztitel"> mit [data-feld data-teil="…"] (Freitext) und [data-tagfeld] (Tags)
      <button data-download>, <button data-kopieren>, <button data-loeschen>, <textarea data-vorschau>
-   Arbeitet mit TAGFELD (Tags) und ABRUF (Ablauf, gesperrte geprüfte Szenarien) zusammen.
+   Arbeitet mit TAGFELD (Tags) und ABRUF (Ablauf, gesperrte geprüfte Aufgaben) zusammen.
    Jede Antwort: { aufgabe, antwort (Freitext, darf leer sein), tags: [Name | "eigen: Text"] }.
    Kennung: Zufall, einmal pro Browser erzeugt und für alle Trails gemerkt. Sie macht den Dateinamen
    einzigartig (antworten-trail-1-k7m2qx.json), damit Abgaben im Upload-Ordner sich nicht überschreiben. */
@@ -1758,7 +1752,7 @@ var ABGABE = (function () {
 <script>
 /* Inhaltsverzeichnis rechts neben der Spalte (nur auf breiten Bildschirmen, siehe kurs.css):
    Teile (<section class="teil"> mit h2) und ihre Aufgaben (h3), ✓ hinter geprüften Aufgaben.
-   Versteckte Teile (z. B. Teil A vor dem Start) fehlen, bis sie sichtbar werden. */
+   Die Teile stehen immer drin, die Aufgaben versteckter Teile (z. B. vor dem Start) erst, wenn sie sichtbar werden. */
 (function () {
   var nav = document.querySelector("[data-inhaltsverzeichnis]");
   if (!nav) return;
