@@ -310,7 +310,7 @@ function TEXT(k, werte) {
 <p>Lies die Szenarien aufmerksam. Unser Alltag mit KI hat sehr viel Potential, um Muster und Irrtümer zu erkennen. Die Hinweise fallen einem aber manchmal nicht auf, weil wir zu sehr involviert sind. In den Szenarien ist stets etwas schiefgelaufen, oder es wurden Gelegenheiten verpasst, etwas besser zu machen. I.d.R. ist das implizit, so wie im echten Leben. Du darfst also auch begründet raten.</p>
 <p>Der Fokus liegt hier auf dem Prozess, mit dem wir Software-Engineering betreiben. Weniger auf dem Coding.</p>
 <p>Versuche pro Aufgabe erst alles <strong>ohne Rückblick</strong> auf die Karte zu beantworten, und streng dein Gedächtnis an. Viele Patterns sind naheliegend, du schaffst das.</p>
-<section data-abruf class="aufgabe" data-aufgabe="A1 Montagmorgen" data-kern="context-rot limited-context-window context-management knowledge-document extract-knowledge" data-passend="compliance-bias silent-misalignment flying-blind cannot-learn knowledge-checkpoint focused-agent feedback-loop">
+<section data-abruf class="aufgabe" data-aufgabe="A1 Montagmorgen" data-kern="context-rot limited-context-window context-management knowledge-document extract-knowledge" data-passend="compliance-bias silent-misalignment cannot-learn knowledge-checkpoint focused-agent">
 <h3>A1 · Montagmorgen</h3>
 <blockquote>
 <p>Am Freitag hast du mit dem Agent die Sessions heiß laufen lassen und ein paar Stunden diskutiert, um einen neuen Endpunkt fertigzustellen. Der Agent hat dabei viel gearbeitet, und es musste ab und zu kompaktiert werden. Abends beantwortet der Agent endlich alle deine Fragen positiv. Du bist fertig.</p>
@@ -336,10 +336,10 @@ function TEXT(k, werte) {
 <button type="button" data-pruefen>Prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
-<p><strong>Auflösung.</strong> Gelogen hat der Agent wahrscheinlich nicht. In einer stundenlangen Session verlieren frühe Anweisungen an Gewicht (Context Rot), und beim Kompaktieren wird der ältere Verlauf zusammengefasst (Limited Context Window). Dabei gingen Felder deiner Spezifikation unter, die README blieb auf einem Zwischenstand. Die Tests prüfen nur, was er noch wusste. Auf Fragen sagt er gern Ja (Compliance Bias). Hättest du die Spezifikation am Freitag in eine Datei geschrieben (Knowledge Document) und Entscheidungen laufend ergänzt (Extract Knowledge), hättest du statt zu kompaktieren eine neue Session mit der Datei starten können (Context Management). Eine frische Session prüft dann Endpunkt und README gegen die Datei, mit einem echten Aufruf (Focused Agent, Feedback Loop).</p>
+<p><strong>Auflösung.</strong> Gelogen hat der Agent wahrscheinlich nicht. In einer stundenlangen Session verlieren frühe Anweisungen an Gewicht (Context Rot), und beim Kompaktieren wird der ältere Verlauf zusammengefasst (Limited Context Window). Dabei gingen Felder deiner Spezifikation unter, die README blieb auf einem Zwischenstand. Die Tests prüfen nur, was er noch wusste. Auf Fragen sagt er gern Ja (Compliance Bias). Hättest du die Spezifikation am Freitag in eine Datei geschrieben (Knowledge Document) und Entscheidungen laufend ergänzt (Extract Knowledge), hättest du statt zu kompaktieren eine neue Session mit der Datei starten können (Context Management). Eine frische Session prüft dann Endpunkt und README gegen die Datei, mit einem echten Aufruf (Focused Agent).</p>
 </div>
 </section>
-<section data-abruf class="aufgabe" data-aufgabe="A2 Alles noch mal erklären" data-kern="cannot-learn limited-focus extract-knowledge knowledge-document ground-rules reference-docs focused-agent" data-passend="limited-context-window selective-hearing obsess-over-rules flying-blind jit-docs hooks learning-loop">
+<section data-abruf class="aufgabe" data-aufgabe="A2 Alles noch mal erklären" data-kern="cannot-learn limited-focus extract-knowledge knowledge-document ground-rules reference-docs focused-agent" data-passend="limited-context-window selective-hearing hooks">
 <h3>A2 · Alles noch mal erklären</h3>
 <blockquote>
 <p>Endlich läuft dein Endpunkt. Aber du hast für das Ausbügeln wieder einen ganzen Tag gebraucht und bist nicht ganz sicher, ob der Agent diesmal nicht wieder gelogen hat.</p>
@@ -365,7 +365,7 @@ function TEXT(k, werte) {
 <p><strong>Auflösung.</strong> Gelogen hat er wieder nicht, er weiß nur nichts mehr vom Freitag (Cannot Learn). Was du ihm neu erklärst, schreibst du einmal in eine Datei (Extract Knowledge, Knowledge Document). Die Zeile in der <code>AGENTS.md</code> ist eine Ground Rule. Aber „alle Confluence-Artikel lesen“ kostet Zeit, füllt den Kontext und verteilt seine Aufmerksamkeit, deshalb hält er sich nicht immer dran (Limited Focus). Besser: kurze Dateien je Thema, und in der <code>AGENTS.md</code> nur, wann welche zu lesen ist (Reference Docs). Der zweite Agent fürs Review ist ein Focused Agent, eine gute Idee. Damit du ihn nicht vergisst, startet ihn ein Hook am Ende jeder Aufgabe (Hooks). Was er immer wieder findet, wird eine Regel.</p>
 </div>
 </section>
-<section data-abruf class="aufgabe" data-aufgabe="A3 Fachchinesisch" data-kern="excess-verbosity semantic-zoom noise-cancellation" data-passend="limited-context-window external-context solution-fixation">
+<section data-abruf class="aufgabe" data-aufgabe="A3 Fachchinesisch" data-kern="excess-verbosity semantic-zoom noise-cancellation" data-passend="limited-context-window external-context">
 <h3>A3 · Fachchinesisch</h3>
 <blockquote>
 <p>Mittlerweile bist du bei deinem Kollegen Sinan aus der Fachabteilung angekommen. Er erklärt dir das Problem, das er im Reporting gefunden hat. Auch wenn du noch nie im Reporting unterwegs warst, hast du direkt eine Idee, was du dem Agenten geben musst, damit er das Problem für dich löst. „Kein Problem. Für meinen Harness sind solche Probleme Frühstück“, sagst du smug und lässt das wirken.</p>
@@ -393,7 +393,7 @@ function TEXT(k, werte) {
 <button type="button" data-pruefen>Prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
-<p><strong>Auflösung.</strong> Der Agent hat viel herausgefunden, aber die Antwort passt nicht zu deinem Wissensstand: Fachbegriffe, Details und Warnungen, nach denen du nicht gefragt hast (Excess Verbosity). Statt Frage für Frage abzuarbeiten, zoomst du erst heraus: „Erklär mir das Problem in drei Sätzen, ohne Abkürzungen.“ Dann gezielt hinein: „Was ist fl-v2.tlp?“ (Semantic Zoom). Wird es wieder zu viel: „Viel kürzer bitte“ (Noise Cancellation). Dass ein anderes Team schuld ist, ist erst mal eine Hypothese, frag nach dem Beleg (Solution Fixation). Code, Datenbank und Pod-Logs kann ein Subagent durchsuchen, der nur das Ergebnis zurückgibt (External Context). Dann bleibt der Kontext frei für deine Fragen und die von Sinan.</p>
+<p><strong>Auflösung.</strong> Der Agent hat viel herausgefunden, aber die Antwort passt nicht zu deinem Wissensstand: Fachbegriffe, Details und Warnungen, nach denen du nicht gefragt hast (Excess Verbosity). Statt Frage für Frage abzuarbeiten, zoomst du erst heraus: „Erklär mir das Problem in drei Sätzen, ohne Abkürzungen.“ Dann gezielt hinein: „Was ist fl-v2.tlp?“ (Semantic Zoom). Wird es wieder zu viel: „Viel kürzer bitte“ (Noise Cancellation). Dass ein anderes Team schuld ist, ist erst mal eine Hypothese, frag nach dem Beleg. Code, Datenbank und Pod-Logs kann ein Subagent durchsuchen, der nur das Ergebnis zurückgibt (External Context). Dann bleibt der Kontext frei für deine Fragen und die von Sinan.</p>
 </div>
 </section>
 </div>
@@ -401,7 +401,7 @@ function TEXT(k, werte) {
 <section class="teil">
 <h2>Teil B · Advance <span class="zeit">25 Min.</span></h2>
 <div data-teil-a hidden>
-<section data-abruf class="aufgabe" data-aufgabe="B1 Gut gemeint: die AGENTS.md" data-kern="ground-rules reference-docs knowledge-composition noise-cancellation" data-passend="extract-knowledge knowledge-document memory-grooming limited-focus limited-context-window excess-verbosity context-rot obsess-over-rules distracted-agent">
+<section data-abruf class="aufgabe" data-aufgabe="B1 Gut gemeint: die AGENTS.md" data-kern="ground-rules reference-docs knowledge-composition noise-cancellation" data-passend="extract-knowledge knowledge-document limited-focus limited-context-window excess-verbosity context-rot distracted-agent">
 <h3>B1 · Gut gemeint: die AGENTS.md</h3>
 <p>Dein Kollege war auch beim Schulungstermin. Danach hat er im <code>reporting-service</code> (Spring Boot, Gradle, Kafka) an der <code>AGENTS.md</code> geschraubt.</p>
 <p>Für Claude Code liegt daneben eine <code>CLAUDE.md</code> mit <code>@AGENTS.md</code>. Er ist zufrieden. Du nicht. Warum?</p>
@@ -478,15 +478,15 @@ Branch: feature/boot3, NICHT auf main arbeiten.
 <div class="aufloesung" hidden>
 <p><strong>Auflösung.</strong> Jedes Pattern ist da, aber keines tut, wofür es gedacht ist.</p>
 <ul>
-<li><strong>Ground Rules als Ablage für alles.</strong> In jeder Session stehen Projekthistorie, Team, Daily, Topic-Details und der Ablauf des Export-Jobs. Ground Rules sind für das, was <em>jede</em> Session braucht, und zwar konkret: „Schreib sauberen Code“ und „Achte auf Performance“ sagen dem Agent nichts, <code>./gradlew test</code> schon. Alles Weitere kostet Platz (Limited Context Window) und Aufmerksamkeit, auch für die guten Regeln (Limited Focus, Obsess Over Rules).</li>
+<li><strong>Ground Rules als Ablage für alles.</strong> In jeder Session stehen Projekthistorie, Team, Daily, Topic-Details und der Ablauf des Export-Jobs. Ground Rules sind für das, was <em>jede</em> Session braucht, und zwar konkret: „Schreib sauberen Code“ und „Achte auf Performance“ sagen dem Agent nichts, <code>./gradlew test</code> schon. Alles Weitere kostet Platz (Limited Context Window) und Aufmerksamkeit, auch für die guten Regeln (Limited Focus).</li>
 <li><strong>Reference Docs, die immer laden.</strong> Die <code>@</code>-Imports holen jede Datei in jede Session, die Zeile „Lies vor jeder Aufgabe alle Dateien in <code>docs/</code>“ tut dasselbe noch einmal. Damit sind es Ground Rules. Reference Docs nennt man mit Bedingung: „Wenn du am Export-Job arbeitest, lies <code>docs/agent/export-job.md</code>.“</li>
-<li><strong>Reference Docs ohne Wert.</strong> <code>clean-code.md</code> wiederholt, was das Modell ohnehin weiß. <code>migration-boot3.md</code> war im März 2025 nützlich. Heute schickt sie jeden Agent auf einen alten Branch, verbietet <code>./gradlew build</code> und hält einen Workaround am Leben. Temporäre Dokumente löschst du, wenn ihr Anlass vorbei ist (Noise Cancellation, Memory Grooming).</li>
+<li><strong>Reference Docs ohne Wert.</strong> <code>clean-code.md</code> wiederholt, was das Modell ohnehin weiß. <code>migration-boot3.md</code> war im März 2025 nützlich. Heute schickt sie jeden Agent auf einen alten Branch, verbietet <code>./gradlew build</code> und hält einen Workaround am Leben. Temporäre Dokumente löschst du, wenn ihr Anlass vorbei ist (Noise Cancellation).</li>
 <li><strong>Knowledge Composition als Zerstückelung.</strong> Sechs Dateien mit zwei bis fünf Zeilen, die ohnehin zusammen geladen werden. Getrennt wird nach Anlass: eine Datei pro Thema, das man unabhängig braucht, z. B. Export-Job oder Kafka.</li>
-<li><strong>Extract Knowledge ohne Aufräumen.</strong> Die „Learnings“ sind ein Tagebuch. Der Eintrag vom 14.10. widerspricht der Regel „keine Feld-Injection“, der vom 30.09. ist ein Gerücht, der vom 21.10. gilt nur manchmal. Neues Wissen gehört in das passende Dokument, Widersprüche werden aufgelöst, Altes fliegt raus (Noise Cancellation, Memory Grooming).</li>
+<li><strong>Extract Knowledge ohne Aufräumen.</strong> Die „Learnings“ sind ein Tagebuch. Der Eintrag vom 14.10. widerspricht der Regel „keine Feld-Injection“, der vom 30.09. ist ein Gerücht, der vom 21.10. gilt nur manchmal. Neues Wissen gehört in das passende Dokument, Widersprüche werden aufgelöst, Altes fliegt raus (Noise Cancellation).</li>
 </ul>
 </div>
 </section>
-<section data-abruf class="aufgabe" data-aufgabe="B2 Gut gemeint: die Spezialisten" data-kern="focused-agent external-context distracted-agent" data-passend="limited-focus limited-context-window context-rot reference-docs excess-verbosity chunking">
+<section data-abruf class="aufgabe" data-aufgabe="B2 Gut gemeint: die Spezialisten" data-kern="focused-agent external-context distracted-agent" data-passend="limited-focus limited-context-window context-rot reference-docs excess-verbosity">
 <h3>B2 · Gut gemeint: die Spezialisten</h3>
 <p>Derselbe Kollege hat auch Spezialisten angelegt. Er wundert sich, dass sie kaum etwas bringen.</p>
 <details class="beispiel" open>
@@ -1764,9 +1764,10 @@ var ABGABE = (function () {
     return kopie.textContent.trim();
   }
 
-  function eintrag(h, zusatz) {
+  // Sprungziel ist der Teil selbst, nicht seine Überschrift: Die läuft beim Scrollen mit und steht oft am Ende des Teils.
+  function eintrag(ziel, h, zusatz) {
     var li = document.createElement("li"), a = document.createElement("a");
-    a.href = "#" + h.id;
+    a.href = "#" + ziel.id;
     a.textContent = titel(h) + (zusatz || "");
     li.appendChild(a);
     return li;
@@ -1774,15 +1775,15 @@ var ABGABE = (function () {
 
   function sichtbar(el) { return !el.closest("[hidden]"); }
 
-  main.querySelectorAll(".teil > h2, .teil h3").forEach(function (h, n) { if (!h.id) h.id = "abschnitt-" + (n + 1); });
+  main.querySelectorAll(".teil, .teil h3").forEach(function (el, n) { if (!el.id) el.id = "abschnitt-" + (n + 1); });
 
   function baue() {
     var liste = document.createElement("ol");
     main.querySelectorAll(".teil").forEach(function (teil) {
-      var li = eintrag(teil.querySelector("h2")), unter = document.createElement("ol");
+      var li = eintrag(teil, teil.querySelector("h2")), unter = document.createElement("ol");
       teil.querySelectorAll("section[data-aufgabe]").forEach(function (a) {
         var h = a.querySelector("h3");
-        if (h && sichtbar(a)) unter.appendChild(eintrag(h, a.dataset.geprueft ? " ✓" : ""));
+        if (h && sichtbar(a)) unter.appendChild(eintrag(h, h, a.dataset.geprueft ? " ✓" : ""));
       });
       if (unter.children.length) li.appendChild(unter);
       liste.appendChild(li);
