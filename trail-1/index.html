@@ -195,7 +195,7 @@ details.beispiel > summary { cursor: pointer; font-weight: 600; }
   .karte { width: min(calc(100vw - 30rem), 80rem); margin-left: calc(50% - min(50vw - 15rem, 40rem)); }
 }
 </style>
-<script>var TEXTE = {"pruefen-leer": "Wähl zuerst mindestens einen Tag. Weißt du nur noch die Idee, leg sie als eigenen Tag an.", "treffer": "{getroffen} von {erwartet}", "treffer-rest": "erwarteten Einträgen getroffen.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
+<script>var TEXTE = {"pruefen-leer": "Wähl zuerst mindestens einen Tag. Weißt du nur noch die Idee, leg sie als eigenen Tag an.", "treffer": "{getroffen} von {erwartet}", "treffer-rest": "erwarteten Einträgen getroffen.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "name-fehlt": "Trag zuerst deinen Namen ein.", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
 <script>
 /* Meldungen der Skripte aus rahmen.md (meldungen). build.py setzt davor: var TEXTE = {…};
    TEXT(schluessel, { n: 3 }) setzt {n} ein. Fehlt ein Schlüssel, erscheint er selbst, damit es auffällt. */
@@ -264,12 +264,15 @@ function TEXT(k, werte) {
 
 <div class="kasten">
 <p>Bearbeite so viel der Hausaufgaben, wie du in 60 Minuten schaffst, und gib ab, was du bis dahin hast. Es steht dir auch frei, mehr Zeit zu investieren.</p>
-<p>Die Trainer werden die Inhalte deiner Abgabe sehen, aber in der Regel nicht, von wem sie stammt.</p>
 </div>
 
 <section class="teil" id="abgabe">
 <h2>Abgabe <span class="zeit">5 Min.</span></h2>
 <div class="reihe">
+  <div>
+    <label for="name">Dein Name</label>
+    <input type="text" id="name" autocomplete="name" data-feld>
+  </div>
   <div>
     <label for="dauer">Gebraucht (Minuten)</label>
     <input type="number" id="dauer" min="0" max="300" data-feld>
@@ -1577,13 +1580,13 @@ var ABRUF = (function () {
    Notlösung) und merkt sich Eingaben im Browser, damit ein Neuladen nichts kostet.
    Markup:
      <body data-trail="1" data-speicher="…">
-     <input id="dauer" data-feld>
+     <input id="name" data-feld>, <input id="dauer" data-feld>
      <… data-aufgabe="Kurztitel"> mit [data-feld data-teil="…"] (Freitext) und [data-tagfeld] (Tags)
      <button data-download>, <button data-kopieren>, <button data-loeschen>, <textarea data-vorschau>
    Arbeitet mit TAGFELD (Tags) und ABRUF (Ablauf, gesperrte geprüfte Aufgaben) zusammen.
    Jede Antwort: { aufgabe, antwort (Freitext, darf leer sein), tags: [Name | "eigen: Text"] }.
-   Kennung: Zufall, einmal pro Browser erzeugt und für alle Trails gemerkt. Sie macht den Dateinamen
-   einzigartig (antworten-trail-1-k7m2qx.json), damit Abgaben im Upload-Ordner sich nicht überschreiben. */
+   Der Name steht in der Datei und im Dateinamen (antworten-trail-1-erika-mustermann.json),
+   damit Abgaben im Upload-Ordner sich nicht überschreiben. Ohne Namen keine Abgabe. */
 var ABGABE = (function () {
   var schluessel;
 
@@ -1594,18 +1597,13 @@ var ABGABE = (function () {
     try { localStorage.setItem(schluessel, JSON.stringify(stand)); } catch (e) { /* ohne Speicher geht es auch */ }
   }
 
-  var kennungFallback;
-  function kennung() {
-    var zeichen = "abcdefghjkmnpqrstuvwxyz23456789", k;  // ohne i, l, o, 0, 1
-    try { k = localStorage.getItem("acs-kennung"); } catch (e) { k = kennungFallback; }
-    if (k) return k;
-    var zufall = new Uint8Array(6);
-    (window.crypto || { getRandomValues: function (a) { return a.map(function () { return Math.random() * 256; }); } }).getRandomValues(zufall);
-    k = Array.prototype.map.call(zufall, function (z) { return zeichen[z % zeichen.length]; }).join("");
-    try { localStorage.setItem("acs-kennung", k); } catch (e) { kennungFallback = k; }
-    return k;
+  // "Jörg Müller-Lüdenscheidt" → "joerg-mueller-luedenscheidt"
+  function kurzname() {
+    var umlaute = { "ä": "ae", "ö": "oe", "ü": "ue", "ß": "ss" };
+    return wert("name").toLowerCase().replace(/[äöüß]/g, function (z) { return umlaute[z]; })
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   }
-  function dateiname() { return "antworten-trail-" + document.body.dataset.trail + "-" + kennung() + ".json"; }
+  function dateiname() { return "antworten-trail-" + document.body.dataset.trail + "-" + kurzname() + ".json"; }
 
   function felder() { return document.querySelectorAll("[data-feld]"); }
 
@@ -1671,7 +1669,7 @@ var ABGABE = (function () {
     var dauer = parseInt(wert("dauer"), 10);
     var daten = {
       trail: Number(document.body.dataset.trail),
-      kennung: kennung(),
+      name: wert("name"),
       datum: heute(),
       dauer_minuten: isNaN(dauer) ? null : dauer,
       studiert: (document.getElementById("phase") || {}).value === "abruf",
@@ -1681,6 +1679,11 @@ var ABGABE = (function () {
   }
 
   function bereit() {
+    if (!kurzname()) {
+      zeige("", TEXT("name-fehlt"));
+      document.getElementById("name").focus();
+      return false;
+    }
     var leer = antworten().filter(function (a) { return !a.tags.length && !a.antwort.replace(/^[^:]*:\s*$/gm, "").trim(); }).length;
     if (leer) return confirm(leer === 1 ? TEXT("leer-eins") : TEXT("leer-mehr", { n: leer }));
     return true;
@@ -1688,7 +1691,7 @@ var ABGABE = (function () {
 
   function zeige(text, hinweis) {
     var v = document.querySelector("[data-vorschau]");
-    if (v) { v.hidden = false; v.value = text; }
+    if (v) { v.hidden = !text; v.value = text; }
     var s = document.querySelector("[data-status]");
     if (s) s.textContent = hinweis;
   }
