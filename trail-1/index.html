@@ -195,7 +195,7 @@ details.beispiel > summary { cursor: pointer; font-weight: 600; }
   .karte { width: min(calc(100vw - 30rem), 80rem); margin-left: calc(50% - min(50vw - 15rem, 40rem)); }
 }
 </style>
-<script>var TEXTE = {"pruefen-leer": "Wähl zuerst mindestens einen Tag. Weißt du nur noch die Idee, leg sie als eigenen Tag an.", "treffer": "{getroffen} von {erwartet}", "treffer-rest": "erwarteten Einträgen getroffen.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "name-fehlt": "Trag zuerst deinen Namen ein.", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
+<script>var TEXTE = {"pruefen-leer": "Wähl zuerst mindestens einen Tag. Weißt du nur noch die Idee, leg sie als eigenen Tag an.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "name-fehlt": "Trag zuerst deinen Namen ein.", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
 <script>
 /* Meldungen der Skripte aus rahmen.md (meldungen). build.py setzt davor: var TEXTE = {…};
    TEXT(schluessel, { n: 3 }) setzt {n} ein. Fehlt ein Schlüssel, erscheint er selbst, damit es auffällt. */
@@ -323,16 +323,8 @@ function TEXT(k, werte) {
 <p>Dein erster Prompt beginnt mit „you lied to me …“.</p>
 <p>Am Ende hattest du doch keine Zeit, um auszuhelfen, und musstest stattdessen korrigieren und geradeziehen. Beim nächsten Daily schiebst du zum wiederholten Mal die Schuld auf das Modell. Immerhin machen die anderen Entwickler das auch.</p>
 </blockquote>
-<div class="reihe">
-<div>
-<label>Obstacles</label>
-<div data-tagfeld id="a1-obstacles" data-label="Was steckt dahinter? Obstacles"></div>
-</div>
-<div>
-<label>Anti-Patterns</label>
-<div data-tagfeld id="a1-antipatterns" data-label="Was steckt dahinter? Anti-Patterns"></div>
-</div>
-</div>
+<label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
+<div data-tagfeld id="a1-dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
 <label>Was hilft? (Patterns)</label>
 <div data-tagfeld id="a1-hilft" data-label="Was hilft? Patterns"></div>
 <label for="a1-warum">Wie würdest du die Patterns hier einsetzen? (optional, Stichworte)</label>
@@ -349,16 +341,8 @@ function TEXT(k, werte) {
 <p>Endlich läuft dein Endpunkt. Aber du hast für das Ausbügeln wieder einen ganzen Tag gebraucht und bist nicht ganz sicher, ob der Agent diesmal nicht wieder gelogen hat.</p>
 <p>Viel Zeit und Nerven hast du damit verbracht, ihm erst mal wieder alles zu erklären, mit ein paar Zusätzen, damit er diesmal keine Fehler macht. Dann kamst du auf die Idee, ihm aufzutragen, einfach in der <code>AGENTS.md</code> zu hinterlegen, dass der Agent immer erst alle Confluence-Artikel zu der aktuellen Aufgabe lesen soll. Das hat geholfen. Aber trotzdem fehlt ihm Detailwissen und immer hält er sich auch nicht dran. Außerdem musst du immer erst warten, bis er gefunden hat, was er sucht. Aber du weißt, was dir wichtig ist, und beauftragst am Ende immer einen zweiten Agenten, der noch mal reviewen soll. Der findet dann auch immer Sachen. Der Turnaround ist natürlich anstrengend und du weißt, dass du den Roundtrip auch manchmal vergessen hast. Man muss aber auch nicht päpstlicher sein als der Papst. Sinan wartet schon mit dem Reporting-Thema.</p>
 </blockquote>
-<div class="reihe">
-<div>
-<label>Obstacles</label>
-<div data-tagfeld id="a2-obstacles" data-label="Was steckt dahinter? Obstacles"></div>
-</div>
-<div>
-<label>Anti-Patterns</label>
-<div data-tagfeld id="a2-antipatterns" data-label="Was steckt dahinter? Anti-Patterns"></div>
-</div>
-</div>
+<label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
+<div data-tagfeld id="a2-dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
 <label>Was hilft? (Patterns)</label>
 <div data-tagfeld id="a2-hilft" data-label="Was hilft? Patterns"></div>
 <label for="a2-warum">Wie würdest du die Patterns hier einsetzen? (optional, Stichworte)</label>
@@ -380,16 +364,8 @@ function TEXT(k, werte) {
 <p>„Das ist die Queue, über die die Änderungsmeldungen kommen. Die Nachrichten folgen dem ECST. V2 deswegen, weil ihr einen Poison-Pill-Fix gemacht habt. Ich muss aber warnen, dass ihr die Ursache damit nicht behoben habt. Der AIO-Schlüssel wird dort nicht richtig transformiert, weil das BaseService-Team das Format gewechselt hat.“ OK … deine Kopfschmerzen klopfen bereits an … „Was ist ein AIO-Schlüssel, was ist ECST und was ist der Base Service? Dass das Format gewechselt hat, bezweifle ich. Wie kommst du darauf?“</p>
 <p>Kurz: Er beantwortet deine Fragen einzeln und stellt zwei Rückfragen. Seine Antworten werfen noch mehr Fragen auf. Du stehst auf und holst dir einen Kaffee.</p>
 </blockquote>
-<div class="reihe">
-<div>
-<label>Obstacles</label>
-<div data-tagfeld id="a3-obstacles" data-label="Was steckt dahinter? Obstacles"></div>
-</div>
-<div>
-<label>Anti-Patterns</label>
-<div data-tagfeld id="a3-antipatterns" data-label="Was steckt dahinter? Anti-Patterns"></div>
-</div>
-</div>
+<label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
+<div data-tagfeld id="a3-dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
 <label>Was hilft? (Patterns)</label>
 <div data-tagfeld id="a3-hilft" data-label="Was hilft? Patterns"></div>
 <label for="a3-warum">Wie würdest du die Patterns hier einsetzen? (optional, Stichworte)</label>
@@ -1496,13 +1472,6 @@ var ABRUF = (function () {
     var getroffen = kern.filter(hat);
 
     meldung.textContent = "";
-    var kopf = document.createElement("p");
-    kopf.style.margin = "0";
-    var fett = document.createElement("strong");
-    fett.textContent = TEXT("treffer", { getroffen: getroffen.length, erwartet: kern.length });
-    kopf.appendChild(fett);
-    kopf.appendChild(document.createTextNode(" " + TEXT("treffer-rest")));
-    meldung.appendChild(kopf);
     meldung.appendChild(liste(TEXT("erwartet"), kern.map(function (id) {
       return { eintrag: TAGFELD.eintrag(id), klasse: hat(id) ? "treffer" : "fehlt", zusatz: hat(id) ? TEXT("getroffen") : TEXT("verpasst") };
     })));
