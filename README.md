@@ -7,4 +7,4 @@ Hier liegen die Hausaufgaben der Staffel 1, eine je Trail. Du öffnest sie im Br
 
 ## Abgabe
 
-Dein Stand bleibt im Browser gespeichert. Am Ende lädst du auf der Seite deine Antwortdatei herunter (`antworten-trail-N-<name>.json`, mit deinem Namen; jeder gibt einzeln ab, auch bei Arbeit zu zweit) und lädst sie über den [Upload-Link](https://kein.tropfenderkessel.de/index.php/s/gswbPWzDmQPF7wS) hoch. Zum Nachbessern einfach neu herunterladen und noch einmal hochladen.
+Dein Stand bleibt im Browser gespeichert. Am Ende lädst du auf der Seite deine Antwortdatei herunter (mit deinem Namen; zu zweit tragt ihr beide Namen ein und gebt eine Datei ab) und lädst sie über den [Upload-Link](https://kein.tropfenderkessel.de/index.php/s/gswbPWzDmQPF7wS) hoch. Zum Nachbessern einfach neu herunterladen und noch einmal hochladen.
