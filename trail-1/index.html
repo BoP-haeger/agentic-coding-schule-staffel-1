@@ -294,7 +294,7 @@ function TEXT(k, werte) {
 <section class="spick teil" id="nachschlagewerk">
   <h2>Nachschlagewerk · Karte <span class="zeit">10 Min.</span></h2>
 
-  <p>Mach dich mit den Knoten von Trail 1 für die erste Aufgabe nochmal vertraut. Für Trail 1 zählt die obere Reihe: Nummern 1–11 und die 5 roten Obstacles auf der gleichen Ebene.</p>
+  <p>Mach dich mit den Knoten von Trail 1 für die erste Aufgabe noch mal vertraut. Für Trail 1 zählt die obere Reihe: Nummern 1–11 und die 5 roten Obstacles auf der gleichen Ebene.</p>
   <div class="karte" data-karte></div>
 
   <div data-vor-start>
@@ -307,7 +307,7 @@ function TEXT(k, werte) {
 <h2 id="teil-a">Teil A · Explore <span class="zeit">15 Min.</span></h2>
 <p class="kasten" data-vor-start>Öffnet sich, sobald du bestätigst, dass du den Trail noch einmal studiert hast.</p>
 <div data-teil-a hidden>
-<p>Lies die Szenarien aufmerksam. Unser Alltag mit KI hat sehr viel Potential, um Muster und Irrtümer zu erkennen. Die Hinweise fallen einem aber manchmal nicht auf, weil wir zu sehr involviert sind. In den Szenarien ist stets etwas schiefgelaufen, oder es wurden Gelegenheiten verpasst, etwas besser zu machen. I.d.R. ist das implizit, so wie im echten Leben. Du darfst also auch begründet raten.</p>
+<p>Lies die Szenarien aufmerksam. Unser Alltag mit KI hat sehr viel Potential, um Muster und Irrtümer zu erkennen. Die Hinweise fallen einem aber manchmal nicht auf, weil wir zu sehr involviert sind. In den Szenarien ist stets etwas schiefgelaufen, oder es wurden Gelegenheiten verpasst, etwas besser zu machen. I. d. R. ist das implizit, so wie im echten Leben. Du darfst also auch begründet raten.</p>
 <p>Der Fokus liegt hier auf dem Prozess, mit dem wir Software-Engineering betreiben. Weniger auf dem Coding.</p>
 <p>Versuche pro Aufgabe erst alles <strong>ohne Rückblick</strong> auf die Karte zu beantworten, und streng dein Gedächtnis an. Viele Patterns sind naheliegend, du schaffst das.</p>
 <section data-abruf class="aufgabe" data-aufgabe="A1 Montagmorgen" data-kern="context-rot limited-context-window context-management knowledge-document extract-knowledge" data-passend="compliance-bias silent-misalignment cannot-learn knowledge-checkpoint focused-agent">
@@ -372,7 +372,7 @@ function TEXT(k, werte) {
 <p>Du beauftragst deinen Agenten voller Zuversicht. Nachdem du das Problem beschrieben hast, schaut er direkt in den Code. Nach einiger Zeit fragt er nach dem MCP für die DB. OK, why not? Dann schaut er in die Pod-Logs von dem Zeitpunkt des Events.</p>
 <p>Es dauert länger als erwartet. Aber schlussendlich erzählt er dir, dass das Problem ganz klar auf der Hand liegt, aber ein anderes Team angefangen hat, falsche Nachrichten zu senden. Da bekommst du langsam ein flaues Gefühl in der Magengegend.</p>
 <p>„Es liegt an der Zuordnung der AIO-Schlüssel und einem falschen Mapping“, sagt er. So weit, so gut.</p>
-<p>„Die Events aus fl-v2.tlp, die das BaseService-Team sendet, verarbeiten die Spalte ID-VD jetzt nicht mehr aus dem Reporting-Prefix. Der dwh-prefight erkennt das natürlich nicht, weshalb das Mapping aus […]“ Du bemerkst, dass du den Anfang des Satzes bereits wieder vergessen hast. Du hast so viele Fragen und beginnst mit der ersten. Was soll fl-v2.tlp sein?</p>
+<p>„Die Events aus fl-v2.tlp, die das BaseService-Team sendet, verarbeiten die Spalte ID-VD jetzt nicht mehr aus dem Reporting-Prefix. Der dwh-preflight erkennt das natürlich nicht, weshalb das Mapping aus […]“ Du bemerkst, dass du den Anfang des Satzes bereits wieder vergessen hast. Du hast so viele Fragen und beginnst mit der ersten. Was soll fl-v2.tlp sein?</p>
 <p>„Das ist die Queue, über die die Änderungsmeldungen kommen. Die Nachrichten folgen dem ECST. V2 deswegen, weil ihr einen Poison-Pill-Fix gemacht habt. Ich muss aber warnen, dass ihr die Ursache damit nicht behoben habt. Der AIO-Schlüssel wird dort nicht richtig transformiert, weil das BaseService-Team das Format gewechselt hat.“ OK … deine Kopfschmerzen klopfen bereits an … „Was ist ein AIO-Schlüssel, was ist ECST und was ist der Base Service? Dass das Format gewechselt hat, bezweifle ich. Wie kommst du darauf?“</p>
 <p>Kurz: Er beantwortet deine Fragen einzeln und stellt zwei Rückfragen. Seine Antworten werfen noch mehr Fragen auf. Du stehst auf und holst dir einen Kaffee.</p>
 </blockquote>
@@ -545,7 +545,7 @@ Schreib dann Tests für die Änderung und führe sie aus.
 <h3>B3 · Dein Spezialist</h3>
 <p>Nimm ein Projekt, an dem du gerade wirklich arbeitest. Kein Projekt zur Hand? Dann nimm eine Kata aus Teil C.</p>
 <ol class="schritte">
-<li>Wähl eine Aufgabe, die du oft vergisst oder bei der dein Hauptagent nicht informiert / unaufmersam ist: Review des Diffs, Tests, Ursachen in Logs suchen, Doku nachziehen, Commit-Messages.</li>
+<li>Wähl eine Aufgabe, die du oft vergisst oder bei der dein Hauptagent nicht informiert / unaufmerksam ist: Review des Diffs, Tests, Ursachen in Logs suchen, Doku nachziehen, Commit-Messages.</li>
 <li>Leg einen Spezialisten dafür an. Du kannst ihn auch von deinem Agent schreiben lassen und dann kürzen. Er braucht: eine <code>description</code>, die sagt, <em>wann</em> er dran ist; genau eine Verantwortung; nur die Werkzeuge, die er braucht; höchstens ein Reference Doc; eine kurze, feste Form für sein Ergebnis.</li>
 <li>Setz den Kontext zurück und gib eine kleine echte Aufgabe. Lass den Spezialisten danach ran, in Claude Code z. B. mit <code>@agent-&lt;name&gt;</code>. Beobachte: Wird er gerufen? Wie lang ist, was zurückkommt? Findet er etwas, das der Hauptagent übersehen hat?</li>
 </ol>
