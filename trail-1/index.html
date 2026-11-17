@@ -1225,6 +1225,7 @@ var KARTE = {"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" v
 /* Tag-Feld: Namen der Einträge auf der Karte (VOKABULAR ∩ KARTE.titel) als Chips wählen.
    Markup: <div data-tagfeld id="…" data-label="…"></div>
    Vorschläge ab 2 Zeichen, Teilstring ohne Groß-/Kleinschreibung, nur Name und Typ.
+   Was in einem Tag-Feld derselben Aufgabe schon gewählt ist, wird nicht mehr vorgeschlagen.
    Annehmen per Klick, Enter oder Tab, wählen mit ↑↓, Esc schließt die Liste.
    Enter ohne Vorschlag legt einen eigenen Tag an. Backspace im leeren Feld entfernt den letzten Chip.
    Änderungen melden sich als bubbelndes „input“-Event am Container. */
@@ -1247,6 +1248,16 @@ var TAGFELD = (function () {
       return va - vb || a.name.localeCompare(b.name);
     });
     return treffer.slice(0, MAX);
+  }
+
+  function gewaehlteIds(feld) {
+    var aufgabe = feld.closest(".aufgabe");
+    var felder = aufgabe ? aufgabe.querySelectorAll("[data-tagfeld]") : [feld];
+    var ids = [];
+    Array.prototype.forEach.call(felder, function (f) {
+      (f._tags || []).forEach(function (t) { if (t.id) ids.push(t.id); });
+    });
+    return ids;
   }
 
   function baue(feld) {
@@ -1294,7 +1305,7 @@ var TAGFELD = (function () {
     }
 
     function zeige() {
-      aktuell = vorschlaege(eingabe.value, feld._tags.map(function (t) { return t.id; }));
+      aktuell = vorschlaege(eingabe.value, gewaehlteIds(feld));
       liste.textContent = "";
       if (!aktuell.length) { schliesse(); return; }
       aktuell.forEach(function (e, i) {
@@ -1327,7 +1338,7 @@ var TAGFELD = (function () {
       text = text.trim().slice(0, 80);
       if (!text) return;
       var gleich = AUSWAHL.filter(function (e) { return e.name.toLowerCase() === text.toLowerCase(); })[0];
-      if (gleich) { if (!feld._tags.some(function (t) { return t.id === gleich.id; })) uebernimm(gleich); else eingabe.value = ""; return; }
+      if (gleich) { if (gewaehlteIds(feld).indexOf(gleich.id) === -1) uebernimm(gleich); else eingabe.value = ""; return; }
       if (!feld._tags.some(function (t) { return !t.id && t.name.toLowerCase() === text.toLowerCase(); })) {
         setze(feld, feld._tags.concat([{ id: null, name: text }]));
         melde(feld);
