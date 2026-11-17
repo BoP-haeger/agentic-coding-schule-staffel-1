@@ -270,8 +270,8 @@ function TEXT(k, werte) {
 <h2>Abgabe <span class="zeit">5 Min.</span></h2>
 <div class="reihe">
   <div>
-    <label for="name">Dein Name</label>
-    <input type="text" id="name" autocomplete="name" data-feld>
+    <label for="name">Name(n)</label>
+    <input type="text" id="name" placeholder="z. B. Erika Mustermann, Max Muster" data-feld>
   </div>
   <div>
     <label for="dauer">Gebraucht (Minuten)</label>
@@ -1585,8 +1585,9 @@ var ABRUF = (function () {
      <button data-download>, <button data-kopieren>, <button data-loeschen>, <textarea data-vorschau>
    Arbeitet mit TAGFELD (Tags) und ABRUF (Ablauf, gesperrte geprüfte Aufgaben) zusammen.
    Jede Antwort: { aufgabe, antwort (Freitext, darf leer sein), tags: [Name | "eigen: Text"] }.
-   Der Name steht in der Datei und im Dateinamen (antworten-trail-1-erika-mustermann.json),
-   damit Abgaben im Upload-Ordner sich nicht überschreiben. Ohne Namen keine Abgabe. */
+   Namen kommagetrennt, eine Datei für alle. Sie stehen in der Datei und im Dateinamen
+   (antworten-trail-1-erika-mustermann_max-muster.json), damit Abgaben im Upload-Ordner sich nicht
+   überschreiben. Ohne Namen keine Abgabe. Der Zeitpunkt zeigt bei Duplikaten die neueste Abgabe. */
 var ABGABE = (function () {
   var schluessel;
 
@@ -1597,11 +1598,16 @@ var ABGABE = (function () {
     try { localStorage.setItem(schluessel, JSON.stringify(stand)); } catch (e) { /* ohne Speicher geht es auch */ }
   }
 
-  // "Jörg Müller-Lüdenscheidt" → "joerg-mueller-luedenscheidt"
+  function namen() {
+    return wert("name").split(",").map(function (n) { return n.trim(); }).filter(Boolean);
+  }
+  // "Jörg Müller-Lüdenscheidt, Ana" → "joerg-mueller-luedenscheidt_ana"
   function kurzname() {
     var umlaute = { "ä": "ae", "ö": "oe", "ü": "ue", "ß": "ss" };
-    return wert("name").toLowerCase().replace(/[äöüß]/g, function (z) { return umlaute[z]; })
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    return namen().map(function (n) {
+      return n.toLowerCase().replace(/[äöüß]/g, function (z) { return umlaute[z]; })
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }).filter(Boolean).join("_");
   }
   function dateiname() { return "antworten-trail-" + document.body.dataset.trail + "-" + kurzname() + ".json"; }
 
@@ -1632,10 +1638,13 @@ var ABGABE = (function () {
     ABRUF.aktualisiere();
   }
 
-  function heute() {
-    var d = new Date();
+  // Ortszeit mit Abstand zu UTC, z. B. 2026-11-20T18:05:09+01:00
+  function jetzt() {
+    var d = new Date(), v = -d.getTimezoneOffset();
     var zwei = function (n) { return (n < 10 ? "0" : "") + n; };
-    return d.getFullYear() + "-" + zwei(d.getMonth() + 1) + "-" + zwei(d.getDate());
+    return d.getFullYear() + "-" + zwei(d.getMonth() + 1) + "-" + zwei(d.getDate()) +
+      "T" + zwei(d.getHours()) + ":" + zwei(d.getMinutes()) + ":" + zwei(d.getSeconds()) +
+      (v < 0 ? "-" : "+") + zwei(Math.floor(Math.abs(v) / 60)) + ":" + zwei(Math.abs(v) % 60);
   }
 
   function wert(id) {
@@ -1669,8 +1678,8 @@ var ABGABE = (function () {
     var dauer = parseInt(wert("dauer"), 10);
     var daten = {
       trail: Number(document.body.dataset.trail),
-      name: wert("name"),
-      datum: heute(),
+      namen: namen(),
+      zeitpunkt: jetzt(),
       dauer_minuten: isNaN(dauer) ? null : dauer,
       studiert: (document.getElementById("phase") || {}).value === "abruf",
       antworten: antworten()
