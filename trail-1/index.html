@@ -311,49 +311,78 @@ function TEXT(k, werte) {
 <h2 id="teil-a">Teil A · Explore <span class="zeit">25 Min.</span></h2>
 <p class="kasten" data-vor-start>Öffnet sich, sobald du bestätigst, dass du den Trail noch einmal studiert hast.</p>
 <div data-teil-a hidden>
-<p>Lies die Szenarien aufmerksam. Unser Alltag mit KI hat sehr viel Potential, um Muster und Irrtümer zu erkennen. Die Hinweise fallen einem aber manchmal nicht auf, weil wir zu sehr involviert sind. In den Szenarien ist stets etwas schiefgelaufen, oder es wurden Gelegenheiten verpasst, etwas besser zu machen. I. d. R. ist das implizit, so wie im echten Leben. Du darfst also auch begründet raten.</p>
+<p>Du erlebst die nachfolgenden Szenarien. Identifiziere, was daran schieflief und welche Obstacles und Anti-Patterns beteiligt waren. Schlage Patterns vor, die helfen könnten.</p>
+<p>Lies die Szenarien aufmerksam. Unser Alltag mit Agenten hat viel Potential, um Muster und Irrtümer zu erkennen. Oft bleiben sie unentdeckt, wenn wir sehr involviert sind. Du darfst auch begründet raten, wenn du einen Hintergrund vermutest.</p>
 <p>Der Fokus liegt hier auf dem Prozess, mit dem wir Software-Engineering betreiben. Weniger auf dem Coding.</p>
-<p>Versuche pro Aufgabe erst alles <strong>ohne Rückblick</strong> auf die Karte zu beantworten, und streng dein Gedächtnis an. Viele Patterns sind naheliegend, du schaffst das.</p>
-<section data-abruf class="aufgabe" data-aufgabe="A1 Montagmorgen" data-kern="context-rot limited-context-window context-management knowledge-document extract-knowledge" data-passend="compliance-bias silent-misalignment cannot-learn knowledge-checkpoint focused-agent">
+<p>Versuche pro Aufgabe erst so viel wie möglich <strong>ohne Rückblick</strong> auf die Karte zu beantworten, und streng dein Gedächtnis an. Vor dem Prüfen kannst du noch mal auf die Karte schauen und ergänzen. Viele Patterns sind naheliegend, du schaffst das.</p>
+<section data-abruf class="aufgabe" data-aufgabe="A1 Montagmorgen" data-kern="context-rot limited-context-window context-management knowledge-document extract-knowledge" data-passend="cannot-learn limited-focus focused-agent">
 <h3>A1 · Montagmorgen</h3>
 <blockquote>
-<p>Am Freitag hast du mit dem Agent die Sessions heiß laufen lassen und ein paar Stunden diskutiert, um einen neuen Endpunkt fertigzustellen. Der Agent hat dabei viel gearbeitet, und es musste ab und zu kompaktiert werden. Abends beantwortet der Agent endlich alle deine Fragen positiv. Du bist fertig.</p>
-<p>Montagmorgen berichtest du im Daily von deinem Fortschritt. Du willst nur noch mal testen, es sollte aber alles passen, und du sagst deine Hilfe bei einem anderen Thema zu. Dafür wartet dein Kollege Sinan auf dich.</p>
-<p>Dann merkst du, dass in der README jetzt eine Beschreibung aus einem deiner Zwischenstände steht. Der Endpunkt läuft zwar wirklich und die Tests sind grün, aber der Body hat nicht alle Felder, die du ganz zu Beginn deiner Session spezifiziert hast. Ein echter Aufruf würde sofort scheitern. Du beginnst zu schwitzen.</p>
-<p>Dein erster Prompt beginnt mit „you lied to me …“.</p>
-<p>Am Ende hattest du doch keine Zeit, um auszuhelfen, und musstest stattdessen korrigieren und geradeziehen. Beim nächsten Daily schiebst du zum wiederholten Mal die Schuld auf das Modell. Immerhin machen die anderen Entwickler das auch.</p>
+<p>Am Freitag hast du mit dem Agent die Session heiß laufen lassen und ein paar Stunden diskutiert, um einen neuen Endpunkt fertigzustellen. Der Agent hat dabei viel gearbeitet, und es musste ab und zu kompaktiert werden. Abends beantwortet der Agent endlich alle deine Fragen positiv. Du bist fertig.</p>
+<p>Montagmorgen berichtest du im Daily von deinem Fortschritt am Endpunkt-Ticket. Du machst nur noch einen Abschlusstest, es sollte aber alles passen. Auf Nachfrage sagst du deinem Fachkollegen Sinan deine Hilfe bei seinem Reporting-Thema zu.</p>
+<p>Zurück in der IDE fällt dir etwas auf. Die README hat eine Beschreibung aus einem deiner Zwischenstände. Du prüfst weiter. Der Endpunkt steht und die Tests sind grün, aber der Body hat nicht alle Felder. Dabei hast du sie dem Agent gleich zu Beginn der Session gegeben. Ein echter Aufruf würde sofort scheitern. Du beginnst zu schwitzen.</p>
+<p>Was hat er noch alles unterschlagen? Dein erster Prompt beginnt mit „you lied to me …“.</p>
+<p>Am Ende hast du doch keine Zeit, um Sinan zu helfen, und musst stattdessen korrigieren und geradeziehen. Beim nächsten Daily schiebst du zum wiederholten Mal die Schuld auf das Modell. Immerhin machen die anderen Entwickler das auch.</p>
 </blockquote>
 <label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
 <div data-tagfeld id="a1-dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
 <label>Was hilft? (Patterns)</label>
 <div data-tagfeld id="a1-hilft" data-label="Was hilft? Patterns"></div>
-<label for="a1-warum">Wie würdest du die Patterns hier einsetzen? (optional, Stichworte)</label>
+<label for="a1-warum">Ist dir etwas aufgefallen was du betonen möchtest? Erkläre für mind. ein Pattern wie du es hier einsetzen würdest. Notiere in kurzen Stichpunkten.</label>
 <textarea id="a1-warum" data-feld style="min-height:4rem"></textarea>
 <button type="button" data-pruefen>Prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
-<p><strong>Auflösung.</strong> Gelogen hat der Agent wahrscheinlich nicht. In einer stundenlangen Session verlieren frühe Anweisungen an Gewicht (Context Rot), und beim Kompaktieren wird der ältere Verlauf zusammengefasst (Limited Context Window). Dabei gingen Felder deiner Spezifikation unter, die README blieb auf einem Zwischenstand. Die Tests prüfen nur, was er noch wusste. Auf Fragen sagt er gern Ja (Compliance Bias). Hättest du die Spezifikation am Freitag in eine Datei geschrieben (Knowledge Document) und Entscheidungen laufend ergänzt (Extract Knowledge), hättest du statt zu kompaktieren eine neue Session mit der Datei starten können (Context Management). Eine frische Session prüft dann Endpunkt und README gegen die Datei, mit einem echten Aufruf (Focused Agent).</p>
+<p><strong>Auflösung.</strong> Gelogen hat der Agent wahrscheinlich nicht. Die Tests prüfen nur, was er noch wusste. Und auf „Ist alles fertig?“ sagt er Ja, denn die fehlenden Felder kennt er nicht mehr oder er hat den Fokus verloren.</p>
+<p><strong>Was steckt dahinter?</strong></p>
+<ul>
+<li>Context Rot: In einer stundenlangen Session verlieren frühe Anweisungen an Gewicht.</li>
+<li>Limited Context Window: Beim Kompaktieren wird der ältere Verlauf zusammengefasst. Dabei gingen Felder deiner Spezifikation unter, die README blieb auf einem Zwischenstand.</li>
+</ul>
+<p><strong>Was hilft?</strong></p>
+<ul>
+<li>Knowledge Document: Du schreibst die Spezifikation gleich am Freitag in eine Datei.</li>
+<li>Extract Knowledge: Entscheidungen aus der Diskussion ergänzt du laufend in der Datei.</li>
+<li>Context Management: Statt zu kompaktieren, startest du eine neue Session mit der Datei.</li>
+<li>Focused Agent: Eine frische Session, die nur prüft, vergleicht Endpunkt und README mit der Datei, mit einem echten Aufruf.</li>
+</ul>
 </div>
 </section>
-<section data-abruf class="aufgabe" data-aufgabe="A2 Alles noch mal erklären" data-kern="cannot-learn limited-focus extract-knowledge knowledge-document ground-rules reference-docs focused-agent" data-passend="limited-context-window selective-hearing hooks">
-<h3>A2 · Alles noch mal erklären</h3>
+<section data-abruf class="aufgabe" data-aufgabe="A2 Wiederkäuen" data-kern="cannot-learn limited-focus extract-knowledge knowledge-document ground-rules reference-docs focused-agent" data-passend="limited-context-window knowledge-composition noise-cancellation external-context distracted-agent">
+<h3>A2 · Wiederkäuen</h3>
 <blockquote>
-<p>Endlich läuft dein Endpunkt. Aber du hast für das Ausbügeln wieder einen ganzen Tag gebraucht und bist nicht ganz sicher, ob der Agent diesmal nicht wieder gelogen hat.</p>
-<p>Viel Zeit und Nerven hast du damit verbracht, ihm erst mal wieder alles zu erklären, mit ein paar Zusätzen, damit er diesmal keine Fehler macht. Dann kamst du auf die Idee, ihm aufzutragen, einfach in der <code>AGENTS.md</code> zu hinterlegen, dass der Agent immer erst alle Confluence-Artikel zu der aktuellen Aufgabe lesen soll. Das hat geholfen. Aber trotzdem fehlt ihm Detailwissen und immer hält er sich auch nicht dran. Außerdem musst du immer erst warten, bis er gefunden hat, was er sucht. Aber du weißt, was dir wichtig ist, und beauftragst am Ende immer einen zweiten Agenten, der noch mal reviewen soll. Der findet dann auch immer Sachen. Der Turnaround ist natürlich anstrengend und du weißt, dass du den Roundtrip auch manchmal vergessen hast. Man muss aber auch nicht päpstlicher sein als der Papst. Sinan wartet schon mit dem Reporting-Thema.</p>
+<p>Dienstag. Endlich läuft dein Endpunkt und du bist zufrieden. Aber du hast für das Ausbügeln wieder einen ganzen Tag gebraucht und bist nicht ganz sicher, ob der Agent bei ein paar Details wieder gelogen hat.</p>
+<p>Viel Zeit und Nerven hast du damit verbracht, ihm erst mal wieder alles zu erklären, mit ein paar Zusätzen, damit er diesmal keine Fehler macht. Dann kamst du auf die Idee, einfach in der <code>AGENTS.md</code> zu hinterlegen, dass der Agent immer erst alle Confluence-Artikel lesen soll, die deinen Service betreffen. Das hat geholfen. Aber trotzdem fehlt ihm Detailwissen, das du schon in den Artikeln gesehen hast. Er hält sich auch nicht immer daran, auch wenn er nachher behauptet, er wüsste davon, nachdem du ihn zur Rede gestellt hast. Außerdem musst du immer erst warten, bis er gefunden hat, was er sucht.</p>
+<p>Naja, dein Vertrauen hat gelitten, aber du hast daraus gelernt. Du beauftragst am Ende jetzt immer einen zweiten Agenten, der noch mal alles reviewen soll. Der findet dann auch immer Sachen. Der Roundtrip ist natürlich anstrengend, und du weißt, dass du ihn auch manchmal vergessen hast. Man muss aber auch nicht päpstlicher sein als der Papst. Sinan wartet schon mit dem Bug im Reporting-Thema.</p>
 </blockquote>
 <label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
 <div data-tagfeld id="a2-dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
 <label>Was hilft? (Patterns)</label>
 <div data-tagfeld id="a2-hilft" data-label="Was hilft? Patterns"></div>
-<label for="a2-warum">Wie würdest du die Patterns hier einsetzen? (optional, Stichworte)</label>
+<label for="a2-warum">Ist dir etwas aufgefallen was du betonen möchtest? Erkläre für mind. ein Pattern wie du es hier einsetzen würdest. Notiere in kurzen Stichpunkten.</label>
 <textarea id="a2-warum" data-feld style="min-height:4rem"></textarea>
 <button type="button" data-pruefen>Prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
-<p><strong>Auflösung.</strong> Gelogen hat er wieder nicht, er weiß nur nichts mehr vom Freitag (Cannot Learn). Was du ihm neu erklärst, schreibst du einmal in eine Datei (Extract Knowledge, Knowledge Document). Die Zeile in der <code>AGENTS.md</code> ist eine Ground Rule. Aber „alle Confluence-Artikel lesen“ kostet Zeit, füllt den Kontext und verteilt seine Aufmerksamkeit, deshalb hält er sich nicht immer dran (Limited Focus). Besser: kurze Dateien je Thema, und in der <code>AGENTS.md</code> nur, wann welche zu lesen ist (Reference Docs). Der zweite Agent fürs Review ist ein Focused Agent, eine gute Idee. Damit du ihn nicht vergisst, startet ihn ein Hook am Ende jeder Aufgabe (Hooks). Was er immer wieder findet, wird eine Regel.</p>
+<p><strong>Auflösung.</strong> Der Agent hat das Detailwissen zwar gefunden, aber wahrscheinlich habt ihr viel in Confluence, und vieles davon ist irrelevant. Die Signal-to-Noise-Ratio leidet bei der Aufgabe.</p>
+<p><strong>Was steckt dahinter?</strong></p>
+<ul>
+<li>Cannot Learn: Vom Freitag weiß er nichts mehr, deshalb musst du ihm alles neu erklären.</li>
+<li>Limited Focus: „Alle Confluence-Artikel lesen“ kostet Zeit, füllt den Kontext und verteilt seine Aufmerksamkeit. Deshalb übersieht er Details aus den Artikeln und hält sich nicht immer an die Regel.</li>
+</ul>
+<p><strong>Was hilft?</strong></p>
+<ul>
+<li>Extract Knowledge: Was du ihm neu erklärst, hältst du einmal fest.</li>
+<li>Knowledge Document: Das kommt in eine Datei, die er in der nächsten Session wieder liest.</li>
+<li>Ground Rules: Die Zeile in der <code>AGENTS.md</code> ist schon eine. Was der Review-Agent immer wieder findet, kommt als Regel dazu.</li>
+<li>Knowledge Composition: Statt ganzer Confluence-Artikel kurze Dateien je Thema.</li>
+<li>Reference Docs: In der <code>AGENTS.md</code> steht nur, wann welche Datei zu lesen ist.</li>
+<li>Noise Cancellation: Die Artikel veralten, und die Entwickler sind oft nicht die Maintainer. Deine eigenen Dateien hältst du kurz und räumst Veraltetes regelmäßig raus.</li>
+<li>Focused Agent: Der zweite Agent fürs Review ist eine gute Idee. Aber auch er liest jetzt alle deine Confluence-Artikel, auch wenn er eigentlich eine sehr fokussierte Aufgabe hätte. Damit du ihn nicht vergisst, startet ihn ein Hook am Ende jeder Aufgabe.</li>
+</ul>
 </div>
 </section>
-<section data-abruf class="aufgabe" data-aufgabe="A3 Fachchinesisch" data-kern="excess-verbosity semantic-zoom noise-cancellation" data-passend="limited-context-window external-context">
+<section data-abruf class="aufgabe" data-aufgabe="A3 Fachchinesisch" data-kern="excess-verbosity semantic-zoom noise-cancellation" data-passend="limited-context-window distracted-agent ground-rules external-context">
 <h3>A3 · Fachchinesisch</h3>
 <blockquote>
 <p>Mittlerweile bist du bei deinem Kollegen Sinan aus der Fachabteilung angekommen. Er erklärt dir das Problem, das er im Reporting gefunden hat. Auch wenn du noch nie im Reporting unterwegs warst, hast du direkt eine Idee, was du dem Agenten geben musst, damit er das Problem für dich löst. „Kein Problem. Für meinen Harness sind solche Probleme Frühstück“, sagst du smug und lässt das wirken.</p>
@@ -368,12 +397,24 @@ function TEXT(k, werte) {
 <div data-tagfeld id="a3-dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
 <label>Was hilft? (Patterns)</label>
 <div data-tagfeld id="a3-hilft" data-label="Was hilft? Patterns"></div>
-<label for="a3-warum">Wie würdest du die Patterns hier einsetzen? (optional, Stichworte)</label>
+<label for="a3-warum">Ist dir etwas aufgefallen was du betonen möchtest? Erkläre für mind. ein Pattern wie du es hier einsetzen würdest. Notiere in kurzen Stichpunkten.</label>
 <textarea id="a3-warum" data-feld style="min-height:4rem"></textarea>
 <button type="button" data-pruefen>Prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
-<p><strong>Auflösung.</strong> Der Agent hat viel herausgefunden, aber die Antwort passt nicht zu deinem Wissensstand: Fachbegriffe, Details und Warnungen, nach denen du nicht gefragt hast (Excess Verbosity). Statt Frage für Frage abzuarbeiten, zoomst du erst heraus: „Erklär mir das Problem in drei Sätzen, ohne Abkürzungen.“ Dann gezielt hinein: „Was ist fl-v2.tlp?“ (Semantic Zoom). Wird es wieder zu viel: „Viel kürzer bitte“ (Noise Cancellation). Dass ein anderes Team schuld ist, ist erst mal eine Hypothese, frag nach dem Beleg. Code, Datenbank und Pod-Logs kann ein Subagent durchsuchen, der nur das Ergebnis zurückgibt (External Context). Dann bleibt der Kontext frei für deine Fragen und die von Sinan.</p>
+<p><strong>Auflösung.</strong> Der Agent hat viel herausgefunden, aber seine Antwort passt nicht zu deinem Wissensstand. Und dass ein anderes Team schuld ist, ist erst mal nur eine Hypothese: Frag nach dem Beleg.</p>
+<p><strong>Was steckt dahinter?</strong></p>
+<ul>
+<li>Excess Verbosity: Fachbegriffe, Details und Warnungen, nach denen du nicht gefragt hast.</li>
+<li>Limited Context Window: Code, Datenbank und Pod-Logs landen alle im selben Kontext. Für deine Fragen bleibt immer weniger Platz.</li>
+</ul>
+<p><strong>Was hilft?</strong></p>
+<ul>
+<li>Semantic Zoom: Statt Frage für Frage abzuarbeiten, zoomst du erst heraus („Erklär mir das Problem in drei Sätzen, ohne Abkürzungen.“), dann gezielt hinein („Was ist fl-v2.tlp?“).</li>
+<li>Noise Cancellation: Wird es wieder zu viel: „Viel kürzer bitte.“</li>
+<li>Ground Rules: Eine Zeile wie „Antworte knapp, erkläre Abkürzungen“ in deiner persönlichen Regeldatei wirkt in jeder Session.</li>
+<li>External Context: Code, Datenbank und Pod-Logs durchsucht ein Subagent, der nur das Ergebnis zurückgibt. Dann bleibt der Kontext frei für deine Fragen und die von Sinan.</li>
+</ul>
 </div>
 </section>
 </div>
