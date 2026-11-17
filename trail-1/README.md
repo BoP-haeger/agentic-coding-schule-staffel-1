@@ -2,4 +2,9 @@
 
 [Hausaufgabe öffnen](https://bop-haeger.github.io/agentic-coding-schule-staffel-1/trail-1/)
 
-In [`kata-meme-generator/`](kata-meme-generator/) liegt die Kata Meme Generator, die Teil C der Hausaufgabe empfiehlt.
+Katas für Teil C der Hausaufgabe:
+
+- [`kata-meme-generator/`](kata-meme-generator/): Meme Generator (empfohlen)
+- [`kata-background-remover/`](kata-background-remover/): Background Remover
+- [`kata-thumbnail-ranker/`](kata-thumbnail-ranker/): Thumbnail Ranker
+- [`kata-audio-transcriber/`](kata-audio-transcriber/): Audio Transcriber
