@@ -195,7 +195,7 @@ details.beispiel > summary { cursor: pointer; font-weight: 600; }
   .karte { width: min(calc(100vw - 30rem), 80rem); margin-left: calc(50% - min(50vw - 15rem, 40rem)); }
 }
 </style>
-<script>var TEXTE = {"pruefen-leer": "Wähl zuerst mindestens einen Tag. Weißt du nur noch die Idee, leg sie als eigenen Tag an.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "name-fehlt": "Trag zuerst deinen Namen ein.", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?\nBitte nur, wenn du dich verklickt hast, nicht um nach der Auflösung neu zu raten. Deine Antworten helfen uns nur, wenn sie ehrlich sind.", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
+<script>var TEXTE = {"pruefen-leer": "Wähl zuerst mindestens einen Tag. Weißt du nur noch die Idee, leg sie als eigenen Tag an.", "festlegen-leer": "Schreib zuerst deine Antwort.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "name-fehlt": "Trag zuerst deinen Namen ein.", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?\nBitte nur, wenn du dich verklickt hast, nicht um nach der Auflösung neu zu raten. Deine Antworten helfen uns nur, wenn sie ehrlich sind.", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
 <script>
 /* Meldungen der Skripte aus rahmen.md (meldungen). build.py setzt davor: var TEXTE = {…};
    TEXT(schluessel, { n: 3 }) setzt {n} ein. Fehlt ein Schlüssel, erscheint er selbst, damit es auffällt. */
@@ -308,7 +308,7 @@ function TEXT(k, werte) {
 </section>
 
 <section class="teil">
-<h2 id="teil-a">Teil A · Explore <span class="zeit">25 Min.</span></h2>
+<h2 id="teil-a">Teil A · Explore <span class="zeit">35 Min.</span></h2>
 <p class="kasten" data-vor-start>Öffnet sich, sobald du bestätigst, dass du den Trail noch einmal studiert hast.</p>
 <div data-teil-a hidden>
 <p>Du erlebst die nachfolgenden Szenarien. Identifiziere, was daran schieflief und welche Obstacles und Anti-Patterns beteiligt waren. Schlage Patterns vor, die helfen könnten.</p>
@@ -328,9 +328,9 @@ function TEXT(k, werte) {
 <div data-tagfeld id="a1-dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
 <label>Was hilft? (Patterns)</label>
 <div data-tagfeld id="a1-hilft" data-label="Was hilft? Patterns"></div>
-<label for="a1-warum">Ist dir etwas aufgefallen was du betonen möchtest? Erkläre für mind. ein Pattern wie du es hier einsetzen würdest. Notiere in kurzen Stichpunkten.</label>
+<label for="a1-warum">Optional - Ist dir etwas aufgefallen, was du betonen möchtest? Oder möchtest du erklären, wie du ein Pattern einsetzen möchtest? Notiere in kurzen Stichpunkten.</label>
 <textarea id="a1-warum" data-feld style="min-height:4rem"></textarea>
-<button type="button" data-pruefen>Prüfen</button>
+<button type="button" data-pruefen>Festlegen und prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
 <p><strong>Auflösung.</strong> Gelogen hat der Agent wahrscheinlich nicht. Die Tests prüfen nur, was er noch wusste. Und auf „Ist alles fertig?“ sagt er Ja, denn die fehlenden Felder kennt er nicht mehr oder er hat den Fokus verloren.</p>
@@ -359,9 +359,9 @@ function TEXT(k, werte) {
 <div data-tagfeld id="a2-dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
 <label>Was hilft? (Patterns)</label>
 <div data-tagfeld id="a2-hilft" data-label="Was hilft? Patterns"></div>
-<label for="a2-warum">Ist dir etwas aufgefallen was du betonen möchtest? Erkläre für mind. ein Pattern wie du es hier einsetzen würdest. Notiere in kurzen Stichpunkten.</label>
+<label for="a2-warum">Optional - Ist dir etwas aufgefallen, was du betonen möchtest? Oder möchtest du erklären, wie du ein Pattern einsetzen möchtest? Notiere in kurzen Stichpunkten.</label>
 <textarea id="a2-warum" data-feld style="min-height:4rem"></textarea>
-<button type="button" data-pruefen>Prüfen</button>
+<button type="button" data-pruefen>Festlegen und prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
 <p><strong>Auflösung.</strong> Der Agent hat das Detailwissen zwar gefunden, aber wahrscheinlich habt ihr viel in Confluence, und vieles davon ist irrelevant. Die Signal-to-Noise-Ratio leidet bei der Aufgabe.</p>
@@ -397,9 +397,9 @@ function TEXT(k, werte) {
 <div data-tagfeld id="a3-dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
 <label>Was hilft? (Patterns)</label>
 <div data-tagfeld id="a3-hilft" data-label="Was hilft? Patterns"></div>
-<label for="a3-warum">Ist dir etwas aufgefallen was du betonen möchtest? Erkläre für mind. ein Pattern wie du es hier einsetzen würdest. Notiere in kurzen Stichpunkten.</label>
+<label for="a3-warum">Optional - Ist dir etwas aufgefallen, was du betonen möchtest? Oder möchtest du erklären, wie du ein Pattern einsetzen möchtest? Notiere in kurzen Stichpunkten.</label>
 <textarea id="a3-warum" data-feld style="min-height:4rem"></textarea>
-<button type="button" data-pruefen>Prüfen</button>
+<button type="button" data-pruefen>Festlegen und prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
 <p><strong>Auflösung.</strong> Der Agent hat viel herausgefunden, aber seine Antwort passt nicht zu deinem Wissensstand. Und dass ein anderes Team schuld ist, ist erst mal nur eine Hypothese: Frag nach dem Beleg.</p>
@@ -420,9 +420,9 @@ function TEXT(k, werte) {
 </div>
 </section>
 <section class="teil">
-<h2>Teil B · Advance <span class="zeit">30 Min.</span></h2>
+<h2>Teil B · Advance <span class="zeit">25 Min.</span></h2>
 <div data-teil-a hidden>
-<section data-abruf class="aufgabe" data-aufgabe="B1 Gut gemeint: die AGENTS.md" data-kern="ground-rules reference-docs knowledge-composition noise-cancellation" data-passend="extract-knowledge knowledge-document limited-focus limited-context-window excess-verbosity context-rot distracted-agent">
+<section data-abruf class="aufgabe" data-aufgabe="B1 Gut gemeint: die AGENTS.md" data-kern="ground-rules reference-docs knowledge-composition extract-knowledge" data-passend="knowledge-document noise-cancellation cannot-learn limited-focus limited-context-window excess-verbosity context-rot distracted-agent">
 <h3>B1 · Gut gemeint: die AGENTS.md</h3>
 <p>Dein Kollege war auch beim Schulungstermin. Danach hat er im <code>reporting-service</code> (Spring Boot, Gradle, Kafka) an der <code>AGENTS.md</code> geschraubt.</p>
 <p>Für Claude Code liegt daneben eine <code>CLAUDE.md</code> mit <code>@AGENTS.md</code>. Er ist zufrieden. Du nicht. Warum?</p>
@@ -472,7 +472,8 @@ Daily um 9:15.
    2 docs/agent/datenbank.md
    4 docs/agent/export-job.md
    5 docs/agent/clean-code.md
-   9 docs/notes/migration-boot3.md
+   7 docs/notes/migration-boot3.md
+  23 total
 </code></pre>
 <pre><code class="language-markdown"># Clean Code
 - Methoden kurz halten.
@@ -494,41 +495,41 @@ Branch: feature/boot3, NICHT auf main arbeiten.
 <textarea id="b1-befund" data-feld></textarea>
 <label>Welche Einträge der Sammlung erkennst du?</label>
 <div data-tagfeld id="b1-erkannt" data-label="Erkannte Einträge"></div>
-<button type="button" data-pruefen>Prüfen</button>
+<button type="button" data-pruefen>Festlegen und prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
 <p><strong>Auflösung.</strong> Jedes Pattern ist da, aber keines tut, wofür es gedacht ist.</p>
 <ul>
-<li><strong>Ground Rules als Ablage für alles.</strong> In jeder Session stehen Projekthistorie, Team, Daily, Topic-Details und der Ablauf des Export-Jobs. Ground Rules sind für das, was <em>jede</em> Session braucht, und zwar konkret: „Schreib sauberen Code“ und „Achte auf Performance“ sagen dem Agent nichts, <code>./gradlew test</code> schon. Alles Weitere kostet Platz (Limited Context Window) und Aufmerksamkeit, auch für die guten Regeln (Limited Focus).</li>
-<li><strong>Reference Docs, die immer laden.</strong> Die <code>@</code>-Imports holen jede Datei in jede Session, die Zeile „Lies vor jeder Aufgabe alle Dateien in <code>docs/</code>“ tut dasselbe noch einmal. Damit sind es Ground Rules. Reference Docs nennt man mit Bedingung: „Wenn du am Export-Job arbeitest, lies <code>docs/agent/export-job.md</code>.“</li>
-<li><strong>Reference Docs ohne Wert.</strong> <code>clean-code.md</code> wiederholt, was das Modell ohnehin weiß. <code>migration-boot3.md</code> war im März 2025 nützlich. Heute schickt sie jeden Agent auf einen alten Branch, verbietet <code>./gradlew build</code> und hält einen Workaround am Leben. Temporäre Dokumente löschst du, wenn ihr Anlass vorbei ist (Noise Cancellation).</li>
-<li><strong>Knowledge Composition als Zerstückelung.</strong> Sechs Dateien mit zwei bis fünf Zeilen, die ohnehin zusammen geladen werden. Getrennt wird nach Anlass: eine Datei pro Thema, das man unabhängig braucht, z. B. Export-Job oder Kafka.</li>
+<li><strong>Ground Rules als Ablage für alles.</strong> In jeder Session stehen Projekthistorie, Team, Daily, Topic-Details und der Ablauf des Export-Jobs. Ground Rules sind für das, was <em>jede</em> Session braucht, und zwar konkret: „Schreib sauberen, wartbaren Code“ und „Achte auf Performance“ sagen dem Agenten nichts, <code>./gradlew test</code> schon. Alles Weitere kostet Platz (Limited Context Window) und Aufmerksamkeit, auch für die guten Regeln (Limited Focus).</li>
+<li><strong>Reference Docs, die immer laden.</strong> In Claude Code holen die <code>@</code>-Imports jede Datei in jede Session, die Zeile „Lies vor jeder Aufgabe alle Dateien in <code>docs/</code>“ tut dasselbe noch einmal. Damit sind es Ground Rules. Reference Docs nennt man mit Bedingung: „Wenn du am Export-Job arbeitest, lies <code>docs/agent/export-job.md</code>.“</li>
+<li><strong>Reference Docs ohne Wert.</strong> <code>clean-code.md</code> wiederholt, was das Modell ohnehin weiß. <code>migration-boot3.md</code> war im März 2025 nützlich. Heute schickt sie jeden Agenten auf einen alten Branch, verbietet <code>./gradlew build</code> und hält einen Workaround am Leben. Temporäre Dokumente löschst du, wenn ihr Anlass vorbei ist (Noise Cancellation).</li>
+<li><strong>Knowledge Composition als Zerstückelung.</strong> Sechs Dateien mit zwei bis sieben Zeilen, die ohnehin zusammen geladen werden. Getrennt wird nach Anlass: eine Datei pro Thema, das man unabhängig braucht, z. B. Export-Job oder Kafka.</li>
 <li><strong>Extract Knowledge ohne Aufräumen.</strong> Die „Learnings“ sind ein Tagebuch. Der Eintrag vom 14.10. widerspricht der Regel „keine Feld-Injection“, der vom 30.09. ist ein Gerücht, der vom 21.10. gilt nur manchmal. Neues Wissen gehört in das passende Dokument, Widersprüche werden aufgelöst, Altes fliegt raus (Noise Cancellation).</li>
 </ul>
 </div>
 </section>
-<section data-abruf class="aufgabe" data-aufgabe="B2 Gut gemeint: die Spezialisten" data-kern="focused-agent external-context distracted-agent" data-passend="limited-focus limited-context-window context-rot reference-docs excess-verbosity">
+<section data-abruf class="aufgabe" data-aufgabe="B2 Gut gemeint: die Spezialisten" data-kern="focused-agent external-context distracted-agent" data-passend="limited-focus limited-context-window context-rot reference-docs noise-cancellation excess-verbosity">
 <h3>B2 · Gut gemeint: die Spezialisten</h3>
 <p>Derselbe Kollege hat auch Spezialisten angelegt. Er wundert sich, dass sie kaum etwas bringen.</p>
 <details class="beispiel" open>
 <summary>.claude/agents/</summary>
-<pre><code class="language-markdown"># helper.md
----
+<p><code>helper.md</code></p>
+<pre><code class="language-markdown">---
 name: helper
 description: Allround-Assistent für das Team
 ---
 Du unterstützt das Team. Schreib Code, führe Tests aus, mach Reviews,
 aktualisiere die Doku und committe am Ende.
 </code></pre>
-<pre><code class="language-markdown"># reviewer.md
----
+<p><code>reviewer.md</code></p>
+<pre><code class="language-markdown">---
 name: reviewer
 description: Hilft bei Code
 ---
 Du bist ein erfahrener Senior-Entwickler. Sei gründlich.
 </code></pre>
-<pre><code class="language-markdown"># researcher.md
----
+<p><code>researcher.md</code></p>
+<pre><code class="language-markdown">---
 name: researcher
 description: Sucht in Code, Datenbank und Pod-Logs nach der Ursache eines Fehlers.
 ---
@@ -536,8 +537,8 @@ Untersuche den Fehler. Gib am Ende alles zurück, was du gelesen hast:
 vollständige Logs, alle Abfragen und ihre Ergebnisse, damit nichts verloren geht.
 Findest du die Ursache, behebe sie direkt.
 </code></pre>
-<pre><code class="language-markdown"># tester.md
----
+<p><code>tester.md</code></p>
+<pre><code class="language-markdown">---
 name: tester
 description: Schreibt und startet Tests, wenn Code geändert wurde.
 ---
@@ -545,47 +546,49 @@ Lies zuerst AGENTS.md und alle Dateien in docs/, damit du das Projekt kennst.
 Schreib dann Tests für die Änderung und führe sie aus.
 </code></pre>
 </details>
-<p>Was macht jeden dieser Spezialisten schwach?</p>
+<p>Was könnte die Spezialisten hier weniger nützlich machen?</p>
 <label for="b2-befund">Was ist schiefgegangen, und wie wäre es besser? (Stichworte)</label>
 <textarea id="b2-befund" data-feld></textarea>
-<label>Welche Einträge der Sammlung erkennst du?</label>
-<div data-tagfeld id="b2-erkannt" data-label="Erkannte Einträge"></div>
-<button type="button" data-pruefen>Prüfen</button>
+<label>Welche Einträge der Sammlung erklären die Schwächen?</label>
+<div data-tagfeld id="b2-erkannt" data-label="Einträge, die die Schwächen erklären"></div>
+<button type="button" data-pruefen>Festlegen und prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
 <p><strong>Auflösung.</strong> Ein Spezialist hilft durch zwei Dinge: eine einzige Verantwortung (Focused Agent) und einen eigenen Kontext, aus dem nur das Ergebnis zurückkommt (External Context).</p>
 <ul>
 <li><strong><code>helper</code></strong> hat fünf Aufgaben. Das ist der Distracted Agent mit neuem Namen.</li>
-<li><strong><code>reviewer</code></strong>: Die <code>description</code> entscheidet, wann der Hauptagent ihn ruft. „Hilft bei Code“ passt auf alles und damit auf nichts. Der Text sagt nicht, wogegen er prüft und was er zurückgibt. Besser: „Prüft vor dem Abschluss einer Aufgabe den Diff gegen <code>main</code>. Gibt höchstens fünf Befunde zurück, je mit Datei und Zeile.“</li>
+<li><strong><code>reviewer</code></strong>: Die <code>description</code> entscheidet, wann der Hauptagent ihn ruft. „Hilft bei Code“ passt auf alles und damit auf nichts. Der Text sagt nicht, wogegen er prüft und was er zurückgibt. Besser: „Prüft vor dem Abschluss einer Aufgabe den Diff gegen <code>main</code>. Gibt Befunde mit Kategorie (Minor, Medium, Major) zurück, je mit Datei und Zeile.“</li>
 <li><strong><code>researcher</code></strong> gibt alles zurück. Dann landen Logs und Abfragen doch im Hauptkontext (Limited Context Window, Excess Verbosity). Zurück gehört die Ursache in wenigen Sätzen mit Beleg. „Behebe sie direkt“ ist eine zweite Verantwortung, und das ohne eingeschränkte Werkzeuge: Er sollte nur lesen.</li>
 <li><strong><code>tester</code></strong> lädt zuerst alles. Damit ist sein eigener Kontext gleich wieder voll, und die Aufmerksamkeit verteilt sich (Limited Focus). Er braucht nur das Reference Doc zu den Tests.</li>
 </ul>
 </div>
 </section>
-<section class="aufgabe" data-aufgabe="B3 Dein Spezialist">
+<section data-abruf class="aufgabe" data-aufgabe="B3 Dein Spezialist">
 <h3>B3 · Dein Spezialist</h3>
 <p>Nimm ein Projekt, an dem du gerade wirklich arbeitest. Kein Projekt zur Hand? Dann nimm eine Kata aus Teil C.</p>
 <ol class="schritte">
-<li>Wähl eine Aufgabe, die du oft vergisst oder bei der dein Hauptagent nicht informiert / unaufmerksam ist: Review des Diffs, Tests, Ursachen in Logs suchen, Doku nachziehen, Commit-Messages.</li>
-<li>Leg einen Spezialisten dafür an. Du kannst ihn auch von deinem Agent schreiben lassen und dann kürzen. Er braucht: eine <code>description</code>, die sagt, <em>wann</em> er dran ist; genau eine Verantwortung; nur die Werkzeuge, die er braucht; höchstens ein Reference Doc; eine kurze, feste Form für sein Ergebnis.</li>
-<li>Setz den Kontext zurück und gib eine kleine echte Aufgabe. Lass den Spezialisten danach ran, in Claude Code z. B. mit <code>@agent-&lt;name&gt;</code>. Beobachte: Wird er gerufen? Wie lang ist, was zurückkommt? Findet er etwas, das der Hauptagent übersehen hat?</li>
+<li>Wähl eine Aufgabe, die du oft vergisst oder bei der dein Hauptagent nicht informiert / unaufmerksam ist: Review des Diffs, Tests, Ursachen in Logs suchen, Doku nachziehen, Git-Flow.</li>
+<li>Leg einen Spezialisten dafür an. Du kannst ihn auch von deinem Agenten schreiben lassen und dann reviewen. Er braucht: eine <code>description</code>, die sagt, <em>wann</em> er dran ist; eine Verantwortung; nur die Werkzeuge, die er braucht; höchstens ein Reference Doc; eine kurze, feste Form für sein Ergebnis.</li>
+<li>Setz den Kontext zurück und gib eine kleine echte Aufgabe. Lass den Spezialisten danach einmal als Hauptagenten und einmal als Subagenten laufen. In Claude Code z. B. als Hauptagenten mit <code>claude --agent &lt;name&gt;</code>, als Subagenten mit <code>@agent-&lt;name&gt;</code>, über progressive Disclosure oder indem du deinen Hauptagenten anweist, ihn zu starten.</li>
 </ol>
 <p class="klein">Siehe auch: Claude Code <a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">Regeldateien</a>, <a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">Subagents</a> · Codex <a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md" target="_blank" rel="noopener">AGENTS.md</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents" target="_blank" rel="noopener">Subagents</a> · Pi <a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/configuration.md" target="_blank" rel="noopener">Konfiguration</a>, <a href="https://github.com/earendil-works/pi/tree/main/packages/coding-agent/examples/extensions/subagent" target="_blank" rel="noopener">Erweiterung <code>subagent</code></a>.</p>
-<details class="beispiel">
-<summary>Beispiel: reviewer für Claude Code</summary>
+<p class="klein"><strong>Codex:</strong> eine TOML-Datei mit <code>name</code>, <code>description</code> und <code>developer_instructions</code>. <strong>Pi:</strong> hat keine eingebauten Subagenten; die Beispiel-Erweiterung <code>subagent</code> einzurichten kostet ein paar Minuten extra.</p>
+<label for="b3">Datei deines Spezialisten (oder Auszug, falls vertraulich), die Aufgabe, an der du ihn ausprobiert hast, und was er als Hauptagent und als Subagent gefunden oder anders gemacht hat.</label>
+<textarea id="b3" data-feld></textarea>
+<button type="button" data-pruefen>Festlegen und auflösen</button>
+<div class="rueckmeldung" aria-live="polite"></div>
+<div class="aufloesung" hidden>
+<p><strong>Auflösung.</strong> Beispiel: <code>reviewer</code> für Claude Code.</p>
 <pre><code class="language-markdown">---
 name: reviewer
-description: Prüft vor dem Abschluss einer Aufgabe den Diff gegen main. Nutze ihn, bevor du eine Aufgabe als fertig meldest.
+description: Prüft vor dem Abschluss einer Aufgabe (Erstellen eines MR) den Diff gegen main. Nutze ihn, bevor du eine Aufgabe als fertig meldest.
 tools: Read, Grep, Glob, Bash
 ---
 Du prüfst nur, du änderst nichts. Lies `git diff main`.
-Gib höchstens fünf Befunde zurück, je eine Zeile: Datei:Zeile, Problem, Vorschlag.
+Gib Befunde mit Kategorien für Findings (Minor, Medium, Major) zurück, je eine Zeile: Kategorie, Datei:Zeile, Problem, Vorschlag. Solange Major-Findings existieren, ist eine Änderung notwendig.
 Findest du nichts: „Keine Befunde.“
 </code></pre>
-</details>
-<p class="klein"><strong>Codex:</strong> eine TOML-Datei mit <code>name</code>, <code>description</code> und <code>developer_instructions</code>. <strong>Pi:</strong> hat keine eingebauten Subagenten; die Beispiel-Erweiterung <code>subagent</code> einzurichten kostet ein paar Minuten extra.</p>
-<label for="b3">Datei deines Spezialisten (oder Auszug, falls vertraulich), die Aufgabe, an der du ihn ausprobiert hast, und was er gefunden oder anders gemacht hat als dein Hauptagent.</label>
-<textarea id="b3" data-feld></textarea>
+</div>
 </section>
 </div>
 </section>
@@ -1466,6 +1469,7 @@ var TAGFELD = (function () {
        <div class="aufloesung" hidden>…</div>
      </section>
    Nach dem Prüfen sind die Felder gesperrt (außer [data-offen]), damit die Abgabe den echten Abruf zeigt.
+   Eine Aufgabe ohne Tag-Feld (Projekt) hat statt „Prüfen“ „Festlegen“: Es sperrt die Antwort und zeigt die Auflösung, ohne zu vergleichen.
 
    Ablauf der Seite (Zustand im versteckten Feld #phase, gespeichert von abgabe.js):
      „lesen“  Teil A zu. Erst nach [data-studiert] (Bestätigung) startet [data-starten] „abruf“.
@@ -1510,7 +1514,35 @@ var ABRUF = (function () {
     return Array.prototype.reduce.call(section.querySelectorAll("[data-tagfeld]"), function (summe, f) { return summe.concat(TAGFELD.werte(f)); }, []);
   }
 
+  // Sperrt die Felder, zeigt die Auflösung und merkt sich die Aufgabe als geprüft.
+  function sperre(section) {
+    section.querySelectorAll("[data-tagfeld]").forEach(TAGFELD.sperre);
+    section.querySelectorAll("textarea[data-feld]:not([data-offen])").forEach(function (f) { f.readOnly = true; });
+    var knopf = section.querySelector("[data-pruefen]");
+    if (knopf) knopf.disabled = true;
+    var aufloesung = section.querySelector(".aufloesung");
+    if (aufloesung) aufloesung.hidden = false;
+
+    section.dataset.geprueft = "ja";
+    aktualisiere();
+    document.dispatchEvent(new CustomEvent("abruf:geprueft", { detail: { aufgabe: section.dataset.aufgabe } }));
+  }
+
+  // Ohne Tag-Feld (Projekt) gibt es nichts zu vergleichen: „Festlegen“ sperrt die Antwort und zeigt die Auflösung.
+  function festlege(section) {
+    var meldung = section.querySelector(".rueckmeldung");
+    var leer = !Array.prototype.some.call(section.querySelectorAll("textarea[data-feld]"), function (f) { return f.value.trim(); });
+    if (leer) {
+      meldung.textContent = TEXT("festlegen-leer");
+      return null;
+    }
+    meldung.textContent = "";
+    sperre(section);
+    return "";
+  }
+
   function pruefe(section) {
+    if (!section.querySelector("[data-tagfeld]")) return festlege(section);
     var gewaehlt = tags(section);
     var meldung = section.querySelector(".rueckmeldung");
     if (!gewaehlt.length) {
@@ -1537,22 +1569,13 @@ var ABRUF = (function () {
       return { name: t.name, klasse: "extra", zusatz: TEXT("nicht-gewertet") };
     }))));
 
-    section.querySelectorAll("[data-tagfeld]").forEach(TAGFELD.sperre);
-    section.querySelectorAll("textarea[data-feld]:not([data-offen])").forEach(function (f) { f.readOnly = true; });
-    var knopf = section.querySelector("[data-pruefen]");
-    if (knopf) knopf.disabled = true;
-    var aufloesung = section.querySelector(".aufloesung");
-    if (aufloesung) aufloesung.hidden = false;
-
-    section.dataset.geprueft = "ja";
     section.dataset.treffer = getroffen.length + " von " + kern.length;
     section._ergebnis = {
       getroffen: getroffen.map(function (id) { return TAGFELD.eintrag(id).name; }),
       verpasst: kern.filter(function (id) { return !hat(id); }).map(function (id) { return TAGFELD.eintrag(id).name; }),
       zusaetzlich: zusaetzlich.map(function (id) { return TAGFELD.eintrag(id).name; }).concat(eigene.map(TAGFELD.alsText))
     };
-    aktualisiere();
-    document.dispatchEvent(new CustomEvent("abruf:geprueft", { detail: { aufgabe: section.dataset.aufgabe } }));
+    sperre(section);
     return section.dataset.treffer;
   }
 
