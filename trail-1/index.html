@@ -510,73 +510,76 @@ Branch: feature/boot3, NICHT auf main arbeiten.
 </ul>
 </div>
 </section>
-<section data-abruf class="aufgabe" data-aufgabe="B2 Gut gemeint: die Spezialisten" data-kern="focused-agent external-context distracted-agent" data-passend="limited-focus limited-context-window context-rot reference-docs noise-cancellation excess-verbosity">
-<h3>B2 · Gut gemeint: die Spezialisten</h3>
-<p>Derselbe Kollege hat auch Spezialisten angelegt. Er wundert sich, dass sie kaum etwas bringen.</p>
+<section data-abruf class="aufgabe" data-aufgabe="B2 Skill entern">
+<h3>B2 · Skill entern</h3>
+<ol class="schritte">
+<li>Installiere in einem leeren Ordner die Skills von Matt Pocock als bearbeitbare Dateien: <code>npx skills@latest add mattpocock/skills</code>. Nimm alle oder nur <code>wait-what</code>. Das Plugin aktualisiert sich selbst und würde deine Änderung überschreiben.</li>
+<li>Lass deinen Agenten <code>wait-what</code> so ändern, dass er wie ein Pirat spricht.</li>
+<li>Starte eine neue Session und stell eine Frage, die schnell einen Semantic Zoom braucht. Zwei Beispiele: „How do Wardley Maps help with DDD?“ oder „How do CRDTs work?“</li>
+<li>Ruf danach <code>wait-what</code> auf, in Claude Code mit <code>/wait-what</code>.</li>
+</ol>
+<label for="b2">Kann dein Agent den Skill von selbst nutzen, wenn er merkt, dass seine Erklärung nicht ankommt? Wenn nein: Was müsstest du dafür ändern?</label>
+<textarea id="b2" data-teil="frage" data-feld></textarea>
+<button type="button" data-pruefen>Festlegen und auflösen</button>
+<div class="rueckmeldung" aria-live="polite"></div>
+<div class="aufloesung" hidden>
+<p><strong>Auflösung.</strong> Nein. <code>wait-what</code> hat <code>disable-model-invocation: true</code>. Dann kennt dein Agent nicht einmal die <code>description</code> und startet den Skill nur, wenn du <code>/wait-what</code> tippst. Damit er ihn selbst nutzt, entfernst du die Zeile und sagst in der <code>description</code>, wann er dran ist, z. B. „Use when the user did not understand your last answer.“ In Codex steht dasselbe in <code>agents/openai.yaml</code> unter <code>allow_implicit_invocation</code>.</p>
+<p>Die <code>description</code> ist der Zeiger auf den Skill, wie eine Zeile in der <code>AGENTS.md</code> auf ein Reference Doc: Sie entscheidet, ob der Agent ihn lädt. Und <code>/wait-what</code> ist Semantic Zoom: Es zoomt aus der Fachsprache heraus. Fragst du danach zu einem Punkt nach, zoomst du wieder hinein.</p>
+</div>
+</section>
+<section data-abruf class="aufgabe" data-aufgabe="B3 Gut gemeint: die Spezialisten" data-kern="external-context focused-agent distracted-agent" data-passend="reference-docs limited-focus limited-context-window context-rot noise-cancellation excess-verbosity">
+<h3>B3 · Gut gemeint: die Spezialisten</h3>
+<p>Der Kollege aus B1 hat auch Spezialisten angelegt. Er wundert sich, dass sie kaum etwas bringen.</p>
 <details class="beispiel" open>
 <summary>.claude/agents/</summary>
-<p><code>helper.md</code></p>
-<pre><code class="language-markdown">---
-name: helper
-description: Allround-Assistent für das Team
----
-Du unterstützt das Team. Schreib Code, führe Tests aus, mach Reviews,
-aktualisiere die Doku und committe am Ende.
-</code></pre>
 <p><code>reviewer.md</code></p>
 <pre><code class="language-markdown">---
 name: reviewer
-description: Hilft bei Code
+description: Erfahrener Code-Reviewer für Qualität, Sicherheit und Performance.
+tools: Read, Grep, Glob
 ---
-Du bist ein erfahrener Senior-Entwickler. Sei gründlich.
+Prüfe die Änderungen gegen docs/agent/clean-code.md,
+außerdem auf Sicherheit, Performance, Testabdeckung, Fehlerbehandlung und Logging.
+Gib jeden Befund mit Datei und Zeile zurück.
 </code></pre>
 <p><code>researcher.md</code></p>
 <pre><code class="language-markdown">---
 name: researcher
-description: Sucht in Code, Datenbank und Pod-Logs nach der Ursache eines Fehlers.
+description: Sucht die Ursache eines Fehlers in Code, Datenbank und Pod-Logs. Nutze ihn bei Fehlermeldungen aus Produktion.
+tools: Read, Grep, Glob, Bash
 ---
-Untersuche den Fehler. Gib am Ende alles zurück, was du gelesen hast:
-vollständige Logs, alle Abfragen und ihre Ergebnisse, damit nichts verloren geht.
-Findest du die Ursache, behebe sie direkt.
-</code></pre>
-<p><code>tester.md</code></p>
-<pre><code class="language-markdown">---
-name: tester
-description: Schreibt und startet Tests, wenn Code geändert wurde.
----
-Lies zuerst AGENTS.md und alle Dateien in docs/, damit du das Projekt kennst.
-Schreib dann Tests für die Änderung und führe sie aus.
+Untersuche den Fehler, bis du die Ursache kennst.
+Gib dann deinen Weg dorthin zurück, mit den Log-Auszügen und Abfrage-Ergebnissen,
+die du dir angesehen hast, damit der Hauptagent jeden Schritt nachvollziehen kann.
 </code></pre>
 </details>
 <p>Was könnte die Spezialisten hier weniger nützlich machen?</p>
-<label for="b2-befund">Was ist schiefgegangen, und wie wäre es besser? (Stichworte)</label>
-<textarea id="b2-befund" data-teil="befund" data-feld></textarea>
+<label for="b3-befund">Was ist schiefgegangen, und wie wäre es besser? (Stichworte)</label>
+<textarea id="b3-befund" data-teil="befund" data-feld></textarea>
 <label>Welche Einträge der Sammlung erklären die Schwächen?</label>
-<div data-tagfeld id="b2-erkannt" data-teil="erkannt" data-label="Einträge, die die Schwächen erklären"></div>
+<div data-tagfeld id="b3-erkannt" data-teil="erkannt" data-label="Einträge, die die Schwächen erklären"></div>
 <button type="button" data-pruefen>Festlegen und prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
-<p><strong>Auflösung.</strong> Ein Spezialist hilft durch zwei Dinge: eine einzige Verantwortung (Focused Agent) und einen eigenen Kontext, aus dem nur das Ergebnis zurückkommt (External Context).</p>
+<p><strong>Auflösung.</strong> Ein Spezialist bringt nur etwas, wenn der Hauptagent ihn im richtigen Moment ruft und er aus seinem eigenen Kontext nur das Ergebnis zurückgibt (External Context). Beide sehen richtig aus, aber bei jedem kippt ein Detail.</p>
 <ul>
-<li><strong><code>helper</code></strong> hat fünf Aufgaben. Das ist der Distracted Agent mit neuem Namen.</li>
-<li><strong><code>reviewer</code></strong>: Die <code>description</code> entscheidet, wann der Hauptagent ihn ruft. „Hilft bei Code“ passt auf alles und damit auf nichts. Der Text sagt nicht, wogegen er prüft und was er zurückgibt. Besser: „Prüft vor dem Abschluss einer Aufgabe den Diff gegen <code>main</code>. Gibt Befunde mit Kategorie (Minor, Medium, Major) zurück, je mit Datei und Zeile.“</li>
-<li><strong><code>researcher</code></strong> gibt alles zurück. Dann landen Logs und Abfragen doch im Hauptkontext (Limited Context Window, Excess Verbosity). Zurück gehört die Ursache in wenigen Sätzen mit Beleg. „Behebe sie direkt“ ist eine zweite Verantwortung, und das ohne eingeschränkte Werkzeuge: Er sollte nur lesen.</li>
-<li><strong><code>tester</code></strong> lädt zuerst alles. Damit ist sein eigener Kontext gleich wieder voll, und die Aufmerksamkeit verteilt sich (Limited Focus). Er braucht nur das Reference Doc zu den Tests.</li>
+<li><strong><code>reviewer</code></strong>: Die <code>description</code> sagt, wer er ist, aber nicht, wann er dran ist. Der Hauptagent ruft ihn deshalb nur, wenn man ihn ausdrücklich darum bittet. Ein Spezialist wird wie ein Reference Doc nur bei Bedarf geladen, die <code>description</code> ist die Bedingung dafür: „Nutze ihn, bevor du eine Aufgabe als fertig meldest.“ Dazu prüft er sechs Dinge auf einmal. Ein Reviewer für alles ist ein Distracted Agent, nur mit engerem Namen: Er bleibt überall an der Oberfläche. Besser ist ein Reviewer pro Anliegen, das wirklich zählt (Focused Agent).</li>
+<li><strong><code>researcher</code></strong> dreht External Context um: Die Logs und Abfragen, die er vom Hauptkontext fernhalten soll, liefert er mit (Limited Context Window, Excess Verbosity). Zurück gehört die Ursache in wenigen Sätzen mit einem Beleg.</li>
 </ul>
 </div>
 </section>
-<section data-abruf class="aufgabe" data-aufgabe="B3 Dein Spezialist">
-<h3>B3 · Dein Spezialist</h3>
-<p>Nimm ein Projekt, an dem du gerade wirklich arbeitest. Kein Projekt zur Hand? Dann nimm eine Kata aus Teil C.</p>
+<section data-abruf class="aufgabe" data-aufgabe="B4 Dein Spezialist">
+<h3>B4 · Dein Spezialist</h3>
+<p>Nimm ein Projekt, an dem du gerade wirklich arbeitest. Kein Projekt zur Hand? Dann nimm eine Kata aus Teil C oder arbeite ohne.</p>
 <ol class="schritte">
 <li>Wähl eine Aufgabe, die du oft vergisst oder bei der dein Hauptagent nicht informiert / unaufmerksam ist, z.B.: Review des der Lösung, Tests an der Oberfläche (Playwrite), Bug-Ursachen suche, Doku nachziehen, Commiter.</li>
-<li>Leg einen Spezialisten dafür an. Du kannst ihn auch von deinem Agenten schreiben lassen und dann reviewen. Er braucht: eine <code>description</code>, die sagt, <em>wann</em> er dran ist; eine Verantwortung; nur die Werkzeuge, die er braucht.</li>
+<li>Leg einen Spezialisten dafür an. Du kannst ihn auch von deinem Agenten schreiben lassen und dann reviewen. Er braucht: eine <code>description</code>, die sagt, <em>wann</em> er dran ist; eine Verantwortung; ausreichend Werkzeuge.</li>
 <li>Setz den Kontext zurück und gib eine kleine echte Aufgabe. Lass den Spezialisten danach einmal als Hauptagenten und einmal als Subagenten laufen. In Claude Code z. B. als Hauptagenten mit <code>claude --agent &lt;name&gt;</code>, als Subagenten mit <code>@agent-&lt;name&gt;</code>, über progressive Disclosure oder indem du deinen Hauptagenten anweist, ihn zu starten.</li>
 </ol>
 <p class="klein">Siehe auch: Claude Code <a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">Regeldateien</a>, <a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">Subagents</a> · Codex <a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md" target="_blank" rel="noopener">AGENTS.md</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents" target="_blank" rel="noopener">Subagents</a> · Pi <a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/configuration.md" target="_blank" rel="noopener">Konfiguration</a>, <a href="https://github.com/earendil-works/pi/tree/main/packages/coding-agent/examples/extensions/subagent" target="_blank" rel="noopener">Erweiterung <code>subagent</code></a>.</p>
 <p class="klein"><strong>Codex:</strong> eine TOML-Datei mit <code>name</code>, <code>description</code> und <code>developer_instructions</code>. <strong>Pi:</strong> hat keine eingebauten Subagenten; die Beispiel-Erweiterung <code>subagent</code> einzurichten kostet ein paar Minuten extra.</p>
-<label for="b3">Datei deines Spezialisten (oder Auszug, falls vertraulich), die Aufgabe, an der du ihn ausprobiert hast, und was er als Hauptagent und als Subagent gefunden oder anders gemacht hat.</label>
-<textarea id="b3" data-teil="frage" data-feld></textarea>
+<label for="b4">Datei deines Spezialisten (oder Auszug, falls vertraulich), die Aufgabe, an der du ihn ausprobiert hast, und was er als Hauptagent und als Subagent gefunden oder anders gemacht hat.</label>
+<textarea id="b4" data-teil="frage" data-feld></textarea>
 <button type="button" data-pruefen>Festlegen und auflösen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
@@ -605,7 +608,7 @@ Letzte Zeile: „Ticket schließen“ oder „Nicht schließen: &lt;Grund&gt;“
 <div data-teil-a hidden>
 <p>Freiwillig und außerhalb der 60 Minuten: für alle, die ohne eigenes Projekt üben oder mehr Zeit investieren möchten.</p>
 <p>Die <a href="https://github.com/vanonselenp/agentic-katas" target="_blank" rel="noopener">Agentic Katas</a> sind kleine Projekte, die du gemeinsam mit deinem Agenten löst. Lies zuerst den <a href="https://github.com/vanonselenp/agentic-katas/blob/main/participant-guide.md" target="_blank" rel="noopener">Participant Guide</a>. Die <a href="https://github.com/vanonselenp/agentic-katas/blob/main/Katas/brief-meme-generator.md" target="_blank" rel="noopener">Meme Generator</a>-Kata hat Boris geprüft, und sie ist bekannt. Die anderen Katas funktionieren aber sicher auch gut.</p>
-<p>Das Kata-Projekt eignet sich auch als Ausgangspunkt für deinen Spezialisten aus B3.</p>
+<p>Das Kata-Projekt eignet sich auch als Ausgangspunkt für deinen Spezialisten aus B4.</p>
 <p>Wer bereits etwas Erfahrung hat oder neugierig ist und ein Starterset von vorgefertigten Skills einsetzen möchte, für den empfiehlt sich z. B. <a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener">Matt Pocock</a> oder auch <a href="https://www.humanlayer.com/blog/show-me-skill" target="_blank" rel="noopener">show-me</a>.</p>
 </div>
 </section>
