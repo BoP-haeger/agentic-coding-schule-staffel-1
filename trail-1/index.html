@@ -596,11 +596,17 @@ Findest du nichts: „Keine Befunde.“
 <h2>Teil C · Kata (freiwillig)</h2>
 <div data-teil-a hidden>
 <p>Freiwillig und außerhalb der 60 Minuten: für alle, die ohne eigenes Projekt üben oder mehr Zeit investieren möchten.</p>
-<p>Die <a href="https://github.com/vanonselenp/agentic-katas" target="_blank" rel="noopener">Agentic Katas</a> sind kleine Projekte, die du gemeinsam mit deinem Agenten löst. Lies zuerst den <a href="https://github.com/vanonselenp/agentic-katas/blob/main/participant-guide.md" target="_blank" rel="noopener">Participant Guide</a>. Wir empfehlen den <a href="https://github.com/vanonselenp/agentic-katas/blob/main/Katas/brief-meme-generator.md" target="_blank" rel="noopener">Meme Generator</a>: Boris hat ihn selbst durchgespielt. Die anderen Katas funktionieren aber auch.</p>
+<p>Die <a href="https://github.com/vanonselenp/agentic-katas" target="_blank" rel="noopener">Agentic Katas</a> sind kleine Projekte, die du gemeinsam mit deinem Agenten löst. Lies zuerst den <a href="https://github.com/vanonselenp/agentic-katas/blob/main/participant-guide.md" target="_blank" rel="noopener">Participant Guide</a>. Die <a href="https://github.com/vanonselenp/agentic-katas/blob/main/Katas/brief-meme-generator.md" target="_blank" rel="noopener">Meme Generator</a>-Kata hat Boris geprüft, und sie ist bekannt. Die anderen Katas funktionieren aber sicher auch gut.</p>
 <p>Das Kata-Projekt eignet sich auch als Ausgangspunkt für deinen Spezialisten aus B3.</p>
 </div>
 </section>
 
+
+<section class="teil">
+<h2>Feedback zur Hausaufgabe</h2>
+<label for="feedback">Hast du Feedback? Was hat dir gefallen, geholfen oder hast du etwas vermisst?</label>
+<textarea id="feedback" data-feld></textarea>
+</section>
 
 <p class="nicht-drucken"><a href="#abgabe" data-hoch>↑ Nach oben zur Abgabe</a></p>
 
@@ -1625,7 +1631,7 @@ var ABRUF = (function () {
    Notlösung) und merkt sich Eingaben im Browser, damit ein Neuladen nichts kostet.
    Markup:
      <body data-trail="1" data-speicher="…">
-     <input id="name" data-feld>, <input id="dauer" data-feld>
+     <input id="name" data-feld>, <input id="dauer" data-feld>, <textarea id="feedback" data-feld>
      <… data-aufgabe="Kurztitel"> mit [data-feld data-teil="…"] (Freitext) und [data-tagfeld] (Tags)
      <button data-download>, <button data-kopieren>, <button data-loeschen>, <textarea data-vorschau>
    Arbeitet mit TAGFELD (Tags) und ABRUF (Ablauf, gesperrte geprüfte Aufgaben) zusammen.
@@ -1727,7 +1733,8 @@ var ABGABE = (function () {
       zeitpunkt: jetzt(),
       dauer_minuten: isNaN(dauer) ? null : dauer,
       studiert: (document.getElementById("phase") || {}).value === "abruf",
-      antworten: antworten()
+      antworten: antworten(),
+      feedback: wert("feedback")
     };
     return JSON.stringify(daten, null, 2);
   }
