@@ -263,6 +263,7 @@ function TEXT(k, werte) {
 <p class="untertitel">Agentic Coding Schule · Staffel 1</p>
 
 <div class="kasten">
+<p><strong>Abgabe bis Donnerstag, 26.11., 19:00 Uhr.</strong></p>
 <p>Bearbeite so viel der Hausaufgaben, wie du in mind. 60 Minuten schaffst. Man muss nicht alles schaffen. Es steht dir auch frei, mehr Zeit zu investieren.</p>
 <p>Wenn möglich, dann bearbeitet die Aufgaben zu zweit.</p>
 </div>
@@ -351,9 +352,10 @@ function TEXT(k, werte) {
 <section data-abruf class="aufgabe" data-aufgabe="A2 Wiederkäuen" data-kern="cannot-learn limited-focus extract-knowledge knowledge-document ground-rules reference-docs focused-agent" data-passend="limited-context-window knowledge-composition noise-cancellation external-context distracted-agent">
 <h3>A2 · Wiederkäuen</h3>
 <blockquote>
-<p>Dienstag. Endlich läuft dein Endpunkt und du bist zufrieden. Aber du hast für das Ausbügeln wieder einen ganzen Tag gebraucht und bist nicht ganz sicher, ob der Agent bei ein paar Details wieder gelogen hat.</p>
-<p>Viel Zeit und Nerven hast du damit verbracht, ihm erst mal wieder alles zu erklären, mit ein paar Zusätzen, damit er diesmal keine Fehler macht. Dann kamst du auf die Idee, einfach in der <code>AGENTS.md</code> zu hinterlegen, dass der Agent immer erst alle Confluence-Artikel lesen soll, die deinen Service betreffen. Das hat geholfen. Aber trotzdem fehlt ihm Detailwissen, das du schon in den Artikeln gesehen hast. Er hält sich auch nicht immer daran, auch wenn er nachher behauptet, er wüsste davon, nachdem du ihn zur Rede gestellt hast. Außerdem musst du immer erst warten, bis er gefunden hat, was er sucht.</p>
-<p>Naja, dein Vertrauen hat gelitten, aber du hast daraus gelernt. Du beauftragst am Ende jetzt immer einen zweiten Agenten, der noch mal alles reviewen soll. Der findet dann auch immer Sachen. Der Roundtrip ist natürlich anstrengend, und du weißt, dass du ihn auch manchmal vergessen hast. Man muss aber auch nicht päpstlicher sein als der Papst. Sinan wartet schon mit dem Bug im Reporting-Thema.</p>
+<p>Dienstag. Endlich läuft dein Endpunkt und du bist zufrieden. Den Code hast du nicht im Detail gelesen, das ist zu viel. Aber der Endpunkt sieht gut aus und dein Agent Claudia behauptet, dass es diesmal wirklich geht. Er hat es getestet (ja, Claudia ist ein er). Dann kann es auch raus.</p>
+<p>Aber wieso hat dich das den ganzen Tag gekostet? Du warst doch eigentlich schon fertig.</p>
+<p>Ok, du musstest ein paar Mal iterieren mit erneutem Testen und Fixen und Testen der Fixes. Viel Zeit und Nerven gingen dafür drauf, ihm mit jeder Session Teile der Welt zu erklären, die er gleich braucht. Plus ein paar Zusätzen, damit er diesmal keine Fehler macht und die Spec 1:1 nachbaut. Dann kamst du auf die Idee, einfach in der <code>AGENTS.md</code> zu hinterlegen, dass der Agent immer erst alle Confluence-Artikel lesen soll, die deinen Service betreffen, und auch das Ticket, das du gerade bearbeitest. Das hat geholfen, musste aber auch erst von dir getestet werden, ob das so klappt, wie du willst. Dabei ist dir aufgefallen, dass ihm trotzdem Detailwissen, das du schon in den Artikeln gesehen hast, fehlt. Er hält sich auch nicht immer daran, auch wenn er nachher behauptet, er wüsste davon, nachdem du ihn zur Rede gestellt hast. Außerdem musst du immer erst warten, bis er gefunden hat, was er sucht.</p>
+<p>Ok, dein Vertrauen hat zwar gelitten, aber du hast daraus gelernt. Du beauftragst am Ende jetzt immer einen zweiten Agenten, der noch mal alles reviewen soll, weil du dem ersten nicht traust. Der findet dann auch immer Sachen. Der Roundtrip ist natürlich anstrengend, und du weißt, dass du ihn auch manchmal vergessen hast. Man muss aber auch nicht päpstlicher sein als der Papst. Sinan wartet schon mit dem Bug im Reporting-Thema.</p>
 </blockquote>
 <label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
 <div data-tagfeld id="a2-dahinter" data-teil="dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
@@ -367,7 +369,7 @@ function TEXT(k, werte) {
 <p><strong>Auflösung.</strong> Der Agent hat das Detailwissen zwar gefunden, aber wahrscheinlich habt ihr viel in Confluence, und vieles davon ist irrelevant. Die Signal-to-Noise-Ratio leidet bei der Aufgabe.</p>
 <p><strong>Was steckt dahinter?</strong></p>
 <ul>
-<li>Cannot Learn: Vom Freitag weiß er nichts mehr, deshalb musst du ihm alles neu erklären.</li>
+<li>Cannot Learn: Aus der letzten Session weiß er nichts mehr, deshalb musst du ihm in jeder Session neu erklären, was er braucht.</li>
 <li>Limited Focus: „Alle Confluence-Artikel lesen“ kostet Zeit, füllt den Kontext und verteilt seine Aufmerksamkeit. Deshalb übersieht er Details aus den Artikeln und hält sich nicht immer an die Regel.</li>
 </ul>
 <p><strong>Was hilft?</strong></p>
@@ -385,13 +387,13 @@ function TEXT(k, werte) {
 <section data-abruf class="aufgabe" data-aufgabe="A3 Fachchinesisch" data-kern="excess-verbosity semantic-zoom noise-cancellation" data-passend="limited-context-window distracted-agent ground-rules external-context">
 <h3>A3 · Fachchinesisch</h3>
 <blockquote>
-<p>Mittlerweile bist du bei deinem Kollegen Sinan aus der Fachabteilung angekommen. Er erklärt dir das Problem, das er im Reporting gefunden hat. Auch wenn du noch nie im Reporting unterwegs warst, hast du direkt eine Idee, was du dem Agenten geben musst, damit er das Problem für dich löst. „Kein Problem. Für meinen Harness sind solche Probleme Frühstück“, sagst du smug und lässt das wirken.</p>
-<p>Du beauftragst deinen Agenten voller Zuversicht. Nachdem du das Problem beschrieben hast, schaut er direkt in den Code. Nach einiger Zeit fragt er nach dem MCP für die DB. OK, why not? Dann schaut er in die Pod-Logs von dem Zeitpunkt des Events.</p>
-<p>Es dauert länger als erwartet. Aber schlussendlich erzählt er dir, dass das Problem ganz klar auf der Hand liegt, aber ein anderes Team angefangen hat, falsche Nachrichten zu senden. Da bekommst du langsam ein flaues Gefühl in der Magengegend.</p>
+<p>Mittlerweile bist du bei deinem Kollegen Sinan aus der Fachabteilung angekommen. Er erklärt dir das Problem, das er im Reporting gefunden hat. Auch wenn du noch nie im Reporting unterwegs warst, hast du direkt eine Idee, was du dem Agenten geben musst, damit er das Problem für dich löst. „No Problemo. Mein Harness weiß bereits, wo er nachschauen muss“, sagst du smug und lässt das wirken.</p>
+<p>Zurück am PC aktivierst du den Datenbank-MCP. Voller Zuversicht delegierst du an Claudia. Nachdem du das Problem beschrieben hast, schaut er direkt in den Code, dann versucht er es mit der DB. Er hatte Connection-Probleme, aber wie so oft konnte er sie lösen, ohne dich zu nerven. Jetzt siehst du im Reasoning, dass Claudia über die Konsole auf die Pod-Logs zugreift. Ok, why not?</p>
+<p>Es dauert länger als erwartet. Aber schlussendlich erzählt er dir, dass das Problem ganz klar auf der Hand liegt. Ein anderes Team hat angefangen, falsche Nachrichten zu senden. Du bekommst ein flaues Gefühl in der Magengegend.</p>
 <p>„Es liegt an der Zuordnung der AIO-Schlüssel und einem falschen Mapping“, sagt er. So weit, so gut.</p>
 <p>„Die Events aus fl-v2.tlp, die das BaseService-Team sendet, verarbeiten die Spalte ID-VD jetzt nicht mehr aus dem Reporting-Prefix. Der dwh-preflight erkennt das natürlich nicht, weshalb das Mapping aus […]“ Du bemerkst, dass du den Anfang des Satzes bereits wieder vergessen hast. Du hast so viele Fragen und beginnst mit der ersten. Was soll fl-v2.tlp sein?</p>
-<p>„Das ist die Queue, über die die Änderungsmeldungen kommen. Die Nachrichten folgen dem ECST. V2 deswegen, weil ihr einen Poison-Pill-Fix gemacht habt. Ich muss aber warnen, dass ihr die Ursache damit nicht behoben habt. Der AIO-Schlüssel wird dort nicht richtig transformiert, weil das BaseService-Team das Format gewechselt hat.“ OK … deine Kopfschmerzen klopfen bereits an … „Was ist ein AIO-Schlüssel, was ist ECST und was ist der Base Service? Dass das Format gewechselt hat, bezweifle ich. Wie kommst du darauf?“</p>
-<p>Kurz: Er beantwortet deine Fragen einzeln und stellt zwei Rückfragen. Seine Antworten werfen noch mehr Fragen auf. Du stehst auf und holst dir einen Kaffee.</p>
+<p>„Das ist die Queue, über die die Änderungsmeldungen kommen. Die Nachrichten folgen dem ECST. V2 deswegen, weil ihr einen Poison-Pill-Fix gemacht habt. Ich muss aber warnen, dass ihr die Ursache damit nicht behoben habt. Der AIO-Schlüssel wird dort nicht richtig transformiert, weil das BaseService-Team das Format gewechselt hat.“ OK … deine Kopfschmerzen von gestern klopfen bereits an … „Was ist ein AIO-Schlüssel, was ist ECST und was ist der Base Service? Dass das Format gewechselt hat, bezweifle ich. Wie kommst du darauf?“</p>
+<p>TLDR: Er beantwortet deine Fragen einzeln und stellt zwei Rückfragen. Seine Antworten werfen noch mehr Fragen auf. Du stehst auf und holst dir einen Kaffee.</p>
 </blockquote>
 <label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
 <div data-tagfeld id="a3-dahinter" data-teil="dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
@@ -406,7 +408,7 @@ function TEXT(k, werte) {
 <p><strong>Was steckt dahinter?</strong></p>
 <ul>
 <li>Excess Verbosity: Fachbegriffe, Details und Warnungen, nach denen du nicht gefragt hast.</li>
-<li>Limited Context Window: Code, Datenbank und Pod-Logs landen alle im selben Kontext. Für deine Fragen bleibt immer weniger Platz.</li>
+<li>Limited Context Window: Code, Datenbank und Pod-Logs landen alle im selben Kontext, dazu seine Versuche mit den Connection-Problemen. Für deine Fragen bleibt immer weniger Platz.</li>
 </ul>
 <p><strong>Was hilft?</strong></p>
 <ul>
