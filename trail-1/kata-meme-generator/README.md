@@ -5,7 +5,12 @@ In dieser Kata baust du mit deinem KI-Agenten einen kleinen Service, der Memes e
 - [`brief.md`](brief.md): die Aufgabe
 - [`participant-guide.md`](participant-guide.md): Regeln und Ablauf
 
-Arbeite in deinem eigenen Fork, zum Beispiel in diesem Ordner.
+Arbeite in deinem eigenen Fork, zum Beispiel in diesem Ordner. Dein Fork ist öffentlich: keine Zugangsdaten, Kundendaten oder Firmencode.
+
+## Hintergrund
+
+Euer Unternehmen lässt aus Sicherheitsgründen keine Meme-Generatoren zu. Ihr wollt die kreativen Köpfe aber trotzdem fördern und LLMs bieten neue Möglichkeiten für Betrieb und Eigenentwicklung.
+Euer Unternehmen hat 50.000 Mitarbeiter in Zeitzonen zwischen CET+0 und CET+8. Keine Authentication-Anforderungen.
 
 ## Quelle
 
