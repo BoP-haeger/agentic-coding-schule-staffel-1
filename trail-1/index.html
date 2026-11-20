@@ -569,8 +569,8 @@ Schreib dann Tests für die Änderung und führe sie aus.
 <h3>B3 · Dein Spezialist</h3>
 <p>Nimm ein Projekt, an dem du gerade wirklich arbeitest. Kein Projekt zur Hand? Dann nimm eine Kata aus Teil C.</p>
 <ol class="schritte">
-<li>Wähl eine Aufgabe, die du oft vergisst oder bei der dein Hauptagent nicht informiert / unaufmerksam ist: Review des Diffs, Tests, Ursachen in Logs suchen, Doku nachziehen, Git-Flow.</li>
-<li>Leg einen Spezialisten dafür an. Du kannst ihn auch von deinem Agenten schreiben lassen und dann reviewen. Er braucht: eine <code>description</code>, die sagt, <em>wann</em> er dran ist; eine Verantwortung; nur die Werkzeuge, die er braucht; höchstens ein Reference Doc; eine kurze, feste Form für sein Ergebnis.</li>
+<li>Wähl eine Aufgabe, die du oft vergisst oder bei der dein Hauptagent nicht informiert / unaufmerksam ist, z.B.: Review des der Lösung, Tests an der Oberfläche (Playwrite), Bug-Ursachen suche, Doku nachziehen, Commiter.</li>
+<li>Leg einen Spezialisten dafür an. Du kannst ihn auch von deinem Agenten schreiben lassen und dann reviewen. Er braucht: eine <code>description</code>, die sagt, <em>wann</em> er dran ist; eine Verantwortung; nur die Werkzeuge, die er braucht.</li>
 <li>Setz den Kontext zurück und gib eine kleine echte Aufgabe. Lass den Spezialisten danach einmal als Hauptagenten und einmal als Subagenten laufen. In Claude Code z. B. als Hauptagenten mit <code>claude --agent &lt;name&gt;</code>, als Subagenten mit <code>@agent-&lt;name&gt;</code>, über progressive Disclosure oder indem du deinen Hauptagenten anweist, ihn zu starten.</li>
 </ol>
 <p class="klein">Siehe auch: Claude Code <a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">Regeldateien</a>, <a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener">Subagents</a> · Codex <a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md" target="_blank" rel="noopener">AGENTS.md</a>, <a href="https://learn.chatgpt.com/docs/agent-configuration/subagents" target="_blank" rel="noopener">Subagents</a> · Pi <a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/configuration.md" target="_blank" rel="noopener">Konfiguration</a>, <a href="https://github.com/earendil-works/pi/tree/main/packages/coding-agent/examples/extensions/subagent" target="_blank" rel="noopener">Erweiterung <code>subagent</code></a>.</p>
@@ -580,15 +580,21 @@ Schreib dann Tests für die Änderung und führe sie aus.
 <button type="button" data-pruefen>Festlegen und auflösen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
-<p><strong>Auflösung.</strong> Beispiel: <code>reviewer</code> für Claude Code.</p>
+<p><strong>Auflösung.</strong> Beispiel: <code>feature-reviewer</code> für Claude Code. <code>mcp__jira__get_issue</code> steht für die Lese-Operation deines Jira-MCP.</p>
 <pre><code class="language-markdown">---
-name: reviewer
-description: Prüft vor dem Abschluss einer Aufgabe (Erstellen eines MR) den Diff gegen main. Nutze ihn, bevor du eine Aufgabe als fertig meldest.
-tools: Read, Grep, Glob, Bash
+name: feature-reviewer
+description: Abnahme eines Jira-Tickets. Prüft, ob der Branch das Ticket löst und seine DoD erfüllt. Nutze ihn, bevor du eine Aufgabe als fertig meldest oder einen MR erstellst.
+tools: Read, Grep, Glob, Bash, mcp__jira__get_issue
 ---
-Du prüfst nur, du änderst nichts. Lies `git diff main`.
-Gib Befunde mit Kategorien für Findings (Minor, Medium, Major) zurück, je eine Zeile: Kategorie, Datei:Zeile, Problem, Vorschlag. Solange Major-Findings existieren, ist eine Änderung notwendig.
-Findest du nichts: „Keine Befunde.“
+Du machst die Abnahme: Du liest und bewertest, Korrekturen macht der Aufrufer.
+1. Die Ticketnummer steht in den Commit-Messages deines Branches. Lies das Ticket über Jira.
+2. Lies die ADRs in `docs/adr/`, deren Datum nach dem Anlagedatum des Tickets liegt.
+3. Reviewe, ob die Änderungen zu diesem Ticket das Ticket lösen.
+4. Prüfe dafür jeden DoD-Punkt gegen die Änderungen und die ADRs. Hat das Ticket keine DoD, prüfe gegen die Beschreibung und sag das in der ersten Zeile.
+
+Gib je DoD-Punkt eine Zeile zurück: erfüllt | offen | überholt (ADR), Beleg (Datei:Zeile oder ADR), was fehlt.
+Ist ein Punkt überholt, schlag vor, wie das Ticket angepasst wird.
+Letzte Zeile: „Ticket schließen“ oder „Nicht schließen: &lt;Grund&gt;“.
 </code></pre>
 </div>
 </section>
