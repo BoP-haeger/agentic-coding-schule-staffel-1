@@ -1,9 +1,10 @@
 # Agentic Coding Schule – Staffel 1
 
-Hier liegen die Hausaufgaben der Staffel 1, eine je Trail. Du öffnest sie im Browser, ohne etwas zu installieren.
+Hier liegen Hausaufgabe und Vortrag zu jedem Trail der Staffel 1. Du öffnest sie im Browser, ohne etwas zu installieren.
 
 - Startseite: <https://bop-haeger.github.io/agentic-coding-schule-staffel-1/>
 - [Hausaufgabe zu Trail 1](https://bop-haeger.github.io/agentic-coding-schule-staffel-1/trail-1/)
+- [Vortrag zu Trail 1 (PDF)](https://bop-haeger.github.io/agentic-coding-schule-staffel-1/trail-1/vortrag.pdf)
 
 ## Abgabe
 
