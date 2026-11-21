@@ -25,6 +25,13 @@ def test_health(client: httpx.Client) -> None:
     assert client.get("/health").json() == {"status": "ok"}
 
 
+def test_root_serves_the_meme_page(client: httpx.Client) -> None:
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/html")
+    assert "/memes" in response.text
+
+
 def test_meme_without_caption_is_400(client: httpx.Client) -> None:
     response = client.post("/memes", files={"image": ("a.jpg", jpeg_bytes())})
     assert response.status_code == 400

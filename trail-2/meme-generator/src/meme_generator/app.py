@@ -1,10 +1,11 @@
 import io
 import os
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import FastAPI, File, Form, UploadFile
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import HTMLResponse, JSONResponse, Response
 from PIL import Image, UnidentifiedImageError
 from starlette.formparsers import MultiPartParser
 
@@ -12,6 +13,7 @@ from meme_generator.limits import MULTIPART_SPOOL_BYTES
 from meme_generator.rendering import load_font, render_caption
 
 MultiPartParser.spool_max_size = MULTIPART_SPOOL_BYTES
+INDEX_HTML = Path(__file__).with_name("index.html")
 
 
 def _error(status: int, code: str, message: str) -> JSONResponse:
@@ -33,6 +35,10 @@ def create_app() -> FastAPI:
         redoc_url=None,
         openapi_url="/openapi.json" if docs else None,
     )
+
+    @app.get("/", include_in_schema=False)
+    def index() -> HTMLResponse:
+        return HTMLResponse(INDEX_HTML.read_text(encoding="utf-8"))
 
     @app.get("/health")
     def health() -> dict[str, str]:

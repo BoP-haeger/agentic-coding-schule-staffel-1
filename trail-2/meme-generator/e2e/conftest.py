@@ -1,4 +1,4 @@
-"""Starts a real uvicorn process on an OS-assigned port; tests talk to it over HTTP only."""
+"""Starts a real uvicorn process on a free port; tests talk to it over HTTP or through a browser."""
 
 import socket
 import subprocess
@@ -13,15 +13,18 @@ import pytest
 FIXTURES = Path(__file__).parent / "fixtures"
 
 
+def free_port() -> int:
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        return sock.getsockname()[1]
+
+
 @pytest.fixture(scope="session")
 def base_url() -> Iterator[str]:
-    sock = socket.socket()
-    sock.bind(("127.0.0.1", 0))
-    sock.listen()
-    port = sock.getsockname()[1]
+    """Also pytest-playwright's base URL, so `page.goto("/")` opens this server."""
+    port = free_port()
     server = subprocess.Popen(
-        [sys.executable, "-m", "uvicorn", "meme_generator.app:app", "--fd", str(sock.fileno())],
-        pass_fds=[sock.fileno()],
+        [sys.executable, "-m", "uvicorn", "meme_generator.app:app", "--port", str(port)]
     )
     url = f"http://127.0.0.1:{port}"
     try:
@@ -39,7 +42,6 @@ def base_url() -> Iterator[str]:
     finally:
         server.terminate()
         server.wait(timeout=10)
-        sock.close()
 
 
 @pytest.fixture(scope="session")
@@ -49,5 +51,10 @@ def client(base_url: str) -> Iterator[httpx.Client]:
 
 
 @pytest.fixture
-def jpeg() -> bytes:
-    return (FIXTURES / "gradient-800x600.jpg").read_bytes()
+def jpeg_path() -> Path:
+    return FIXTURES / "gradient-800x600.jpg"
+
+
+@pytest.fixture
+def jpeg(jpeg_path: Path) -> bytes:
+    return jpeg_path.read_bytes()
