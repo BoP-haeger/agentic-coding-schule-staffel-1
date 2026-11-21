@@ -108,51 +108,19 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
   .zeile .bedingung { grid-column: 1 / -1; margin-top: .25rem; }
 }
 
-/* Wie in den Hausaufgaben: Link zur Startseite oben links, Farbschema-Knopf oben rechts */
+/* Wie in den Hausaufgaben: Link zur Startseite oben links, auf einer Höhe mit dem Farbschema-Knopf (../thema.js) oben rechts */
 .startseite { position: absolute; top: .6rem; left: .75rem; padding: calc(.3rem + 1px) 0; font: .8rem/1 var(--sans); color: var(--muted); text-decoration: none; }
 .startseite:hover, .startseite:focus-visible { color: var(--accent); text-decoration: underline; }
-.thema { position: absolute; top: .6rem; right: .75rem; margin: 0; padding: .3rem .55rem; font: 600 .8rem/1 var(--sans);
-  color: var(--accent); background: transparent; border: 1px solid var(--accent); border-radius: 4px; cursor: pointer; }
 @media print { .nicht-drucken { display: none !important; } }
 
 /* Tooltip */
 #tip { position: fixed; z-index: 10; max-width: 18rem; padding: .4rem .6rem; border-radius: 4px; background: var(--fg); color: var(--bg);
   font: .82rem/1.35 var(--sans); pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
 </style>
-<script>
-/* Farbschema wie in den Hausaufgaben (gleicher Speicherschlüssel): System → Hell → Dunkel → System.
-   Steht im <head>, damit data-theme vor dem ersten Rendern gesetzt ist. */
-(function () {
-  var schluessel = "acs-farbschema";
-  var stufen = ["system", "light", "dark"];
-  var namen = { system: "System", light: "Hell", dark: "Dunkel" };
-  var zeichen = { system: "◐", light: "☀︎", dark: "☾" };
-  function lies() {
-    try { var w = localStorage.getItem(schluessel); return stufen.indexOf(w) !== -1 ? w : "system"; }
-    catch (e) { return "system"; }
-  }
-  function schreib(w) { try { localStorage.setItem(schluessel, w); } catch (e) { /* ohne Speicher geht es auch */ } }
-  function setze(w) {
-    if (w === "system") document.documentElement.removeAttribute("data-theme");
-    else document.documentElement.setAttribute("data-theme", w);
-  }
-  function beschrifte(k, w) { k.textContent = zeichen[w] + " " + namen[w]; k.setAttribute("aria-label", "Farbschema: " + namen[w]); }
-  var wahl = lies();
-  setze(wahl);
-  document.addEventListener("DOMContentLoaded", function () {
-    var k = document.querySelector("[data-thema]");
-    beschrifte(k, wahl);
-    k.addEventListener("click", function () {
-      wahl = stufen[(stufen.indexOf(wahl) + 1) % stufen.length];
-      setze(wahl); schreib(wahl); beschrifte(k, wahl);
-    });
-  });
-})();
-</script>
+<script src="../thema.js"></script>
 </head>
 <body>
 <a class="startseite nicht-drucken" href="../index.html">← Startseite</a>
-<button type="button" class="thema nicht-drucken" data-thema></button>
 <main>
 <h1>Fokus vor Größe</h1>
 <p class="untertitel">Nachtrag zum Distracted Agent · Trail 1</p>
