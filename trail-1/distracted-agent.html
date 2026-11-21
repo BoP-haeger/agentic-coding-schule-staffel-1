@@ -52,14 +52,15 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 .farbe { width: .8rem; height: .8rem; border-radius: 3px; flex: none; }
 .farbe.fokus, .seg.fokus, .balken.fokus { background: var(--fokus); }
 .farbe.ablenkung, .seg.ablenkung, .balken.ablenkung { background: var(--ablenkung); }
-
-/* Zwei Agenten gegenüber: Säulen wachsen nach oben, der Kasten ist der gesamte Kontext */
 .farbe.rahmen { width: 1.1rem; border: 1.5px solid var(--rahmen); border-radius: 4px; }
+
+/* Zwei Agenten gegenüber: Säulen wachsen nach oben, der Kasten ist der gesamte Kontext.
+   Ein Stück ist --u Einheiten hoch; gleiche Stücke sind auf beiden Seiten gleich hoch. */
 .typ { font: 600 .72rem/1.4 var(--sans); text-transform: uppercase; letter-spacing: .05em; padding: .15rem .5rem; border-radius: 4px; }
 .typ[data-typ="Pattern"] { color: var(--pattern); background: var(--pattern-grund); }
 .typ[data-typ="Anti-Pattern"] { color: var(--anti-pattern); background: var(--anti-pattern-grund); }
-.gegenueber { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.25rem; row-gap: .6rem; margin-top: 1.5rem; }
-.gegenueber .kopf { line-height: 1.35; align-self: end; }
+.gegenueber { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.25rem; row-gap: .75rem; margin-top: 1.5rem; }
+.gegenueber .kopf { line-height: 1.35; align-self: start; }
 .gegenueber .kopf b { display: block; margin-top: .3rem; }
 .rolle { display: block; color: var(--muted); font-size: .95rem; }
 .kopf.links, .ergebnis.links { text-align: right; }
@@ -68,29 +69,27 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 .koerper { display: grid; align-self: end; column-gap: 14px; }
 .koerper.links { grid-area: 2 / 1; grid-template-columns: 1fr auto; }
 .koerper.rechts { grid-area: 2 / 2; grid-template-columns: auto 1fr; }
-.kontext { width: 5.75rem; height: calc(var(--n) * 4.2px); display: flex; flex-direction: column-reverse; gap: 2px;
+.kontext { width: 2.75rem; display: flex; flex-direction: column-reverse; gap: 2px;
   border: 1.5px solid var(--rahmen); border-radius: 8px; padding: 4px; }
-.seg { flex: 1 1 0; min-height: 6px; border-radius: 4px; cursor: default; }
+.seg { flex: none; height: calc(var(--u) * 4.5px - 2px); border-radius: 4px; cursor: default; }
+.seg:hover { filter: brightness(1.12); }
 .seg:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 .notizen { position: relative; }
-.notiz { position: absolute; left: 0; right: 0; font: .8rem/1.3 var(--sans); color: var(--muted); }
+.notiz { position: absolute; left: 0; right: 0; transform: translateY(-50%); font: .8rem/1.3 var(--sans); color: var(--muted); }
 .koerper.links .notiz { text-align: right; }
-.notiz code { white-space: nowrap; }
-.notiz.oben { top: 0; }
-.notiz.unten { bottom: 0; }
-.notiz.mitte { transform: translateY(50%); }
-.notiz::after { content: ""; position: absolute; width: 10px; border-top: 1px solid var(--achse); }
+.notiz::after { content: ""; position: absolute; top: 50%; width: 12px; border-top: 1px solid var(--achse); }
 .koerper.links .notiz::after { right: -13px; }
 .koerper.rechts .notiz::after { left: -13px; }
-.notiz.oben::after { top: .65em; }
-.notiz.unten::after { bottom: .65em; }
-.notiz.mitte::after { top: 50%; }
+.koerper.links .notiz.bereich::after { right: -7px; width: 7px; }
+.klammer { position: absolute; width: 6px; border: 1px solid var(--achse); }
+.koerper.links .klammer { right: -13px; border-right: 0; }
+.koerper.rechts .klammer { left: -13px; border-left: 0; }
 .anfang { grid-area: 3 / 1 / 4 / 3; border-top: 1px solid var(--achse); padding-top: .3rem; text-align: center; font: .8rem/1 var(--sans); color: var(--muted); }
 .ergebnis { margin: .4rem 0 0; line-height: 1.4; }
 .ergebnis.links { grid-area: 4 / 1; }
 .ergebnis.rechts { grid-area: 4 / 2; }
 @media (max-width: 34rem) {
-  .kontext { width: 4.25rem; }
+  .kontext { width: 2.25rem; }
   .notiz { font-size: .72rem; }
 }
 
@@ -102,31 +101,64 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 .spur::before, .spur::after { content: ""; position: absolute; top: -3px; bottom: -3px; border-left: 1px solid var(--line); }
 .spur::before { left: 50%; }
 .spur::after { left: 100%; }
-.balken { position: relative; z-index: 1; display: block; height: 100%; border-radius: 0 4px 4px 0; cursor: default; }
-.balken:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.balken { position: relative; z-index: 1; display: block; height: 100%; border-radius: 0 4px 4px 0; }
 .wert { text-align: right; font-variant-numeric: tabular-nums; }
-.achse { font: .75rem/1 var(--sans); color: var(--muted); margin-top: .1rem; }
-.achse .spur { border: 0; height: 1rem; }
-.achse .spur::before, .achse .spur::after { display: none; }
-.achse span span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
-.achse span span:first-child { transform: none; }
-.achse span span:last-child { transform: translateX(-100%); }
 @media (max-width: 34rem) {
   .zeile { grid-template-columns: 1fr 2.75rem; }
   .zeile .bedingung { grid-column: 1 / -1; margin-top: .25rem; }
 }
 
+/* Wie in den Hausaufgaben: Link zur Startseite oben links, Farbschema-Knopf oben rechts */
+.startseite { position: absolute; top: .6rem; left: .75rem; padding: calc(.3rem + 1px) 0; font: .8rem/1 var(--sans); color: var(--muted); text-decoration: none; }
+.startseite:hover, .startseite:focus-visible { color: var(--accent); text-decoration: underline; }
+.thema { position: absolute; top: .6rem; right: .75rem; margin: 0; padding: .3rem .55rem; font: 600 .8rem/1 var(--sans);
+  color: var(--accent); background: transparent; border: 1px solid var(--accent); border-radius: 4px; cursor: pointer; }
+@media print { .nicht-drucken { display: none !important; } }
+
 /* Tooltip */
 #tip { position: fixed; z-index: 10; max-width: 18rem; padding: .4rem .6rem; border-radius: 4px; background: var(--fg); color: var(--bg);
   font: .82rem/1.35 var(--sans); pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
 </style>
+<script>
+/* Farbschema wie in den Hausaufgaben (gleicher Speicherschlüssel): System → Hell → Dunkel → System.
+   Steht im <head>, damit data-theme vor dem ersten Rendern gesetzt ist. */
+(function () {
+  var schluessel = "acs-farbschema";
+  var stufen = ["system", "light", "dark"];
+  var namen = { system: "System", light: "Hell", dark: "Dunkel" };
+  var zeichen = { system: "◐", light: "☀︎", dark: "☾" };
+  function lies() {
+    try { var w = localStorage.getItem(schluessel); return stufen.indexOf(w) !== -1 ? w : "system"; }
+    catch (e) { return "system"; }
+  }
+  function schreib(w) { try { localStorage.setItem(schluessel, w); } catch (e) { /* ohne Speicher geht es auch */ } }
+  function setze(w) {
+    if (w === "system") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", w);
+  }
+  function beschrifte(k, w) { k.textContent = zeichen[w] + " " + namen[w]; k.setAttribute("aria-label", "Farbschema: " + namen[w]); }
+  var wahl = lies();
+  setze(wahl);
+  document.addEventListener("DOMContentLoaded", function () {
+    var k = document.querySelector("[data-thema]");
+    beschrifte(k, wahl);
+    k.addEventListener("click", function () {
+      wahl = stufen[(stufen.indexOf(wahl) + 1) % stufen.length];
+      setze(wahl); schreib(wahl); beschrifte(k, wahl);
+    });
+  });
+})();
+</script>
 </head>
 <body>
+<a class="startseite nicht-drucken" href="../">← Startseite</a>
+<button type="button" class="thema nicht-drucken" data-thema></button>
 <main>
 <h1>Fokus vor Größe</h1>
 <p class="untertitel">Nachtrag zum Distracted Agent · Trail 1</p>
 
 <p class="kern">Ein kleiner Kontext schützt nicht vor Ablenkung. Entscheidend ist, wie viel davon zur Aufgabe gehört.</p>
+<p>„Small, focused agents“ im Focused Agent meint eine schmale Zuständigkeit, keinen kurzen Kontext.</p>
 
 <h2>Zwei Agenten, eine Aufgabe: committen</h2>
 <p class="klein">Schematisch nach dem Beispiel im Distracted Agent, Längen grob geschätzt. Der Kontext wächst nach oben.</p>
@@ -142,34 +174,44 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 
   <div class="koerper links">
     <div class="notizen">
-      <span class="notiz oben"><code>git status</code> und Dateiliste, ganz am Ende</span>
-      <span class="notiz mitte" style="bottom:49%">Feature-Code, Web-Recherche, Testausgaben, Doku</span>
-      <span class="notiz unten">Commit-Regeln, ganz am Anfang</span>
+      <span class="notiz" data-seg="11">Diff</span>
+      <span class="notiz" data-seg="10">git status</span>
+      <span class="notiz" data-seg="9">Auftrag</span>
+      <span class="klammer" data-seg="1-8"></span>
+      <span class="notiz bereich" data-seg="1-8">Debugging, Architektur, Web-Recherche, Doku, dazwischen Stücke des eigenen Codes</span>
+      <span class="notiz" data-seg="0">Commit-Regeln</span>
     </div>
-    <div class="kontext" style="--n:54" role="group" aria-label="Kürzerer Kontext des Hauptagenten, von Anfang bis Ende">
-      <span class="seg fokus" style="flex-grow:4" tabindex="0" data-tip="Commit-Regeln (AGENTS.md): gehören zur Aufgabe"></span>
-      <span class="seg ablenkung" style="flex-grow:10" tabindex="0" data-tip="Feature-Code: gehört nicht dazu"></span>
-      <span class="seg ablenkung" style="flex-grow:9" tabindex="0" data-tip="Web-Recherche: gehört nicht dazu"></span>
-      <span class="seg ablenkung" style="flex-grow:8" tabindex="0" data-tip="Testausgaben: gehören nicht dazu"></span>
-      <span class="seg ablenkung" style="flex-grow:7" tabindex="0" data-tip="Doku: gehört nicht dazu"></span>
-      <span class="seg ablenkung" style="flex-grow:6" tabindex="0" data-tip="Noch mehr Feature-Code: gehört nicht dazu"></span>
-      <span class="seg ablenkung" style="flex-grow:5" tabindex="0" data-tip="Noch mehr Testausgaben: gehören nicht dazu"></span>
-      <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="git status: gehört zur Aufgabe"></span>
-      <span class="seg fokus" style="flex-grow:2" tabindex="0" data-tip="Dateiliste des Diffs (git diff --stat): gehört zur Aufgabe"></span>
+    <div class="kontext" role="group" aria-label="Kontext des Hauptagenten, von unten (Anfang) nach oben (Ende)">
+      <span class="seg fokus" style="--u:4" tabindex="0" role="img" aria-label="Commit-Regeln: gehören zur Aufgabe" data-tip="Commit-Regeln: gehören zur Aufgabe"></span>
+      <span class="seg fokus" style="--u:3" tabindex="0" role="img" aria-label="Eigener Code: gehört zur Aufgabe" data-tip="Eigener Code: gehört zur Aufgabe"></span>
+      <span class="seg ablenkung" style="--u:8" tabindex="0" role="img" aria-label="Debugging: gehört nicht dazu" data-tip="Debugging: gehört nicht dazu"></span>
+      <span class="seg fokus" style="--u:2" tabindex="0" role="img" aria-label="Eigener Code: gehört zur Aufgabe" data-tip="Eigener Code: gehört zur Aufgabe"></span>
+      <span class="seg ablenkung" style="--u:7" tabindex="0" role="img" aria-label="Architektur-Entscheidungen: gehören nicht dazu" data-tip="Architektur-Entscheidungen: gehören nicht dazu"></span>
+      <span class="seg ablenkung" style="--u:9" tabindex="0" role="img" aria-label="Web-Recherche: gehört nicht dazu" data-tip="Web-Recherche: gehört nicht dazu"></span>
+      <span class="seg fokus" style="--u:3" tabindex="0" role="img" aria-label="Eigener Code: gehört zur Aufgabe" data-tip="Eigener Code: gehört zur Aufgabe"></span>
+      <span class="seg ablenkung" style="--u:6" tabindex="0" role="img" aria-label="Noch mehr Debugging: gehört nicht dazu" data-tip="Noch mehr Debugging: gehört nicht dazu"></span>
+      <span class="seg ablenkung" style="--u:8" tabindex="0" role="img" aria-label="Doku: gehört nicht dazu" data-tip="Doku: gehört nicht dazu"></span>
+      <span class="seg fokus" style="--u:4" tabindex="0" role="img" aria-label="Auftrag: committen. Gehört zur Aufgabe" data-tip="Auftrag: committen. Gehört zur Aufgabe"></span>
+      <span class="seg fokus" style="--u:4" tabindex="0" role="img" aria-label="git status: gehört zur Aufgabe" data-tip="git status: gehört zur Aufgabe"></span>
+      <span class="seg fokus" style="--u:20" tabindex="0" role="img" aria-label="Diff: gehört zur Aufgabe" data-tip="Diff: gehört zur Aufgabe"></span>
     </div>
   </div>
   <div class="koerper rechts">
-    <div class="kontext" style="--n:100" role="group" aria-label="Längerer Kontext des Committers, von Anfang bis Ende">
-      <span class="seg fokus" style="flex-grow:4" tabindex="0" data-tip="Dieselben Commit-Regeln: gehören zur Aufgabe"></span>
-      <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="Auftrag vom Hauptagenten: gehört zur Aufgabe"></span>
-      <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="git status: gehört zur Aufgabe"></span>
-      <span class="seg fokus" style="flex-grow:72" tabindex="0" data-tip="Der ganze Diff: gehört zur Aufgabe"></span>
-      <span class="seg fokus" style="flex-grow:18" tabindex="0" data-tip="Linter-Ausgabe: gehört zur Aufgabe"></span>
+    <div class="kontext" role="group" aria-label="Kontext des Committers, von unten (Anfang) nach oben (Ende)">
+      <span class="seg fokus" style="--u:4" tabindex="0" role="img" aria-label="Commit-Regeln: gehören zur Aufgabe" data-tip="Commit-Regeln: gehören zur Aufgabe"></span>
+      <span class="seg fokus" style="--u:4" tabindex="0" role="img" aria-label="Auftrag: committen. Gehört zur Aufgabe" data-tip="Auftrag: committen. Gehört zur Aufgabe"></span>
+      <span class="seg fokus" style="--u:4" tabindex="0" role="img" aria-label="git status: gehört zur Aufgabe" data-tip="git status: gehört zur Aufgabe"></span>
+      <span class="seg fokus" style="--u:20" tabindex="0" role="img" aria-label="Diff: gehört zur Aufgabe" data-tip="Diff: gehört zur Aufgabe"></span>
+      <span class="seg fokus" style="--u:48" tabindex="0" role="img" aria-label="Geänderte Dateien, vollständig gelesen: gehören zur Aufgabe" data-tip="Geänderte Dateien, vollständig gelesen: gehören zur Aufgabe"></span>
+      <span class="seg fokus" style="--u:20" tabindex="0" role="img" aria-label="git log, für die Namenskonventionen: gehört zur Aufgabe" data-tip="git log, für die Namenskonventionen: gehört zur Aufgabe"></span>
     </div>
     <div class="notizen">
-      <span class="notiz oben">Linter-Ausgabe</span>
-      <span class="notiz mitte" style="bottom:46%">der ganze Diff</span>
-      <span class="notiz unten">dieselben Regeln, Auftrag, <code>git status</code></span>
+      <span class="notiz" data-seg="5">git log</span>
+      <span class="notiz" data-seg="4">geänderte Dateien, vollständig</span>
+      <span class="notiz" data-seg="3">Diff</span>
+      <span class="notiz" data-seg="2">git status</span>
+      <span class="notiz" data-seg="1">Auftrag</span>
+      <span class="notiz" data-seg="0">Commit-Regeln</span>
     </div>
   </div>
   <div class="anfang">Anfang des Kontexts</div>
@@ -178,6 +220,7 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 </div>
 
 <h2>Was Studien zeigen</h2>
+<p class="klein">Die Studien sind nicht untereinander vergleichbar: andere Modelle, Aufgaben und Messgrößen. Getestet wurden Frage- und Rechenaufgaben, keine Coding-Agents.</p>
 <ul class="legende">
   <li><span class="farbe fokus"></span>fokussierter</li>
   <li><span class="farbe ablenkung"></span>abgelenkter</li>
@@ -185,39 +228,29 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 
 <div class="beleg">
   <h3>Länger, aber mehr Relevantes: besser</h3>
-  <p class="herkunft">GPT-4o, biomedizinische Fragen, die Ablenkung bleibt gleich (≈ 20.000 Tokens), nur der relevante Teil wächst · <a href="https://arxiv.org/abs/2505.18148">Bianchi u. a. 2025</a></p>
-  <div class="zeile"><span class="bedingung">großer relevanter Teil</span><span class="spur"><span class="balken fokus" style="width:98%" tabindex="0" data-tip="Großer relevanter Teil, Kontext insgesamt länger: 98 % richtig"></span></span><span class="wert">98 %</span></div>
-  <div class="zeile"><span class="bedingung">kleiner relevanter Teil</span><span class="spur"><span class="balken ablenkung" style="width:77%" tabindex="0" data-tip="Kleiner relevanter Teil, Kontext insgesamt kürzer: 77 % richtig"></span></span><span class="wert">77 %</span></div>
+  <p class="herkunft">GPT-4o, biomedizinische Fragen, Anteil richtiger Antworten. Die Ablenkung bleibt gleich (≈ 20.000 Tokens), nur der relevante Teil wächst · <a href="https://arxiv.org/abs/2505.18148">Bianchi u. a. 2025</a></p>
+  <div class="zeile"><span class="bedingung">großer relevanter Teil</span><span class="spur"><span class="balken fokus" style="width:98%"></span></span><span class="wert">98 %</span></div>
+  <div class="zeile"><span class="bedingung">kleiner relevanter Teil</span><span class="spur"><span class="balken ablenkung" style="width:77%"></span></span><span class="wert">77 %</span></div>
 </div>
 
 <div class="beleg">
   <h3>Ein Satz Ablenkung in einer kurzen Aufgabe</h3>
-  <p class="herkunft">code-davinci-002, Mathe-Textaufgaben, ein Satz ohne Bezug zur Frage eingefügt · <a href="https://arxiv.org/abs/2302.00093">Shi u. a. 2023</a></p>
-  <div class="zeile"><span class="bedingung">ohne den Satz</span><span class="spur"><span class="balken fokus" style="width:95%" tabindex="0" data-tip="Ohne irrelevanten Satz: 95 % richtig"></span></span><span class="wert">95 %</span></div>
-  <div class="zeile"><span class="bedingung">mit einem irrelevanten Satz</span><span class="spur"><span class="balken ablenkung" style="width:72%" tabindex="0" data-tip="Mit einem irrelevanten Satz: 72 % richtig"></span></span><span class="wert">72 %</span></div>
-</div>
-
-<div class="beleg">
-  <h3>Viele Regeln auf einmal</h3>
-  <p class="herkunft">GPT-4o, Anteil der Antworten, die alle Anweisungen gleichzeitig erfüllen · <a href="https://arxiv.org/abs/2509.21051">Harada u. a. 2025</a></p>
-  <div class="zeile"><span class="bedingung">1 Anweisung</span><span class="spur"><span class="balken fokus" style="width:94%" tabindex="0" data-tip="1 Anweisung: in 94 % der Antworten erfüllt"></span></span><span class="wert">94 %</span></div>
-  <div class="zeile"><span class="bedingung">10 Anweisungen</span><span class="spur"><span class="balken ablenkung" style="width:21%" tabindex="0" data-tip="10 Anweisungen: nur in 21 % der Antworten alle erfüllt"></span></span><span class="wert">21 %</span></div>
+  <p class="herkunft">code-davinci-002 (2022), Mathe-Textaufgaben, Anteil richtiger Antworten. Eingefügt: ein Satz ohne Bezug zur Frage · <a href="https://arxiv.org/abs/2302.00093">Shi u. a. 2023</a></p>
+  <div class="zeile"><span class="bedingung">ohne den Satz</span><span class="spur"><span class="balken fokus" style="width:95%"></span></span><span class="wert">95 %</span></div>
+  <div class="zeile"><span class="bedingung">mit einem irrelevanten Satz</span><span class="spur"><span class="balken ablenkung" style="width:72%"></span></span><span class="wert">72 %</span></div>
 </div>
 
 <div class="beleg">
   <h3>Gegenprobe: nur länger, ohne Ablenkung</h3>
-  <p class="herkunft">GPT-4o, Mathe-Textaufgaben, 30.000 Leerzeichen eingefügt · <a href="https://arxiv.org/abs/2510.05381">Du u. a. 2025</a></p>
-  <div class="zeile"><span class="bedingung">ohne Leerzeichen</span><span class="spur"><span class="balken fokus" style="width:88%" tabindex="0" data-tip="Ohne Füllung: 88 % richtig"></span></span><span class="wert">88 %</span></div>
-  <div class="zeile"><span class="bedingung">mit 30.000 Leerzeichen</span><span class="spur"><span class="balken fokus" style="width:81%" tabindex="0" data-tip="Mit 30.000 Leerzeichen, sonst gleich: 81 % richtig"></span></span><span class="wert">81 %</span></div>
-  <div class="zeile achse" aria-hidden="true"><span class="bedingung"></span><span class="spur"><span style="left:0">0 %</span><span style="left:50%">50 %</span><span style="left:100%">100 %</span></span><span></span></div>
+  <p class="herkunft">GPT-4o, Mathe-Textaufgaben, Anteil richtiger Antworten. Eingefügt: 30.000 Leerzeichen · <a href="https://arxiv.org/abs/2510.05381">Du u. a. 2025</a></p>
+  <div class="zeile"><span class="bedingung">ohne Leerzeichen</span><span class="spur"><span class="balken fokus" style="width:88%"></span></span><span class="wert">88 %</span></div>
+  <div class="zeile"><span class="bedingung">mit 30.000 Leerzeichen</span><span class="spur"><span class="balken fokus" style="width:81%"></span></span><span class="wert">81 %</span></div>
 </div>
 
-<p>Mehr Kontext kann besser sein, wenn das Mehr zur Aufgabe gehört. Länge allein kostet auch etwas, aber weniger.</p>
-<p class="klein">Die Zeilen sind nicht untereinander vergleichbar: andere Modelle, Aufgaben und Messgrößen. Getestet wurden Frage- und Rechenaufgaben, keine Coding-Agents.</p>
+<p>Mehr Kontext kann besser sein, wenn das Mehr zur Aufgabe gehört. Länge allein kostet auch etwas. Bei gleicher Länge schadet fremder Text aber mehr als relevanter (<a href="https://arxiv.org/abs/2402.14848">Levy u. a. 2024</a>).</p>
 
 <h2>Weiterlesen</h2>
 <ul>
-  <li><a href="https://arxiv.org/abs/2402.14848">Levy u. a. 2024</a>: Bei gleicher Länge schadet fremder Text mehr als eine Kopie des relevanten.</li>
   <li><a href="https://www.trychroma.com/research/context-rot">Chroma 2025, Context Rot</a>: Schon ein ablenkender Absatz kostet, mit wachsender Länge mehr.</li>
   <li><a href="https://www.anthropic.com/engineering/multi-agent-research-system">Anthropic 2025</a>: Subagenten mit eigenem Kontext schlagen einen einzelnen Agenten deutlich (interne Messung).</li>
 </ul>
@@ -227,6 +260,20 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 <div id="tip" role="tooltip" hidden></div>
 <script>
 (() => {
+  // Notizen und Klammern auf die Höhe ihrer Stücke setzen (data-seg = Index von unten, oder Bereich a-b)
+  const setze = () => document.querySelectorAll('.koerper').forEach(k => {
+    const n = k.querySelector('.notizen'), segs = k.querySelectorAll('.seg'), o = n.getBoundingClientRect().top;
+    n.querySelectorAll('[data-seg]').forEach(el => {
+      const [a, b = a] = el.dataset.seg.split('-').map(Number);
+      const ra = segs[a].getBoundingClientRect(), rb = segs[b].getBoundingClientRect();
+      const oben = Math.min(ra.top, rb.top) - o, unten = Math.max(ra.bottom, rb.bottom) - o;
+      if (el.classList.contains('klammer')) { el.style.top = oben + 'px'; el.style.height = (unten - oben) + 'px'; }
+      else el.style.top = (oben + unten) / 2 + 'px';
+    });
+  });
+  setze();
+  addEventListener('resize', setze);
+
   const tip = document.getElementById('tip');
   const zeige = el => {
     tip.textContent = el.dataset.tip;
