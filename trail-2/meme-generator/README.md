@@ -38,10 +38,10 @@ uv run pytest e2e   # startet den Server selbst, testet über HTTP und im Browse
 ### Video aufnehmen
 
 ```sh
-uv run pytest e2e --video on --output videos
+uv run pytest e2e --video on --output videos --slowmo 500
 ```
 
-Danach liegt je Browser-Test ein Video in `videos/<test>/video.webm`; es lässt sich z. B. in Chrome oder Firefox abspielen. Mit `--slowmo 500` läuft der Test langsamer und das Video lässt sich besser verfolgen. Dieser Befehl leert `videos/` vorher; andere Testläufe lassen den Ordner in Ruhe.
+Danach liegt je Browser-Test ein Video in `videos/<test>/video.webm`; es lässt sich z. B. in Chrome oder Firefox abspielen. `--slowmo 500` verlangsamt den Test; ohne fehlt das Ergebnis oft im Video. Dieser Befehl leert `videos/` vorher; andere Testläufe lassen den Ordner in Ruhe.
 
 ## Offene Anforderungen
 

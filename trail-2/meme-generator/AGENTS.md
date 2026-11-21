@@ -38,7 +38,7 @@ Läuft auf <http://127.0.0.1:8000>. Umgebungsvariablen: `MEME_PORT`, `MEME_HOST`
 | ------ | --- |
 | `uv run pytest` | Unit-Tests in `tests/` |
 | `uv run pytest e2e` | Startet den Server selbst auf einem freien Port, dann HTTP- und Browser-Tests (Chromium, headless) |
-| `uv run pytest e2e --video on --output videos` | Dasselbe, mit einem Video je Browser-Test in `videos/<test>/video.webm` |
+| `uv run pytest e2e --video on --output videos --slowmo 500` | Dasselbe, mit einem Video je Browser-Test in `videos/<test>/video.webm`; ohne `--slowmo` fehlt das Ergebnis oft im Video |
 | `uv run pytest e2e --headed --slowmo 500` | Browser sichtbar und verlangsamt |
 | `uv run ruff check .`, `uv run ruff format --check .`, `uv run pyright` | Lint, Formatierung, Typen (strict) |
 
