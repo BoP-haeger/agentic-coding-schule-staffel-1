@@ -6,11 +6,17 @@ import sys
 import time
 from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
 import httpx
 import pytest
+from playwright.sync_api import ViewportSize
 
 FIXTURES = Path(__file__).parent / "fixtures"
+
+# The page shows a meme at most 640 px wide. At 800 × 1000 px the form and a square meme fit
+# without scrolling; videos get the same size instead of Playwright's default 800 × 450.
+VIEWPORT: ViewportSize = {"width": 800, "height": 1000}
 
 
 def free_port() -> int:
@@ -42,6 +48,12 @@ def base_url() -> Iterator[str]:
     finally:
         server.terminate()
         server.wait(timeout=10)
+
+
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args: dict[str, Any]) -> dict[str, Any]:
+    """pytest-playwright's browser context options, with our viewport and video size."""
+    return {**browser_context_args, "viewport": VIEWPORT, "record_video_size": VIEWPORT}
 
 
 @pytest.fixture(scope="session")

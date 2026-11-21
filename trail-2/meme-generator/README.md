@@ -18,7 +18,7 @@ uv sync
 uv run playwright install chromium
 ```
 
-Der zweite Befehl lädt Chromium für die Browser-Tests, etwa 300 MB. Unter Linux: `uv run playwright install --with-deps chromium`.
+Der zweite Befehl lädt Chromium für die Browser-Tests (Download etwa 300 MB, auf der Platte etwa 600 MB). Unter Linux: `uv run playwright install --with-deps chromium`.
 
 ## Starten
 
@@ -38,10 +38,10 @@ uv run pytest e2e   # startet den Server selbst, testet über HTTP und im Browse
 ### Video aufnehmen
 
 ```sh
-uv run pytest e2e --video on
+uv run pytest e2e --video on --output videos
 ```
 
-Danach liegt je Browser-Test ein Video in `test-results/<test>/video.webm`; es lässt sich z. B. in Chrome oder Firefox abspielen. Mit `--slowmo 500` läuft der Test langsamer und das Video lässt sich besser verfolgen. Jeder Testlauf leert `test-results/` vorher.
+Danach liegt je Browser-Test ein Video in `videos/<test>/video.webm`; es lässt sich z. B. in Chrome oder Firefox abspielen. Mit `--slowmo 500` läuft der Test langsamer und das Video lässt sich besser verfolgen. Dieser Befehl leert `videos/` vorher; andere Testläufe lassen den Ordner in Ruhe.
 
 ## Offene Anforderungen
 
