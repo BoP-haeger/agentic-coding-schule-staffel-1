@@ -97,6 +97,9 @@ button.leise { background: transparent; color: var(--accent); border: 1px solid 
 button:disabled { opacity: .5; cursor: default; }
 /* Farbschema-Knopf oben rechts (thema.js) */
 .thema { position: absolute; top: .6rem; right: .75rem; margin: 0; padding: .3rem .55rem; font-size: .8rem; }
+/* Link zur Startseite des Teilnehmer-Repos oben links, auf einer Höhe mit dem Farbschema-Knopf */
+.startseite { position: absolute; top: .6rem; left: .75rem; padding: calc(.3rem + 1px) 0; font: .8rem/1 var(--sans); color: var(--muted); text-decoration: none; }
+.startseite:hover, .startseite:focus-visible { color: var(--accent); text-decoration: underline; }
 .status { font: .9rem var(--sans); color: var(--ok); margin-left: .25rem; }
 
 /* Aufgaben im Rahmen, Abruf-Widget */
@@ -254,6 +257,7 @@ function TEXT(k, werte) {
 </script>
 </head>
 <body data-trail="1" data-speicher="acs-staffel1-trail1-v3">
+<a class="startseite nicht-drucken" href="../index.html">← Startseite</a>
 <button type="button" class="leise thema nicht-drucken" data-thema></button>
 <nav class="inhaltsverzeichnis nicht-drucken" data-inhaltsverzeichnis aria-label="Inhaltsverzeichnis"><ol></ol></nav>
 <main>
