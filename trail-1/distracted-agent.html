@@ -7,8 +7,8 @@
 <style>
 :root {
   --bg: #fffff8; --fg: #1d1d1b; --muted: #5f5e58; --line: #d9d6c8; --panel: #f6f4e8; --accent: #8a3b12;
-  --achse: #8f8b7c;
-  --fokus: #0ca678; --ablenkung: #f76707; --auf-farbe: #1d1d1b;
+  --achse: #8f8b7c; --rahmen: #5f5e58;
+  --fokus: #0ca678; --ablenkung: #f76707;
   --pattern: #0ca678; --pattern-grund: #e6fcf5; --anti-pattern: #f76707; --anti-pattern-grund: #fff4e6;
   --serif: "Iowan Old Style", "Charter", "Palatino Linotype", Palatino, Georgia, serif;
   --sans: -apple-system, "Segoe UI", system-ui, sans-serif;
@@ -18,7 +18,7 @@
   :root:not([data-theme="light"]) {
     color-scheme: dark;
     --bg: #161614; --fg: #e9e7df; --muted: #a8a59a; --line: #3a3934; --panel: #201f1c; --accent: #e39a6b;
-    --achse: #6b6960;
+    --achse: #6b6960; --rahmen: #a8a59a;
     --fokus: #0f9d72; --ablenkung: #e8691a;
     --pattern: #12b886; --pattern-grund: #1e3d36; --anti-pattern: #ff8c42; --anti-pattern-grund: #3d2b1f;
   }
@@ -26,7 +26,7 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #161614; --fg: #e9e7df; --muted: #a8a59a; --line: #3a3934; --panel: #201f1c; --accent: #e39a6b;
-  --achse: #6b6960;
+  --achse: #6b6960; --rahmen: #a8a59a;
   --fokus: #0f9d72; --ablenkung: #e8691a;
   --pattern: #12b886; --pattern-grund: #1e3d36; --anti-pattern: #ff8c42; --anti-pattern-grund: #3d2b1f;
 }
@@ -53,20 +53,46 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 .farbe.fokus, .seg.fokus, .balken.fokus { background: var(--fokus); }
 .farbe.ablenkung, .seg.ablenkung, .balken.ablenkung { background: var(--ablenkung); }
 
-/* Zwei Agenten */
-.agent { margin: 1.75rem 0; }
-.agent-kopf { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .5rem; margin: 0 0 .5rem; }
+/* Zwei Agenten gegenüber: Säulen wachsen nach oben, der Kasten ist der gesamte Kontext */
+.farbe.rahmen { width: 1.1rem; border: 1.5px solid var(--rahmen); border-radius: 4px; }
 .typ { font: 600 .72rem/1.4 var(--sans); text-transform: uppercase; letter-spacing: .05em; padding: .15rem .5rem; border-radius: 4px; }
 .typ[data-typ="Pattern"] { color: var(--pattern); background: var(--pattern-grund); }
 .typ[data-typ="Anti-Pattern"] { color: var(--anti-pattern); background: var(--anti-pattern-grund); }
-.rolle { color: var(--muted); }
-.kontext { display: flex; gap: 2px; height: 28px; }
-.seg { flex: 1 1 0; min-width: 0; border-radius: 4px; display: flex; align-items: center; padding: 0 6px; cursor: default; }
+.gegenueber { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.25rem; row-gap: .6rem; margin-top: 1.5rem; }
+.gegenueber .kopf { line-height: 1.35; align-self: end; }
+.gegenueber .kopf b { display: block; margin-top: .3rem; }
+.rolle { display: block; color: var(--muted); font-size: .95rem; }
+.kopf.links, .ergebnis.links { text-align: right; }
+.kopf.links { grid-area: 1 / 1; }
+.kopf.rechts { grid-area: 1 / 2; }
+.koerper { display: grid; align-self: end; column-gap: 14px; }
+.koerper.links { grid-area: 2 / 1; grid-template-columns: 1fr auto; }
+.koerper.rechts { grid-area: 2 / 2; grid-template-columns: auto 1fr; }
+.kontext { width: 5.75rem; height: calc(var(--n) * 4.2px); display: flex; flex-direction: column-reverse; gap: 2px;
+  border: 1.5px solid var(--rahmen); border-radius: 8px; padding: 4px; }
+.seg { flex: 1 1 0; min-height: 6px; border-radius: 4px; cursor: default; }
 .seg:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
-.seg .name { display: block; width: 100%; white-space: nowrap; font: 600 .78rem/1 var(--sans); color: var(--auf-farbe); }
-.darin { font: .9rem/1.45 var(--sans); color: var(--muted); margin: .5rem 0 .25rem; }
-.ergebnis { margin: 0; }
-.laenge { font: .8rem/1 var(--sans); color: var(--muted); border-top: 1px solid var(--achse); padding-top: .4rem; margin-top: 1.5rem; text-align: right; }
+.notizen { position: relative; }
+.notiz { position: absolute; left: 0; right: 0; font: .8rem/1.3 var(--sans); color: var(--muted); }
+.koerper.links .notiz { text-align: right; }
+.notiz code { white-space: nowrap; }
+.notiz.oben { top: 0; }
+.notiz.unten { bottom: 0; }
+.notiz.mitte { transform: translateY(50%); }
+.notiz::after { content: ""; position: absolute; width: 10px; border-top: 1px solid var(--achse); }
+.koerper.links .notiz::after { right: -13px; }
+.koerper.rechts .notiz::after { left: -13px; }
+.notiz.oben::after { top: .65em; }
+.notiz.unten::after { bottom: .65em; }
+.notiz.mitte::after { top: 50%; }
+.anfang { grid-area: 3 / 1 / 4 / 3; border-top: 1px solid var(--achse); padding-top: .3rem; text-align: center; font: .8rem/1 var(--sans); color: var(--muted); }
+.ergebnis { margin: .4rem 0 0; line-height: 1.4; }
+.ergebnis.links { grid-area: 4 / 1; }
+.ergebnis.rechts { grid-area: 4 / 2; }
+@media (max-width: 34rem) {
+  .kontext { width: 4.25rem; }
+  .notiz { font-size: .72rem; }
+}
 
 /* Belege */
 .beleg { margin: 1.75rem 0; }
@@ -103,41 +129,53 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 <p class="kern">Ein kleiner Kontext schützt nicht vor Ablenkung. Entscheidend ist, wie viel davon zur Aufgabe gehört.</p>
 
 <h2>Zwei Agenten, eine Aufgabe: committen</h2>
-<p class="klein">Schematisch nach dem Beispiel im Distracted Agent, Längen frei gewählt.</p>
+<p class="klein">Schematisch nach dem Beispiel im Distracted Agent, Längen grob geschätzt. Der Kontext wächst nach oben.</p>
 <ul class="legende">
   <li><span class="farbe fokus"></span>gehört zur Aufgabe</li>
   <li><span class="farbe ablenkung"></span>gehört nicht dazu</li>
+  <li><span class="farbe rahmen"></span>gesamter Kontext</li>
 </ul>
 
-<div class="agent">
-  <p class="agent-kopf"><span class="typ" data-typ="Anti-Pattern">Anti-Pattern</span> <b>Distracted Agent</b> <span class="rolle">der Hauptagent nach einer Weile Arbeit</span></p>
-  <div class="kontext" style="width:53%" role="group" aria-label="Kurzer Kontext des Hauptagenten">
-    <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="Commit-Regeln (AGENTS.md): gehört zur Aufgabe"></span>
-    <span class="seg ablenkung" style="flex-grow:10" tabindex="0" data-tip="Feature-Code: gehört nicht dazu"></span>
-    <span class="seg ablenkung" style="flex-grow:9" tabindex="0" data-tip="Web-Recherche: gehört nicht dazu"></span>
-    <span class="seg ablenkung" style="flex-grow:8" tabindex="0" data-tip="Testausgaben: gehören nicht dazu"></span>
-    <span class="seg ablenkung" style="flex-grow:7" tabindex="0" data-tip="Doku: gehört nicht dazu"></span>
-    <span class="seg ablenkung" style="flex-grow:6" tabindex="0" data-tip="Noch mehr Feature-Code: gehört nicht dazu"></span>
-    <span class="seg ablenkung" style="flex-grow:5" tabindex="0" data-tip="Noch mehr Testausgaben: gehören nicht dazu"></span>
-    <span class="seg fokus" style="flex-grow:2" tabindex="0" data-tip="git status: gehört zur Aufgabe"></span>
-    <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="Diff: gehört zur Aufgabe"></span>
-  </div>
-  <p class="darin">Die Commit-Regeln stehen ganz am Anfang, <code>git status</code> und Diff ganz am Ende. Dazwischen Feature-Code, Web-Recherche, Testausgaben und Doku.</p>
-  <p class="ergebnis">→ Warnt weder vor <code>node_modules</code> im Commit noch vor Stilverstößen.</p>
-</div>
+<div class="gegenueber">
+  <div class="kopf links"><span class="typ" data-typ="Anti-Pattern">Anti-Pattern</span><b>Distracted Agent</b><span class="rolle">der Hauptagent nach einer Weile Arbeit</span></div>
+  <div class="kopf rechts"><span class="typ" data-typ="Pattern">Pattern</span><b>Focused Agent</b><span class="rolle">der Committer</span></div>
 
-<div class="agent">
-  <p class="agent-kopf"><span class="typ" data-typ="Pattern">Pattern</span> <b>Focused Agent</b> <span class="rolle">der Committer</span></p>
-  <div class="kontext" style="width:100%" role="group" aria-label="Längerer Kontext des Committers">
-    <span class="seg fokus" style="flex-grow:4" tabindex="0" data-tip="Auftrag vom Hauptagenten: gehört zur Aufgabe"><span class="name">Auftrag</span></span>
-    <span class="seg fokus" style="flex-grow:12" tabindex="0" data-tip="Commit-Regeln: gehören zur Aufgabe"><span class="name">Regeln</span></span>
-    <span class="seg fokus" style="flex-grow:16" tabindex="0" data-tip="git status: gehört zur Aufgabe"><span class="name">git status</span></span>
-    <span class="seg fokus" style="flex-grow:68" tabindex="0" data-tip="Diff: gehört zur Aufgabe"><span class="name">Diff</span></span>
+  <div class="koerper links">
+    <div class="notizen">
+      <span class="notiz oben"><code>git status</code> und Dateiliste, ganz am Ende</span>
+      <span class="notiz mitte" style="bottom:49%">Feature-Code, Web-Recherche, Testausgaben, Doku</span>
+      <span class="notiz unten">Commit-Regeln, ganz am Anfang</span>
+    </div>
+    <div class="kontext" style="--n:54" role="group" aria-label="Kürzerer Kontext des Hauptagenten, von Anfang bis Ende">
+      <span class="seg fokus" style="flex-grow:4" tabindex="0" data-tip="Commit-Regeln (AGENTS.md): gehören zur Aufgabe"></span>
+      <span class="seg ablenkung" style="flex-grow:10" tabindex="0" data-tip="Feature-Code: gehört nicht dazu"></span>
+      <span class="seg ablenkung" style="flex-grow:9" tabindex="0" data-tip="Web-Recherche: gehört nicht dazu"></span>
+      <span class="seg ablenkung" style="flex-grow:8" tabindex="0" data-tip="Testausgaben: gehören nicht dazu"></span>
+      <span class="seg ablenkung" style="flex-grow:7" tabindex="0" data-tip="Doku: gehört nicht dazu"></span>
+      <span class="seg ablenkung" style="flex-grow:6" tabindex="0" data-tip="Noch mehr Feature-Code: gehört nicht dazu"></span>
+      <span class="seg ablenkung" style="flex-grow:5" tabindex="0" data-tip="Noch mehr Testausgaben: gehören nicht dazu"></span>
+      <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="git status: gehört zur Aufgabe"></span>
+      <span class="seg fokus" style="flex-grow:2" tabindex="0" data-tip="Dateiliste des Diffs (git diff --stat): gehört zur Aufgabe"></span>
+    </div>
   </div>
-  <p class="darin">Länger, aber alles gehört zum Commit.</p>
-  <p class="ergebnis">→ Findet beides sofort.</p>
+  <div class="koerper rechts">
+    <div class="kontext" style="--n:100" role="group" aria-label="Längerer Kontext des Committers, von Anfang bis Ende">
+      <span class="seg fokus" style="flex-grow:4" tabindex="0" data-tip="Dieselben Commit-Regeln: gehören zur Aufgabe"></span>
+      <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="Auftrag vom Hauptagenten: gehört zur Aufgabe"></span>
+      <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="git status: gehört zur Aufgabe"></span>
+      <span class="seg fokus" style="flex-grow:72" tabindex="0" data-tip="Der ganze Diff: gehört zur Aufgabe"></span>
+      <span class="seg fokus" style="flex-grow:18" tabindex="0" data-tip="Linter-Ausgabe: gehört zur Aufgabe"></span>
+    </div>
+    <div class="notizen">
+      <span class="notiz oben">Linter-Ausgabe</span>
+      <span class="notiz mitte" style="bottom:46%">der ganze Diff</span>
+      <span class="notiz unten">dieselben Regeln, Auftrag, <code>git status</code></span>
+    </div>
+  </div>
+  <div class="anfang">Anfang des Kontexts</div>
+  <p class="ergebnis links">Warnt weder vor <code>node_modules</code> im Commit noch vor Stilverstößen.</p>
+  <p class="ergebnis rechts">Findet beides sofort.</p>
 </div>
-<p class="laenge">Länge des Kontexts →</p>
 
 <h2>Was Studien zeigen</h2>
 <ul class="legende">
@@ -205,14 +243,6 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
   document.addEventListener('focusin', e => { const el = ziel(e); if (el) zeige(el); });
   document.addEventListener('focusout', () => { tip.hidden = true; });
   addEventListener('scroll', () => { tip.hidden = true; }, { passive: true });
-
-  // Namen in den Blöcken nur zeigen, wenn sie ganz hineinpassen
-  const passt = () => document.querySelectorAll('.seg .name').forEach(n => {
-    n.hidden = false;
-    if (n.scrollWidth > n.clientWidth) n.hidden = true;
-  });
-  passt();
-  addEventListener('resize', passt);
 })();
 </script>
 </body>
