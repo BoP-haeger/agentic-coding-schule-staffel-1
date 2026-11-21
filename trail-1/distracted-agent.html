@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fokus vor Größe</title>
+<style>
+:root {
+  --bg: #fffff8; --fg: #1d1d1b; --muted: #5f5e58; --line: #d9d6c8; --panel: #f6f4e8; --accent: #8a3b12;
+  --achse: #8f8b7c;
+  --fokus: #0ca678; --ablenkung: #f76707; --auf-farbe: #1d1d1b;
+  --pattern: #0ca678; --pattern-grund: #e6fcf5; --anti-pattern: #f76707; --anti-pattern-grund: #fff4e6;
+  --serif: "Iowan Old Style", "Charter", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: -apple-system, "Segoe UI", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #161614; --fg: #e9e7df; --muted: #a8a59a; --line: #3a3934; --panel: #201f1c; --accent: #e39a6b;
+    --achse: #6b6960;
+    --fokus: #0f9d72; --ablenkung: #e8691a;
+    --pattern: #12b886; --pattern-grund: #1e3d36; --anti-pattern: #ff8c42; --anti-pattern-grund: #3d2b1f;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #161614; --fg: #e9e7df; --muted: #a8a59a; --line: #3a3934; --panel: #201f1c; --accent: #e39a6b;
+  --achse: #6b6960;
+  --fokus: #0f9d72; --ablenkung: #e8691a;
+  --pattern: #12b886; --pattern-grund: #1e3d36; --anti-pattern: #ff8c42; --anti-pattern-grund: #3d2b1f;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 1.0625rem/1.6 var(--serif); }
+main { max-width: 44rem; margin: 0 auto; padding: 2.5rem 1rem 5rem; }
+h1 { font-size: 2rem; font-weight: 600; line-height: 1.25; margin: 0 0 .25rem; }
+h2 { font-size: 1.45rem; font-weight: 600; line-height: 1.25; margin: 3rem 0 .5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.3; margin: 0; }
+.untertitel { color: var(--muted); font-style: italic; margin: 0 0 2rem; }
+.kern { font-size: 1.2rem; }
+a { color: var(--accent); }
+code { font-family: var(--mono); font-size: .88em; background: var(--panel); padding: .05em .3em; border-radius: 3px; }
+.klein { font: .85rem/1.45 var(--sans); color: var(--muted); }
+footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
+[hidden] { display: none !important; }
+
+/* Legende */
+.legende { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; list-style: none; padding: 0; margin: .75rem 0 1.25rem; font: .9rem/1.4 var(--sans); }
+.legende li { display: flex; align-items: center; gap: .4rem; }
+.farbe { width: .8rem; height: .8rem; border-radius: 3px; flex: none; }
+.farbe.fokus, .seg.fokus, .balken.fokus { background: var(--fokus); }
+.farbe.ablenkung, .seg.ablenkung, .balken.ablenkung { background: var(--ablenkung); }
+
+/* Zwei Agenten */
+.agent { margin: 1.75rem 0; }
+.agent-kopf { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .5rem; margin: 0 0 .5rem; }
+.typ { font: 600 .72rem/1.4 var(--sans); text-transform: uppercase; letter-spacing: .05em; padding: .15rem .5rem; border-radius: 4px; }
+.typ[data-typ="Pattern"] { color: var(--pattern); background: var(--pattern-grund); }
+.typ[data-typ="Anti-Pattern"] { color: var(--anti-pattern); background: var(--anti-pattern-grund); }
+.rolle { color: var(--muted); }
+.kontext { display: flex; gap: 2px; height: 28px; }
+.seg { flex: 1 1 0; min-width: 0; border-radius: 4px; display: flex; align-items: center; padding: 0 6px; cursor: default; }
+.seg:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.seg .name { display: block; width: 100%; white-space: nowrap; font: 600 .78rem/1 var(--sans); color: var(--auf-farbe); }
+.darin { font: .9rem/1.45 var(--sans); color: var(--muted); margin: .5rem 0 .25rem; }
+.ergebnis { margin: 0; }
+.laenge { font: .8rem/1 var(--sans); color: var(--muted); border-top: 1px solid var(--achse); padding-top: .4rem; margin-top: 1.5rem; text-align: right; }
+
+/* Belege */
+.beleg { margin: 1.75rem 0; }
+.herkunft { font: .85rem/1.45 var(--sans); color: var(--muted); margin: .1rem 0 .5rem; }
+.zeile { display: grid; grid-template-columns: 14rem 1fr 2.75rem; align-items: center; gap: .2rem .75rem; margin: .35rem 0; font: .9rem/1.3 var(--sans); }
+.spur { position: relative; height: 16px; border-left: 1px solid var(--achse); }
+.spur::before, .spur::after { content: ""; position: absolute; top: -3px; bottom: -3px; border-left: 1px solid var(--line); }
+.spur::before { left: 50%; }
+.spur::after { left: 100%; }
+.balken { position: relative; z-index: 1; display: block; height: 100%; border-radius: 0 4px 4px 0; cursor: default; }
+.balken:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+.wert { text-align: right; font-variant-numeric: tabular-nums; }
+.achse { font: .75rem/1 var(--sans); color: var(--muted); margin-top: .1rem; }
+.achse .spur { border: 0; height: 1rem; }
+.achse .spur::before, .achse .spur::after { display: none; }
+.achse span span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.achse span span:first-child { transform: none; }
+.achse span span:last-child { transform: translateX(-100%); }
+@media (max-width: 34rem) {
+  .zeile { grid-template-columns: 1fr 2.75rem; }
+  .zeile .bedingung { grid-column: 1 / -1; margin-top: .25rem; }
+}
+
+/* Tooltip */
+#tip { position: fixed; z-index: 10; max-width: 18rem; padding: .4rem .6rem; border-radius: 4px; background: var(--fg); color: var(--bg);
+  font: .82rem/1.35 var(--sans); pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+</style>
+</head>
+<body>
+<main>
+<h1>Fokus vor Größe</h1>
+<p class="untertitel">Nachtrag zum Distracted Agent · Trail 1</p>
+
+<p class="kern">Ein kleiner Kontext schützt nicht vor Ablenkung. Entscheidend ist, wie viel davon zur Aufgabe gehört.</p>
+
+<h2>Zwei Agenten, eine Aufgabe: committen</h2>
+<p class="klein">Schematisch nach dem Beispiel im Distracted Agent, Längen frei gewählt.</p>
+<ul class="legende">
+  <li><span class="farbe fokus"></span>gehört zur Aufgabe</li>
+  <li><span class="farbe ablenkung"></span>gehört nicht dazu</li>
+</ul>
+
+<div class="agent">
+  <p class="agent-kopf"><span class="typ" data-typ="Anti-Pattern">Anti-Pattern</span> <b>Distracted Agent</b> <span class="rolle">der Hauptagent nach einer Weile Arbeit</span></p>
+  <div class="kontext" style="width:53%" role="group" aria-label="Kurzer Kontext des Hauptagenten">
+    <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="Commit-Regeln (AGENTS.md): gehört zur Aufgabe"></span>
+    <span class="seg ablenkung" style="flex-grow:10" tabindex="0" data-tip="Feature-Code: gehört nicht dazu"></span>
+    <span class="seg ablenkung" style="flex-grow:9" tabindex="0" data-tip="Web-Recherche: gehört nicht dazu"></span>
+    <span class="seg ablenkung" style="flex-grow:8" tabindex="0" data-tip="Testausgaben: gehören nicht dazu"></span>
+    <span class="seg ablenkung" style="flex-grow:7" tabindex="0" data-tip="Doku: gehört nicht dazu"></span>
+    <span class="seg ablenkung" style="flex-grow:6" tabindex="0" data-tip="Noch mehr Feature-Code: gehört nicht dazu"></span>
+    <span class="seg ablenkung" style="flex-grow:5" tabindex="0" data-tip="Noch mehr Testausgaben: gehören nicht dazu"></span>
+    <span class="seg fokus" style="flex-grow:2" tabindex="0" data-tip="git status: gehört zur Aufgabe"></span>
+    <span class="seg fokus" style="flex-grow:3" tabindex="0" data-tip="Diff: gehört zur Aufgabe"></span>
+  </div>
+  <p class="darin">Die Commit-Regeln stehen ganz am Anfang, <code>git status</code> und Diff ganz am Ende. Dazwischen Feature-Code, Web-Recherche, Testausgaben und Doku.</p>
+  <p class="ergebnis">→ Warnt weder vor <code>node_modules</code> im Commit noch vor Stilverstößen.</p>
+</div>
+
+<div class="agent">
+  <p class="agent-kopf"><span class="typ" data-typ="Pattern">Pattern</span> <b>Focused Agent</b> <span class="rolle">der Committer</span></p>
+  <div class="kontext" style="width:100%" role="group" aria-label="Längerer Kontext des Committers">
+    <span class="seg fokus" style="flex-grow:4" tabindex="0" data-tip="Auftrag vom Hauptagenten: gehört zur Aufgabe"><span class="name">Auftrag</span></span>
+    <span class="seg fokus" style="flex-grow:12" tabindex="0" data-tip="Commit-Regeln: gehören zur Aufgabe"><span class="name">Regeln</span></span>
+    <span class="seg fokus" style="flex-grow:16" tabindex="0" data-tip="git status: gehört zur Aufgabe"><span class="name">git status</span></span>
+    <span class="seg fokus" style="flex-grow:68" tabindex="0" data-tip="Diff: gehört zur Aufgabe"><span class="name">Diff</span></span>
+  </div>
+  <p class="darin">Länger, aber alles gehört zum Commit.</p>
+  <p class="ergebnis">→ Findet beides sofort.</p>
+</div>
+<p class="laenge">Länge des Kontexts →</p>
+
+<h2>Was Studien zeigen</h2>
+<ul class="legende">
+  <li><span class="farbe fokus"></span>fokussierter</li>
+  <li><span class="farbe ablenkung"></span>abgelenkter</li>
+</ul>
+
+<div class="beleg">
+  <h3>Länger, aber mehr Relevantes: besser</h3>
+  <p class="herkunft">GPT-4o, biomedizinische Fragen, die Ablenkung bleibt gleich (≈ 20.000 Tokens), nur der relevante Teil wächst · <a href="https://arxiv.org/abs/2505.18148">Bianchi u. a. 2025</a></p>
+  <div class="zeile"><span class="bedingung">großer relevanter Teil</span><span class="spur"><span class="balken fokus" style="width:98%" tabindex="0" data-tip="Großer relevanter Teil, Kontext insgesamt länger: 98 % richtig"></span></span><span class="wert">98 %</span></div>
+  <div class="zeile"><span class="bedingung">kleiner relevanter Teil</span><span class="spur"><span class="balken ablenkung" style="width:77%" tabindex="0" data-tip="Kleiner relevanter Teil, Kontext insgesamt kürzer: 77 % richtig"></span></span><span class="wert">77 %</span></div>
+</div>
+
+<div class="beleg">
+  <h3>Ein Satz Ablenkung in einer kurzen Aufgabe</h3>
+  <p class="herkunft">code-davinci-002, Mathe-Textaufgaben, ein Satz ohne Bezug zur Frage eingefügt · <a href="https://arxiv.org/abs/2302.00093">Shi u. a. 2023</a></p>
+  <div class="zeile"><span class="bedingung">ohne den Satz</span><span class="spur"><span class="balken fokus" style="width:95%" tabindex="0" data-tip="Ohne irrelevanten Satz: 95 % richtig"></span></span><span class="wert">95 %</span></div>
+  <div class="zeile"><span class="bedingung">mit einem irrelevanten Satz</span><span class="spur"><span class="balken ablenkung" style="width:72%" tabindex="0" data-tip="Mit einem irrelevanten Satz: 72 % richtig"></span></span><span class="wert">72 %</span></div>
+</div>
+
+<div class="beleg">
+  <h3>Viele Regeln auf einmal</h3>
+  <p class="herkunft">GPT-4o, Anteil der Antworten, die alle Anweisungen gleichzeitig erfüllen · <a href="https://arxiv.org/abs/2509.21051">Harada u. a. 2025</a></p>
+  <div class="zeile"><span class="bedingung">1 Anweisung</span><span class="spur"><span class="balken fokus" style="width:94%" tabindex="0" data-tip="1 Anweisung: in 94 % der Antworten erfüllt"></span></span><span class="wert">94 %</span></div>
+  <div class="zeile"><span class="bedingung">10 Anweisungen</span><span class="spur"><span class="balken ablenkung" style="width:21%" tabindex="0" data-tip="10 Anweisungen: nur in 21 % der Antworten alle erfüllt"></span></span><span class="wert">21 %</span></div>
+</div>
+
+<div class="beleg">
+  <h3>Gegenprobe: nur länger, ohne Ablenkung</h3>
+  <p class="herkunft">GPT-4o, Mathe-Textaufgaben, 30.000 Leerzeichen eingefügt · <a href="https://arxiv.org/abs/2510.05381">Du u. a. 2025</a></p>
+  <div class="zeile"><span class="bedingung">ohne Leerzeichen</span><span class="spur"><span class="balken fokus" style="width:88%" tabindex="0" data-tip="Ohne Füllung: 88 % richtig"></span></span><span class="wert">88 %</span></div>
+  <div class="zeile"><span class="bedingung">mit 30.000 Leerzeichen</span><span class="spur"><span class="balken fokus" style="width:81%" tabindex="0" data-tip="Mit 30.000 Leerzeichen, sonst gleich: 81 % richtig"></span></span><span class="wert">81 %</span></div>
+  <div class="zeile achse" aria-hidden="true"><span class="bedingung"></span><span class="spur"><span style="left:0">0 %</span><span style="left:50%">50 %</span><span style="left:100%">100 %</span></span><span></span></div>
+</div>
+
+<p>Mehr Kontext kann besser sein, wenn das Mehr zur Aufgabe gehört. Länge allein kostet auch etwas, aber weniger.</p>
+<p class="klein">Die Zeilen sind nicht untereinander vergleichbar: andere Modelle, Aufgaben und Messgrößen. Getestet wurden Frage- und Rechenaufgaben, keine Coding-Agents.</p>
+
+<h2>Weiterlesen</h2>
+<ul>
+  <li><a href="https://arxiv.org/abs/2402.14848">Levy u. a. 2024</a>: Bei gleicher Länge schadet fremder Text mehr als eine Kopie des relevanten.</li>
+  <li><a href="https://www.trychroma.com/research/context-rot">Chroma 2025, Context Rot</a>: Schon ein ablenkender Absatz kostet, mit wachsender Länge mehr.</li>
+  <li><a href="https://www.anthropic.com/engineering/multi-agent-research-system">Anthropic 2025</a>: Subagenten mit eigenem Kontext schlagen einen einzelnen Agenten deutlich (interne Messung).</li>
+</ul>
+
+<footer><a href="./">Hausaufgabe zu Trail 1</a></footer>
+</main>
+<div id="tip" role="tooltip" hidden></div>
+<script>
+(() => {
+  const tip = document.getElementById('tip');
+  const zeige = el => {
+    tip.textContent = el.dataset.tip;
+    tip.hidden = false;
+    const r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
+    const x = Math.max(8, Math.min(r.left + r.width / 2 - t.width / 2, innerWidth - t.width - 8));
+    const y = r.top - t.height - 8 < 8 ? r.bottom + 8 : r.top - t.height - 8;
+    tip.style.left = x + 'px';
+    tip.style.top = y + 'px';
+  };
+  const ziel = e => e.target.closest && e.target.closest('[data-tip]');
+  document.addEventListener('pointerover', e => { const el = ziel(e); if (el) zeige(el); });
+  document.addEventListener('pointerout', e => { const el = ziel(e); if (el && !el.contains(e.relatedTarget)) tip.hidden = true; });
+  document.addEventListener('focusin', e => { const el = ziel(e); if (el) zeige(el); });
+  document.addEventListener('focusout', () => { tip.hidden = true; });
+  addEventListener('scroll', () => { tip.hidden = true; }, { passive: true });
+
+  // Namen in den Blöcken nur zeigen, wenn sie ganz hineinpassen
+  const passt = () => document.querySelectorAll('.seg .name').forEach(n => {
+    n.hidden = false;
+    if (n.scrollWidth > n.clientWidth) n.hidden = true;
+  });
+  passt();
+  addEventListener('resize', passt);
+})();
+</script>
+</body>
+</html>
