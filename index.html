@@ -31,15 +31,16 @@ a { color: var(--accent); }
 .info { display: block; font: .85rem/1.4 var(--sans); color: var(--muted); }
 .frist { color: var(--accent); font-weight: 600; }
 
-/* Gruppen: wer noch offen ist, steht hervorgehoben darunter */
+/* Gruppen als Kacheln, wer noch offen ist, hat eine gestrichelte Kachel */
 .gruppen { margin: 0 0 2.5rem; }
 .gruppen h2 { font-size: 1.3rem; font-weight: 600; line-height: 1.3; margin: 0; padding-bottom: .4rem; border-bottom: 1px solid var(--line); }
 .gruppen p { margin: .6rem 0; }
-.gruppen .material li { font-weight: 600; }
-.gruppen .material .info { font-weight: 400; }
-.offen-titel { font: 600 .85rem/1.4 var(--sans); color: var(--accent); margin: 1.2rem 0 .4rem; }
-.offen { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; }
-.offen li { border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; padding: .1rem .7rem; font: .9rem/1.5 var(--sans); }
+.kacheln { list-style: none; margin: .8rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .6rem; }
+.kacheln li { border: 1px solid var(--line); border-radius: .5rem; padding: .6rem .8rem; font-weight: 600; line-height: 1.45; }
+.kacheln span { display: block; }
+.kacheln .klein { font: .8rem/1.4 var(--sans); color: var(--muted); margin-bottom: .2rem; }
+.kacheln .offen { border: 1.5px dashed var(--accent); }
+.kacheln .fehlt { color: var(--accent); }
 </style>
 <script src="thema.js"></script>
 </head>
@@ -51,23 +52,19 @@ a { color: var(--accent); }
 <section class="gruppen">
   <h2>Gruppen</h2>
   <p>Sucht euch bis <span class="frist">Freitag, 27.11., 14:30 Uhr</span> jemanden oder sagt Bescheid, dass ihr allein abgebt. Wer dann noch offen ist, wird zugeteilt.</p>
-  <ul class="material">
-    <li>Fabian<span class="info">allein</span></li>
-    <li>Joshua<span class="info">allein</span></li>
-  </ul>
-  <p class="offen-titel">Noch offen</p>
-  <ul class="offen">
-    <li>Andreas</li>
-    <li>Christian</li>
-    <li>Eric</li>
-    <li>Gerd</li>
-    <li>Gregor</li>
-    <li>James</li>
-    <li>Marten</li>
-    <li>Nick</li>
-    <li>Niklas</li>
-    <li>Sabrina</li>
-    <li>Victoria</li>
+  <ul class="kacheln">
+    <li><span class="klein">Allein</span><span>Fabian</span><span>Joshua</span></li>
+    <li class="offen"><span>Andreas</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>Christian</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>Eric</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>Gerd</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>Gregor</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>James</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>Marten</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>Nick</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>Niklas</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>Sabrina</span><span class="fehlt">+ ?</span></li>
+    <li class="offen"><span>Victoria</span><span class="fehlt">+ ?</span></li>
   </ul>
 </section>
 
