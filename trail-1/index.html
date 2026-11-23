@@ -198,7 +198,7 @@ details.beispiel > summary { cursor: pointer; font-weight: 600; }
   .karte { width: min(calc(100vw - 30rem), 80rem); margin-left: calc(50% - min(50vw - 15rem, 40rem)); }
 }
 </style>
-<script>var TEXTE = {"pruefen-leer": "Wähl zuerst mindestens einen Tag. Weißt du nur noch die Idee, leg sie als eigenen Tag an.", "festlegen-leer": "Schreib zuerst deine Antwort.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "name-fehlt": "Trag zuerst deinen Namen ein.", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?\nBitte nur, wenn du dich verklickt hast, nicht um nach der Auflösung neu zu raten. Deine Antworten helfen uns nur, wenn sie ehrlich sind.", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
+<script>var TEXTE = {"pruefen-leer": "Ohne Tag festlegen? Du siehst dann die Auflösung und kannst nichts mehr ändern.", "festlegen-leer": "Ohne Antwort festlegen? Du siehst dann die Auflösung und kannst nichts mehr ändern.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "name-fehlt": "Trag zuerst deinen Namen ein.", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?\nBitte nur, wenn du dich verklickt hast, nicht um nach der Auflösung neu zu raten. Deine Antworten helfen uns nur, wenn sie ehrlich sind.", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
 <script>
 /* Meldungen der Skripte aus rahmen.md (meldungen). build.py setzt davor: var TEXTE = {…};
    TEXT(schluessel, { n: 3 }) setzt {n} ein. Fehlt ein Schlüssel, erscheint er selbst, damit es auffällt. */
@@ -1494,6 +1494,7 @@ var TAGFELD = (function () {
      </section>
    Nach dem Prüfen sind die Felder gesperrt (außer [data-offen]), damit die Abgabe den echten Abruf zeigt.
    Eine Aufgabe ohne Tag-Feld (Projekt) hat statt „Prüfen“ „Festlegen“: Es sperrt die Antwort und zeigt die Auflösung, ohne zu vergleichen.
+   Ohne Tag (bzw. ohne Antwort) fragt „Prüfen“ erst nach. Beim Wiederherstellen (ohneFrage) nicht.
 
    Ablauf der Seite (Zustand im versteckten Feld #phase, gespeichert von abgabe.js):
      „lesen“  Teil A zu. Erst nach [data-studiert] (Bestätigung) startet [data-starten] „abruf“.
@@ -1553,26 +1554,18 @@ var ABRUF = (function () {
   }
 
   // Ohne Tag-Feld (Projekt) gibt es nichts zu vergleichen: „Festlegen“ sperrt die Antwort und zeigt die Auflösung.
-  function festlege(section) {
-    var meldung = section.querySelector(".rueckmeldung");
+  function festlege(section, ohneFrage) {
     var leer = !Array.prototype.some.call(section.querySelectorAll("textarea[data-feld]"), function (f) { return f.value.trim(); });
-    if (leer) {
-      meldung.textContent = TEXT("festlegen-leer");
-      return null;
-    }
-    meldung.textContent = "";
+    if (leer && !ohneFrage && !confirm(TEXT("festlegen-leer"))) return null;
     sperre(section);
     return "";
   }
 
-  function pruefe(section) {
-    if (!section.querySelector("[data-tagfeld]")) return festlege(section);
+  function pruefe(section, ohneFrage) {
+    if (!section.querySelector("[data-tagfeld]")) return festlege(section, ohneFrage);
     var gewaehlt = tags(section);
     var meldung = section.querySelector(".rueckmeldung");
-    if (!gewaehlt.length) {
-      meldung.textContent = TEXT("pruefen-leer");
-      return null;
-    }
+    if (!gewaehlt.length && !ohneFrage && !confirm(TEXT("pruefen-leer"))) return null;
     var genannt = gewaehlt.filter(function (t) { return t.id; }).map(function (t) { return t.id; });
     var eigene = gewaehlt.filter(function (t) { return !t.id; });
     var kern = ids(section.dataset.kern), passend = ids(section.dataset.passend);
@@ -1702,7 +1695,7 @@ var ABGABE = (function () {
     document.querySelectorAll("[data-tagfeld]").forEach(function (f) { if (tags[f.id]) TAGFELD.setze(f, tags[f.id]); });
     (stand.geprueft || []).forEach(function (aufgabe) {
       document.querySelectorAll("[data-abruf]").forEach(function (s) {
-        if (s.dataset.aufgabe === aufgabe) ABRUF.pruefe(s);
+        if (s.dataset.aufgabe === aufgabe) ABRUF.pruefe(s, true);
       });
     });
     ABRUF.aktualisiere();
@@ -1763,7 +1756,9 @@ var ABGABE = (function () {
       document.getElementById("name").focus();
       return false;
     }
+    // Geprüfte Aufgaben zählen nicht als leer: Wer leer festlegt, hat das schon bestätigt.
     var leer = antworten().filter(function (a) {
+      if (a.geprueft) return false;
       var ohneTags = Object.keys(a.tags).every(function (t) { return !a.tags[t].length; });
       return ohneTags && !a.antwort.replace(/^[^:]*:\s*$/gm, "").trim();
     }).length;
