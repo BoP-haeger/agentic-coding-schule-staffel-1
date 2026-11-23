@@ -20,6 +20,7 @@
   --serif: "Iowan Old Style", "Charter", "Palatino Linotype", Palatino, Georgia, serif;
   --sans: -apple-system, "Segoe UI", system-ui, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --leiste: 2rem;  /* Höhe des mitlaufenden Startseiten-Links, darunter klebt die h2 */
   /* Typ-Farben wie auf ai-coding-patterns.dev */
   --pattern: #0ca678; --pattern-grund: #e6fcf5;
   --anti-pattern: #f76707; --anti-pattern-grund: #fff4e6;
@@ -46,7 +47,8 @@
 :root[data-theme="dark"] ::placeholder { color: var(--muted); opacity: 1; }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+/* Fokus und Sprungziele landen unter Startseiten-Link und mitlaufender h2 (etwa 3,4rem hoch) */
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--leiste) + 4.5rem); }
 body {
   margin: 0; background: var(--bg); color: var(--fg);
   font: 1.0625rem/1.6 var(--serif);
@@ -81,7 +83,7 @@ th { font-family: var(--sans); font-size: .8rem; text-transform: uppercase; lett
 label { display: block; font: 600 .9rem/1.4 var(--sans); margin: 1rem 0 .3rem; }
 input[type=text], input[type=number], textarea {
   width: 100%; font: 1rem/1.5 var(--sans); color: var(--fg); background: var(--bg);
-  border: 1px solid var(--line); border-radius: 4px; padding: .5rem .6rem;
+  border: 1px solid var(--soft); border-radius: 4px; padding: .5rem .6rem;  /* Rand braucht 3:1, --line hat nur 1,5:1 */
 }
 textarea { min-height: 6.5rem; resize: vertical; }
 textarea[readonly] { background: var(--panel); color: var(--muted); }
@@ -96,9 +98,12 @@ button {
 button.leise { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
 button:disabled { opacity: .5; cursor: default; }
 /* Farbschema-Knopf oben rechts (thema.js) */
-.thema { position: absolute; top: .6rem; right: .75rem; margin: 0; padding: .3rem .55rem; font-size: .8rem; }
-/* Link zur Startseite des Teilnehmer-Repos oben links, auf einer Höhe mit dem Farbschema-Knopf */
-.startseite { position: absolute; top: .6rem; left: .75rem; padding: calc(.3rem + 1px) 0; font: .8rem/1 var(--sans); color: var(--muted); text-decoration: none; }
+.thema { position: absolute; z-index: 6; top: .25rem; right: .75rem; margin: 0; padding: .3rem .55rem; font-size: .8rem; }
+/* Link zur Startseite des Teilnehmer-Repos oben links, auf einer Höhe mit dem Farbschema-Knopf.
+   Läuft beim Scrollen mit, sein Hintergrund reicht als Leiste über die volle Breite. Der Fokusrahmen liegt innen, sonst schneiden ihn clip-path und Fensterrand ab. */
+.startseite { position: fixed; top: 0; left: 0; z-index: 5; padding: 0 .75rem; font: .8rem/var(--leiste) var(--sans);
+  color: var(--muted); background: var(--bg); text-decoration: none; box-shadow: 0 0 0 100vmax var(--bg); clip-path: inset(0 -100vmax);
+  outline-offset: -2px; }
 .startseite:hover, .startseite:focus-visible { color: var(--accent); text-decoration: underline; }
 .status { font: .9rem var(--sans); color: var(--ok); margin-left: .25rem; }
 
@@ -115,6 +120,8 @@ button:disabled { opacity: .5; cursor: default; }
 .extra::before { content: "+ "; color: var(--accent); font-weight: 700; }
 .art { color: var(--muted); font-size: .85em; }
 .aufloesung { font-family: var(--serif); font-size: 1rem; }
+/* Fokus nach „Prüfen“ und „Starten“ (abruf.js): kein Rahmen, die Elemente sind nicht bedienbar */
+.rueckmeldung:focus, .aufloesung:focus, .teil > h2:focus { outline: none; }
 [hidden] { display: none !important; }
 
 /* Spickzettel */
@@ -132,7 +139,7 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 
 /* Tag-Feld */
 .tagfeld { position: relative; display: flex; flex-wrap: wrap; gap: .35rem; align-items: center;
-  border: 1px solid var(--line); border-radius: 4px; padding: .35rem .4rem; background: var(--bg); cursor: text; }
+  border: 1px solid var(--soft); border-radius: 4px; padding: .35rem .4rem; background: var(--bg); cursor: text; }
 .tagfeld:focus-within { outline: 2px solid var(--accent); outline-offset: 1px; }
 .tagfeld.gesperrt { background: var(--panel); cursor: default; }
 .tagfeld .chips { display: contents; list-style: none; margin: 0; padding: 0; }
@@ -140,29 +147,40 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
   background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: .2rem .35rem .2rem .65rem; }
 .gesperrt .chip { padding-right: .65rem; }
 .chip-eigen { border-style: dashed; font-style: italic; }
-.chip button { margin: 0; padding: 0 .35rem; background: none; color: var(--muted); font: 700 1rem/1 var(--sans); border-radius: 999px; }
+/* „×“: 24×24 px, negative Ränder halten den Chip so hoch wie ohne Knopf */
+.chip button { position: relative; min-width: 24px; min-height: 24px; margin: -.2rem -.2rem -.2rem 0; padding: 0;
+  background: none; color: var(--muted); font: 700 1rem/1 var(--sans); border-radius: 999px; }
 .chip button:hover, .chip button:focus { color: var(--miss); }
+/* Touch: Trefferfläche 44×44 px, mehr Abstand, damit sie nichts anderes überdeckt */
+@media (pointer: coarse) {
+  .tagfeld { gap: 1.25rem .6rem; }
+  .chip button::after { content: ""; position: absolute; inset: -10px; }
+}
 .tagfeld input[type=text] { flex: 1 1 9rem; min-width: 7rem; border: 0; outline: 0; padding: .3rem .2rem; background: transparent; }
 .tagfeld input[type=text]:focus { outline: 0; }
 .vorschlaege { position: absolute; left: 0; right: 0; top: 100%; z-index: 5; margin: 2px 0 0; padding: .25rem 0; list-style: none;
-  background: var(--bg); border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  background: var(--bg); border: 1px solid var(--soft); border-radius: 4px; box-shadow: 0 4px 14px rgba(0,0,0,.12);
   max-height: 16rem; overflow-y: auto; font: .95rem/1.3 var(--sans); }
 .vorschlaege li { padding: .4rem .7rem; cursor: pointer; }
-.vorschlaege li[aria-selected=true] { background: var(--mark); }
+/* Rand innen, damit die scrollende Liste ihn nicht abschneidet; bleibt auch bei Forced Colors */
+.vorschlaege li[aria-selected=true] { background: var(--mark); outline: 2px solid var(--accent); outline-offset: -2px; }
 
 /* Nachschlagewerk und Karte */
 .karte { width: min(96vw, 80rem); margin: 1rem 0 1rem calc(50% - min(48vw, 40rem)); overflow-x: auto; }
 .karte svg { display: block; width: 100%; min-width: 640px; height: auto; background: #fff; border-radius: 6px; }
 .karte .interactive-node { cursor: pointer; outline: none; }
-.karte .interactive-node:hover, .karte .interactive-node:focus-visible { filter: drop-shadow(0 0 4px var(--accent)); }
-.karte-fenster { position: fixed; inset: 0; z-index: 10; display: flex; align-items: flex-start; justify-content: center;
-  padding: 2rem 1rem; overflow-y: auto; background: rgba(0,0,0,.45); }
-.karte-dialog { position: relative; width: 100%; max-width: 42rem; padding: 1.5rem 1.5rem 1rem; background: var(--bg);
-  border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+.karte .interactive-node:hover { filter: drop-shadow(0 0 4px var(--accent)); }
+/* Fokus: dunkler, scharfer Rand, weil die Karte immer weiß ist (--accent hätte dort im Dunkelmodus nur 2,3:1). Längen zählen in Einheiten der Karte, etwa halbe px. */
+.karte .interactive-node:focus-visible { filter: drop-shadow(0 0 2px #1d1d1b) drop-shadow(0 0 2px #1d1d1b); }
+/* Eintrag als modaler <dialog> (karte.js), liegt in der obersten Ebene über Leiste und h2. overscroll-behavior: die Seite dahinter scrollt nicht mit. */
+.karte-dialog { width: 42rem; max-width: calc(100% - 2rem); max-height: calc(100% - 4rem); padding: 1.5rem 1.5rem 1rem;
+  color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 8px 30px rgba(0,0,0,.25);
+  overscroll-behavior: contain; }
+.karte-dialog::backdrop { background: rgba(0,0,0,.45); overflow: hidden; overscroll-behavior: contain; }
 /* Kopf wie auf der Website: Titel links, Typ als Badge rechts, Platz rechts für das × */
 .karte-kopf { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: .5rem 1rem;
   margin: 0 0 1.25rem; padding: 0 2.25rem 1rem 0; border-bottom: 1px solid var(--line); }
-.karte-kopf h3 { flex: 1 1 12rem; min-width: 0; margin: 0; font-size: 1.45rem; }
+.karte-kopf h1 { flex: 1 1 12rem; min-width: 0; margin: 0; font-size: 1.45rem; }
 .karte-typ { flex: none; padding: .25rem .6rem; border-radius: 4px; font: 600 .8rem/1.4 var(--sans);
   text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--panel); }
 .karte-typ[data-typ="Pattern"] { color: var(--pattern); background: var(--pattern-grund); }
@@ -181,10 +199,11 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 .bestaetigung { display: block; margin: 1rem 0 .5rem; font-weight: 400; }
 details.beispiel { margin: .75rem 0; }
 details.beispiel > summary { cursor: pointer; font-weight: 600; }
-/* Teile: Überschrift läuft beim Scrollen oben mit. Der Hintergrund reicht über die volle Breite, weil die Karte breiter ist als die Spalte. */
-.teil > h2 { position: sticky; top: 0; z-index: 4; padding-bottom: .5rem; background: var(--bg);
+/* Teile: Überschrift läuft beim Scrollen unter dem Startseiten-Link mit. Der Hintergrund reicht über die volle Breite, weil die Karte breiter ist als die Spalte. */
+.teil > h2 { position: sticky; top: var(--leiste); z-index: 4; padding-bottom: .5rem; background: var(--bg);
   box-shadow: 0 0 0 100vmax var(--bg); clip-path: inset(0 -100vmax); }
-.teil h3 { scroll-margin-top: 6rem; }
+/* Sprung auf einen Teil: seine h2 landet direkt unter dem Link, nicht erst unter scroll-padding-top */
+.teil { scroll-margin-top: -4.5rem; }
 /* Inhaltsverzeichnis: nur wenn rechts neben der Spalte Platz ist. Die Karte macht ihm dann Platz. */
 .inhaltsverzeichnis { display: none; }
 @media (min-width: 75rem) {
@@ -198,7 +217,7 @@ details.beispiel > summary { cursor: pointer; font-weight: 600; }
   .karte { width: min(calc(100vw - 30rem), 80rem); margin-left: calc(50% - min(50vw - 15rem, 40rem)); }
 }
 </style>
-<script>var TEXTE = {"pruefen-leer": "Ohne Tag festlegen? Du siehst dann die Auflösung und kannst nichts mehr ändern.", "festlegen-leer": "Ohne Antwort festlegen? Du siehst dann die Auflösung und kannst nichts mehr ändern.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen · eigene Idee: Esc, Enter", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "name-fehlt": "Trag zuerst deinen Namen ein.", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?\nBitte nur, wenn du dich verklickt hast, nicht um nach der Auflösung neu zu raten. Deine Antworten helfen uns nur, wenn sie ehrlich sind.", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
+<script>var TEXTE = {"pruefen-leer": "Ohne Tag festlegen? Du siehst dann die Auflösung und kannst nichts mehr ändern.", "festlegen-leer": "Ohne Antwort festlegen? Du siehst dann die Auflösung und kannst nichts mehr ändern.", "erwartet": "Erwartet:", "auch-passend": "Auch passend:", "zusaetzlich": "Zusätzlich gewählt:", "getroffen": "getroffen", "verpasst": "verpasst", "nicht-erwartet": "hier nicht erwartet, passt nur mit guter Begründung", "nicht-gewertet": "wird nicht automatisch gewertet", "eigener-tag": "eigener Tag", "tag-platzhalter": "Name tippen", "tag-als-eigener": "„{name}“ als eigenen Tag", "tag-entfernen": "{name} entfernen", "karte-schliessen": "Schließen", "leer-eins": "1 Aufgabe ist noch leer. Trotzdem fortfahren?", "leer-mehr": "{n} Aufgaben sind noch leer. Trotzdem fortfahren?", "name-fehlt": "Trag zuerst deinen Namen ein.", "heruntergeladen": "{datei} wurde heruntergeladen. Schau in deinen Download-Ordner.", "kopiert": "In die Zwischenablage kopiert. Füge den Text in eine neue Datei {datei} ein.", "kopieren-von-hand": "Kopieren ging nicht automatisch. Markiere den Text unten und kopiere ihn von Hand.", "loeschen-fragen": "Alle Eingaben auf dieser Seite löschen?\nBitte nur, wenn du dich verklickt hast, nicht um nach der Auflösung neu zu raten. Deine Antworten helfen uns nur, wenn sie ehrlich sind.", "thema-system": "System", "thema-hell": "Hell", "thema-dunkel": "Dunkel", "thema-aria": "Farbschema: {name}"};</script>
 <script>
 /* Meldungen der Skripte aus rahmen.md (meldungen). build.py setzt davor: var TEXTE = {…};
    TEXT(schluessel, { n: 3 }) setzt {n} ein. Fehlt ein Schlüssel, erscheint er selbst, damit es auffällt. */
@@ -278,7 +297,7 @@ function TEXT(k, werte) {
 <div class="reihe">
   <div>
     <label for="name">Name(n)</label>
-    <input type="text" id="name" placeholder="z. B. Erika Mustermann, Max Muster" data-feld>
+    <input type="text" id="name" autocomplete="name" placeholder="z. B. Erika Mustermann, Max Muster" data-feld>
   </div>
   <div>
     <label for="dauer">Gebraucht (Minuten)</label>
@@ -330,10 +349,10 @@ function TEXT(k, werte) {
 <p>Was hat er noch alles unterschlagen? Dein erster Prompt beginnt mit „you lied to me …“.</p>
 <p>Am Ende hast du doch keine Zeit, um Sinan zu helfen, und musst stattdessen korrigieren und geradeziehen. Beim nächsten Daily schiebst du zum wiederholten Mal die Schuld auf das Modell. Immerhin machen die anderen Entwickler das auch.</p>
 </blockquote>
-<label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
-<div data-tagfeld id="a1-dahinter" data-teil="dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
-<label>Was hilft? (Patterns)</label>
-<div data-tagfeld id="a1-hilft" data-teil="hilft" data-label="Was hilft? Patterns"></div>
+<label for="a1-dahinter-eingabe">Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
+<div data-tagfeld id="a1-dahinter" data-teil="dahinter"></div>
+<label for="a1-hilft-eingabe">Was hilft? (Patterns)</label>
+<div data-tagfeld id="a1-hilft" data-teil="hilft"></div>
 <label for="a1-warum">Optional - Ist dir etwas aufgefallen, was du betonen möchtest? Oder möchtest du erklären, wie du ein Pattern einsetzen möchtest? Notiere in kurzen Stichpunkten.</label>
 <textarea id="a1-warum" data-teil="warum" data-feld style="min-height:4rem"></textarea>
 <button type="button" data-pruefen>Festlegen und prüfen</button>
@@ -362,10 +381,10 @@ function TEXT(k, werte) {
 <p>Ok, du musstest ein paar Mal iterieren mit erneutem Testen und Fixen und Testen der Fixes. Viel Zeit und Nerven gingen dafür drauf, ihm mit jeder Session Teile der Welt zu erklären, die er gleich braucht. Plus ein paar Zusätzen, damit er diesmal keine Fehler macht und die Spec 1:1 nachbaut. Dann kamst du auf die Idee, einfach in der <code>AGENTS.md</code> zu hinterlegen, dass der Agent immer erst alle Confluence-Artikel lesen soll, die deinen Service betreffen, und auch das Ticket, das du gerade bearbeitest. Das hat geholfen, musste aber auch erst von dir getestet werden, ob das so klappt, wie du willst. Dabei ist dir aufgefallen, dass ihm trotzdem Detailwissen, das du schon in den Artikeln gesehen hast, fehlt. Er hält sich auch nicht immer daran, auch wenn er nachher behauptet, er wüsste davon, nachdem du ihn zur Rede gestellt hast. Außerdem musst du immer erst warten, bis er gefunden hat, was er sucht.</p>
 <p>Ok, dein Vertrauen hat zwar gelitten, aber du hast daraus gelernt. Du beauftragst am Ende jetzt immer einen zweiten Agenten, der noch mal alles reviewen soll, weil du dem ersten nicht traust. Der findet dann auch immer Sachen. Der Roundtrip ist natürlich anstrengend, und du weißt, dass du ihn auch manchmal vergessen hast. Man muss aber auch nicht päpstlicher sein als der Papst. Sinan wartet schon mit dem Bug im Reporting-Thema.</p>
 </blockquote>
-<label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
-<div data-tagfeld id="a2-dahinter" data-teil="dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
-<label>Was hilft? (Patterns)</label>
-<div data-tagfeld id="a2-hilft" data-teil="hilft" data-label="Was hilft? Patterns"></div>
+<label for="a2-dahinter-eingabe">Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
+<div data-tagfeld id="a2-dahinter" data-teil="dahinter"></div>
+<label for="a2-hilft-eingabe">Was hilft? (Patterns)</label>
+<div data-tagfeld id="a2-hilft" data-teil="hilft"></div>
 <label for="a2-warum">Optional - Ist dir etwas aufgefallen, was du betonen möchtest? Oder möchtest du erklären, wie du ein Pattern einsetzen möchtest? Notiere in kurzen Stichpunkten.</label>
 <textarea id="a2-warum" data-teil="warum" data-feld style="min-height:4rem"></textarea>
 <button type="button" data-pruefen>Festlegen und prüfen</button>
@@ -400,10 +419,10 @@ function TEXT(k, werte) {
 <p>„Das ist die Queue, über die die Änderungsmeldungen kommen. Die Nachrichten folgen dem ECST. V2 deswegen, weil ihr einen Poison-Pill-Fix gemacht habt. Ich muss aber warnen, dass ihr die Ursache damit nicht behoben habt. Der AIO-Schlüssel wird dort nicht richtig transformiert, weil das BaseService-Team das Format gewechselt hat.“ OK … deine Kopfschmerzen von gestern klopfen bereits an … „Was ist ein AIO-Schlüssel, was ist ECST und was ist der Base Service? Dass das Format gewechselt hat, bezweifle ich. Wie kommst du darauf?“</p>
 <p>TLDR: Er beantwortet deine Fragen einzeln und stellt zwei Rückfragen. Seine Antworten werfen noch mehr Fragen auf. Du stehst auf und holst dir einen Kaffee.</p>
 </blockquote>
-<label>Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
-<div data-tagfeld id="a3-dahinter" data-teil="dahinter" data-label="Was steckt dahinter? Obstacles und Anti-Patterns"></div>
-<label>Was hilft? (Patterns)</label>
-<div data-tagfeld id="a3-hilft" data-teil="hilft" data-label="Was hilft? Patterns"></div>
+<label for="a3-dahinter-eingabe">Was steckt dahinter? (Obstacles, Anti-Patterns)</label>
+<div data-tagfeld id="a3-dahinter" data-teil="dahinter"></div>
+<label for="a3-hilft-eingabe">Was hilft? (Patterns)</label>
+<div data-tagfeld id="a3-hilft" data-teil="hilft"></div>
 <label for="a3-warum">Optional - Ist dir etwas aufgefallen, was du betonen möchtest? Oder möchtest du erklären, wie du ein Pattern einsetzen möchtest? Notiere in kurzen Stichpunkten.</label>
 <textarea id="a3-warum" data-teil="warum" data-feld style="min-height:4rem"></textarea>
 <button type="button" data-pruefen>Festlegen und prüfen</button>
@@ -500,8 +519,8 @@ Branch: feature/boot3, NICHT auf main arbeiten.
 <p>Welche Patterns wollte er umsetzen, und was ist dabei jeweils schiefgegangen?</p>
 <label for="b1-befund">Was ist schiefgegangen, und wie wäre es besser? (Stichworte)</label>
 <textarea id="b1-befund" data-teil="befund" data-feld></textarea>
-<label>Welche Einträge der Sammlung erkennst du?</label>
-<div data-tagfeld id="b1-erkannt" data-teil="erkannt" data-label="Erkannte Einträge"></div>
+<label for="b1-erkannt-eingabe">Welche Einträge der Sammlung erkennst du?</label>
+<div data-tagfeld id="b1-erkannt" data-teil="erkannt"></div>
 <button type="button" data-pruefen>Festlegen und prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
@@ -561,8 +580,8 @@ die du dir angesehen hast, damit der Hauptagent jeden Schritt nachvollziehen kan
 <p>Was könnte die Spezialisten hier weniger nützlich machen?</p>
 <label for="b3-befund">Was ist schiefgegangen, und wie wäre es besser? (Stichworte)</label>
 <textarea id="b3-befund" data-teil="befund" data-feld></textarea>
-<label>Welche Einträge der Sammlung erklären die Schwächen?</label>
-<div data-tagfeld id="b3-erkannt" data-teil="erkannt" data-label="Einträge, die die Schwächen erklären"></div>
+<label for="b3-erkannt-eingabe">Welche Einträge der Sammlung erklären die Schwächen?</label>
+<div data-tagfeld id="b3-erkannt" data-teil="erkannt"></div>
 <button type="button" data-pruefen>Festlegen und prüfen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
@@ -1218,11 +1237,10 @@ var KARTE = {"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" v
 </script>
 <script>
 /* Interaktive Karte aus KARTE (karte-daten.js).
-   <div data-karte></div>  Klick, Enter oder Leertaste auf einen Eintrag öffnet seinen Originaltext.
-   Esc, × oder ein Klick daneben schließt ihn wieder. */
+   <div data-karte></div>  Klick, Enter oder Leertaste auf einen Eintrag öffnet seinen Originaltext in einem modalen <dialog>.
+   Esc, Zurück-Geste, × oder ein Klick daneben schließt ihn wieder, der Fokus kehrt zum Eintrag zurück. */
 (function () {
-  var fenster = null;
-  var zurueck = null;
+  var dialog = null;
 
   function eintragZu(knoten) {
     var nr = knoten.getAttribute("data-number");
@@ -1230,36 +1248,42 @@ var KARTE = {"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" v
     return pfad ? KARTE.eintraege[pfad] : null;
   }
 
-  function schliessen() {
-    if (!fenster) return;
-    fenster.remove();
-    fenster = null;
-    if (zurueck) zurueck.focus();
+  // Zeiger auf dem Hintergrund: Ziel ist dann der Dialog selbst, aber außerhalb seines Rahmens
+  function daneben(ev) {
+    var r = dialog.getBoundingClientRect();
+    return ev.target === dialog &&
+      (ev.clientX < r.left || ev.clientX > r.right || ev.clientY < r.top || ev.clientY > r.bottom);
+  }
+
+  function anlegen() {
+    dialog = document.createElement("dialog");
+    dialog.className = "karte-dialog";
+    dialog.setAttribute("closedby", "any");  // Klick daneben schließt
+    dialog.setAttribute("aria-labelledby", "karte-titel");
+    dialog.innerHTML =
+      '<form method="dialog"><button class="leise karte-zu" aria-label="' + TEXT("karte-schliessen") + '" autofocus>×</button></form>' +
+      '<div class="karte-kopf"><h1 id="karte-titel"></h1><span class="karte-typ"></span></div><div class="karte-text"></div>';
+    // Ohne closedby (Safari): Drücken und Loslassen neben dem Dialog schließen ihn
+    if (!("closedBy" in HTMLDialogElement.prototype)) {
+      var gedrueckt = false;
+      dialog.addEventListener("pointerdown", function (ev) { gedrueckt = daneben(ev); });
+      dialog.addEventListener("pointerup", function (ev) { if (gedrueckt && daneben(ev)) dialog.close(); });
+    }
+    document.body.appendChild(dialog);
   }
 
   function oeffnen(e, knoten) {
-    schliessen();
-    zurueck = knoten;
-    fenster = document.createElement("div");
-    fenster.className = "karte-fenster";
-    fenster.innerHTML =
-      '<div class="karte-dialog" role="dialog" aria-modal="true">' +
-      '<button type="button" class="leise karte-zu" aria-label="' + TEXT("karte-schliessen") + '">×</button>' +
-      '<div class="karte-kopf"><h3></h3><span class="karte-typ"></span></div><div class="karte-text"></div></div>';
-    fenster.querySelector(".karte-typ").textContent = e.typ;
-    fenster.querySelector(".karte-typ").setAttribute("data-typ", e.typ);  // Farbe je Typ in kurs.css
-    fenster.querySelector("h3").textContent = e.titel;
-    fenster.querySelector(".karte-text").innerHTML = e.html;
-    fenster.querySelector(".karte-dialog").setAttribute("aria-label", e.titel);
-    fenster.querySelectorAll(".karte-text a[href^='http']").forEach(function (a) {
+    if (!dialog) anlegen();
+    dialog.querySelector(".karte-typ").textContent = e.typ;
+    dialog.querySelector(".karte-typ").setAttribute("data-typ", e.typ);  // Farbe je Typ in kurs.css
+    dialog.querySelector("h1").textContent = e.titel;
+    dialog.querySelector(".karte-text").innerHTML = e.html;
+    dialog.querySelectorAll(".karte-text a[href^='http']").forEach(function (a) {
       a.target = "_blank";
       a.rel = "noopener";
     });
-    fenster.addEventListener("click", function (ev) {
-      if (ev.target === fenster || ev.target.closest(".karte-zu")) schliessen();
-    });
-    document.body.appendChild(fenster);
-    fenster.querySelector(".karte-zu").focus();
+    knoten.focus();  // dorthin gibt der Browser den Fokus beim Schließen zurück
+    dialog.showModal();
   }
 
   function ausloeser(ev) {
@@ -1268,10 +1292,6 @@ var KARTE = {"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" v
     if (e) oeffnen(e, knoten);
     return !!e;
   }
-
-  document.addEventListener("keydown", function (ev) {
-    if (ev.key === "Escape") schliessen();
-  });
 
   document.querySelectorAll("[data-karte]").forEach(function (ziel) {
     ziel.innerHTML = KARTE.svg;
@@ -1291,11 +1311,12 @@ var KARTE = {"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" v
 </script>
 <script>
 /* Tag-Feld: Namen der Einträge auf der Karte (VOKABULAR ∩ KARTE.titel) als Chips wählen.
-   Markup: <div data-tagfeld id="…" data-label="…"></div>
+   Markup: <label for="ID-eingabe">…</label><div data-tagfeld id="ID"></div>, die Eingabe bekommt die id ID-eingabe.
    Vorschläge ab 2 Zeichen, Teilstring ohne Groß-/Kleinschreibung, nur Name und Typ.
+   Als letzte Option „… als eigenen Tag“, außer der Text ist genau ein Name aus der Sammlung.
    Was in einem Tag-Feld derselben Aufgabe schon gewählt ist, wird nicht mehr vorgeschlagen.
    Annehmen per Klick, Enter oder Tab, wählen mit ↑↓, Esc schließt die Liste.
-   Enter ohne Vorschlag legt einen eigenen Tag an. Backspace im leeren Feld entfernt den letzten Chip.
+   Enter bei geschlossener Liste legt einen eigenen Tag an. Backspace im leeren Feld entfernt den letzten Chip.
    Änderungen melden sich als bubbelndes „input“-Event am Container. */
 var TAGFELD = (function () {
   var MAX = 8;
@@ -1318,6 +1339,12 @@ var TAGFELD = (function () {
     return treffer.slice(0, MAX);
   }
 
+  // Eintrag der Sammlung mit genau diesem Namen, ohne Groß-/Kleinschreibung
+  function gleichnamig(text) {
+    var q = text.toLowerCase();
+    return AUSWAHL.filter(function (e) { return e.name.toLowerCase() === q; })[0];
+  }
+
   function gewaehlteIds(feld) {
     var aufgabe = feld.closest(".aufgabe");
     var felder = aufgabe ? aufgabe.querySelectorAll("[data-tagfeld]") : [feld];
@@ -1338,11 +1365,13 @@ var TAGFELD = (function () {
     eingabe.type = "text";
     eingabe.autocomplete = "off";
     eingabe.spellcheck = false;
+    eingabe.setAttribute("autocorrect", "off");
+    eingabe.setAttribute("autocapitalize", "none");
     eingabe.setAttribute("role", "combobox");
     eingabe.setAttribute("aria-autocomplete", "list");
     eingabe.setAttribute("aria-expanded", "false");
     eingabe.setAttribute("aria-controls", "tagliste-" + nr);
-    if (feld.dataset.label) eingabe.setAttribute("aria-label", feld.dataset.label);
+    if (feld.id) eingabe.id = feld.id + "-eingabe";
     eingabe.placeholder = TEXT("tag-platzhalter");
     var liste = document.createElement("ul");
     liste.className = "vorschlaege";
@@ -1373,20 +1402,25 @@ var TAGFELD = (function () {
     }
 
     function zeige() {
-      aktuell = vorschlaege(eingabe.value, gewaehlteIds(feld));
+      var text = eingabe.value.trim();
+      aktuell = vorschlaege(text, gewaehlteIds(feld));
+      if (text.length >= 2 && !gleichnamig(text)) aktuell.push({ eigen: true, name: text });
       liste.textContent = "";
       if (!aktuell.length) { schliesse(); return; }
       aktuell.forEach(function (e, i) {
         var li = document.createElement("li");
         li.id = "tagliste-" + nr + "-" + i;
         li.setAttribute("role", "option");
-        li.textContent = e.name + " ";
-        var typ = document.createElement("span");
-        typ.className = "art";
-        typ.textContent = e.typ;
-        li.appendChild(typ);
+        if (e.eigen) li.textContent = TEXT("tag-als-eigener", { name: e.name });
+        else {
+          li.textContent = e.name + " ";
+          var typ = document.createElement("span");
+          typ.className = "art";
+          typ.textContent = e.typ;
+          li.appendChild(typ);
+        }
         li.addEventListener("mousedown", function (ev) { ev.preventDefault(); });
-        li.addEventListener("click", function () { uebernimm(e); });
+        li.addEventListener("click", function () { nimm(e); });
         liste.appendChild(li);
       });
       liste.hidden = false;
@@ -1402,10 +1436,12 @@ var TAGFELD = (function () {
       melde(feld);
     }
 
+    function nimm(e) { if (e.eigen) eigener(e.name); else uebernimm(e); }
+
     function eigener(text) {
       text = text.trim().slice(0, 80);
       if (!text) return;
-      var gleich = AUSWAHL.filter(function (e) { return e.name.toLowerCase() === text.toLowerCase(); })[0];
+      var gleich = gleichnamig(text);
       if (gleich) { if (gewaehlteIds(feld).indexOf(gleich.id) === -1) uebernimm(gleich); else eingabe.value = ""; return; }
       if (!feld._tags.some(function (t) { return !t.id && t.name.toLowerCase() === text.toLowerCase(); })) {
         setze(feld, feld._tags.concat([{ id: null, name: text }]));
@@ -1418,10 +1454,11 @@ var TAGFELD = (function () {
     eingabe.addEventListener("input", function (ev) { ev.stopPropagation(); zeige(); });
     eingabe.addEventListener("blur", function () { setTimeout(schliesse, 100); });
     eingabe.addEventListener("keydown", function (ev) {
+      if (ev.isComposing || ev.keyCode === 229) return;  // Eingabe über IME läuft noch
       var offen = !liste.hidden && aktuell.length;
       if (ev.key === "ArrowDown" && offen) { ev.preventDefault(); markiere((aktiv + 1) % aktuell.length); }
       else if (ev.key === "ArrowUp" && offen) { ev.preventDefault(); markiere((aktiv - 1 + aktuell.length) % aktuell.length); }
-      else if ((ev.key === "Enter" || ev.key === "Tab") && offen && aktiv >= 0) { ev.preventDefault(); uebernimm(aktuell[aktiv]); }
+      else if ((ev.key === "Enter" || ev.key === "Tab") && offen && aktiv >= 0) { ev.preventDefault(); nimm(aktuell[aktiv]); }
       else if (ev.key === "Enter") { ev.preventDefault(); eigener(eingabe.value); }
       else if (ev.key === "Escape" && offen) { ev.preventDefault(); schliesse(); }
       else if (ev.key === "Backspace" && !eingabe.value && feld._tags.length) {
@@ -1612,6 +1649,12 @@ var ABRUF = (function () {
     zeige("[data-vor-abruf]", !fertig);
   }
 
+  // Der geklickte Knopf wird gesperrt oder versteckt, dann fiele der Fokus auf <body>. Er geht stattdessen hierher.
+  function fokussiere(el, optionen) {
+    el.setAttribute("tabindex", "-1");
+    el.focus(optionen);
+  }
+
   function starte() {
     var p = document.getElementById("phase");
     p.value = "abruf";
@@ -1619,12 +1662,18 @@ var ABRUF = (function () {
     p.dispatchEvent(new Event("input", { bubbles: true }));
     var a = document.querySelector("[data-teil-a]");
     var t = a && a.closest(".teil");
-    if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!t) return;
+    t.scrollIntoView({ behavior: "smooth", block: "start" });
+    fokussiere(t.querySelector("h2"), { preventScroll: true });  // scrollt schon weich
   }
 
   alle("[data-abruf]").forEach(function (section) {
     var knopf = section.querySelector("[data-pruefen]");
-    if (knopf) knopf.addEventListener("click", function () { pruefe(section); });
+    if (knopf) knopf.addEventListener("click", function () {
+      if (pruefe(section) === null) return;
+      var meldung = section.querySelector(".rueckmeldung");
+      fokussiere(meldung && meldung.textContent.trim() ? meldung : section.querySelector(".aufloesung"));
+    });
   });
   alle("[data-starten]").forEach(function (k) { k.addEventListener("click", starte); });
   alle("[data-studiert]").forEach(function (h) {
