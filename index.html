@@ -41,6 +41,9 @@ a { color: var(--accent); }
 .kacheln .klein { font: .8rem/1.4 var(--sans); color: var(--muted); margin-bottom: .2rem; }
 .kacheln .offen { border: 1.5px dashed var(--accent); }
 .kacheln .fehlt { color: var(--accent); }
+/* Wer allein abgibt, steht in einer breiten Zeile unter den Kacheln */
+.kacheln .allein { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .9rem; }
+.kacheln .allein .klein { margin: 0 .2rem 0 0; }
 </style>
 <script src="thema.js"></script>
 </head>
@@ -55,13 +58,13 @@ a { color: var(--accent); }
   <ul class="kacheln">
     <li><span>Gregor</span><span>Victoria</span></li>
     <li><span>Marten</span><span>Nick</span></li>
-    <li><span class="klein">Allein</span><span>Fabian</span><span>Joshua</span><span>Sabrina</span></li>
     <li class="offen"><span>Andreas</span><span class="fehlt">+ ?</span></li>
     <li class="offen"><span>Christian</span><span class="fehlt">+ ?</span></li>
     <li class="offen"><span>Eric</span><span class="fehlt">+ ?</span></li>
     <li class="offen"><span>Gerd</span><span class="fehlt">+ ?</span></li>
     <li class="offen"><span>James</span><span class="fehlt">+ ?</span></li>
     <li class="offen"><span>Niklas</span><span class="fehlt">+ ?</span></li>
+    <li class="allein"><span class="klein">Allein</span><span>Fabian</span><span>Joshua</span><span>Sabrina</span></li>
   </ul>
 </section>
 
