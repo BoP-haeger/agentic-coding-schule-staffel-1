@@ -324,7 +324,7 @@ function TEXT(k, werte) {
 <section class="spick teil" id="nachschlagewerk">
   <h2>Nachschlagewerk · Karte</h2>
 
-  <p>Mach dich mit den Knoten von Trail 2 noch mal vertraut. Für Trail 2 zählt die mittlere Reihe: Nummern 12–21 und die 3 roten Obstacles auf der gleichen Ebene. <a class="nicht-drucken" href="https://ai-coding-patterns.dev/talk/" target="_blank" rel="noopener">Originalkarte in neuem Tab öffnen ↗</a></p>
+  <p>Mach dich mit den Knoten von Trail 2 noch mal vertraut. Beachte besonders den Impact von <code>Degrades Under Complexity</code>. <a class="nicht-drucken" href="https://ai-coding-patterns.dev/talk/" target="_blank" rel="noopener">Originalkarte in neuem Tab öffnen ↗</a></p>
   <div class="karte" data-karte data-fokus="2"></div>
 
   <div data-vor-start>
@@ -1082,8 +1082,11 @@ var KARTE = {"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" v
    Esc, Zurück-Geste, × oder ein Klick daneben schließt ihn wieder, der Fokus kehrt zum Eintrag zurück. */
 (function () {
   var dialog = null;
-  // data-fokus="2": weiße Fläche über der Reihe von Trail 3, ohne die Legende rechts unten und den Rahmen. Punkte in Einheiten der Karte.
-  var BLASS = { "2": "16,580 380,580 560,640 1598,640 1598,840 1225,840 1225,910 16,910" };
+  // data-fokus="N": weiße Fläche über den Reihen unter den ersten N, ohne die Legende rechts unten und den Rahmen. Punkte in Einheiten der Karte.
+  var BLASS = {
+    "1": "16,340 1100,340 1180,430 1598,430 1598,840 1225,840 1225,910 16,910",
+    "2": "16,580 380,580 560,640 1598,640 1598,840 1225,840 1225,910 16,910"
+  };
 
   function eintragZu(knoten) {
     var nr = knoten.getAttribute("data-number");
