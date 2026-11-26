@@ -169,6 +169,8 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--line);
 .karte { width: min(96vw, 80rem); margin: 1rem 0 1rem calc(50% - min(48vw, 40rem)); overflow-x: auto; }
 .karte svg { display: block; width: 100%; min-width: 640px; height: auto; background: #fff; border-radius: 6px; }
 .karte .interactive-node { cursor: pointer; outline: none; }
+/* Reihen außerhalb des Fokus blass (karte.js). Klicks gehen durch, die Einträge bleiben erreichbar. */
+.karte .karte-blass { fill: #fff; opacity: .7; pointer-events: none; }
 .karte .interactive-node:hover { filter: drop-shadow(0 0 4px var(--accent)); }
 /* Fokus: dunkler, scharfer Rand, weil die Karte immer weiß ist (--accent hätte dort im Dunkelmodus nur 2,3:1). Längen zählen in Einheiten der Karte, etwa halbe px. */
 .karte .interactive-node:focus-visible { filter: drop-shadow(0 0 2px #1d1d1b) drop-shadow(0 0 2px #1d1d1b); }
@@ -324,7 +326,7 @@ function TEXT(k, werte) {
   <h2>Nachschlagewerk · Karte</h2>
 
   <p>Mach dich mit den Knoten von Trail 1 für die erste Aufgabe noch mal vertraut. Für Trail 1 zählt die obere Reihe: Nummern 1–11 und die 5 roten Obstacles auf der gleichen Ebene. <a class="nicht-drucken" href="https://ai-coding-patterns.dev/talk/" target="_blank" rel="noopener">Originalkarte in neuem Tab öffnen ↗</a></p>
-  <div class="karte" data-karte></div>
+  <div class="karte" data-karte data-fokus="1"></div>
 
   <div data-vor-start>
     <label class="bestaetigung"><input type="checkbox" data-studiert> Ich habe Trail 1 noch einmal studiert.</label>
@@ -1241,6 +1243,11 @@ var KARTE = {"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" v
    Esc, Zurück-Geste, × oder ein Klick daneben schließt ihn wieder, der Fokus kehrt zum Eintrag zurück. */
 (function () {
   var dialog = null;
+  // data-fokus="N": weiße Fläche über den Reihen unter den ersten N, ohne die Legende rechts unten und den Rahmen. Punkte in Einheiten der Karte.
+  var BLASS = {
+    "1": "16,340 1100,340 1180,430 1598,430 1598,840 1225,840 1225,910 16,910",
+    "2": "16,580 380,580 560,640 1598,640 1598,840 1225,840 1225,910 16,910"
+  };
 
   function eintragZu(knoten) {
     var nr = knoten.getAttribute("data-number");
@@ -1295,6 +1302,13 @@ var KARTE = {"svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" v
 
   document.querySelectorAll("[data-karte]").forEach(function (ziel) {
     ziel.innerHTML = KARTE.svg;
+    var blass = BLASS[ziel.getAttribute("data-fokus")];
+    if (blass) {
+      var flaeche = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      flaeche.setAttribute("class", "karte-blass");
+      flaeche.setAttribute("points", blass);
+      ziel.querySelector("svg").appendChild(flaeche);
+    }
     ziel.querySelectorAll(".interactive-node").forEach(function (k) {
       var e = eintragZu(k);
       if (!e) return;
