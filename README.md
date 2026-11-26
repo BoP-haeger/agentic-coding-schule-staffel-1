@@ -5,6 +5,8 @@ Hier liegen Hausaufgabe und Vortrag zu jedem Trail der Staffel 1. Du öffnest si
 - Startseite: <https://bop-haeger.github.io/agentic-coding-schule-staffel-1/>
 - [Hausaufgabe zu Trail 1](https://bop-haeger.github.io/agentic-coding-schule-staffel-1/trail-1/)
 - [Vortrag zu Trail 1 (PDF)](https://bop-haeger.github.io/agentic-coding-schule-staffel-1/trail-1/vortrag.pdf)
+- [Hausaufgabe zu Trail 2](https://bop-haeger.github.io/agentic-coding-schule-staffel-1/trail-2/)
+- [Projekt zu Trail 2: Meme Generator](trail-2/meme-generator/)
 
 ## Abgabe
 
