@@ -415,65 +415,44 @@ function TEXT(k, werte) {
 <section class="teil">
 <h2>Teil B · Advance</h2>
 <div data-teil-a hidden>
-<section data-abruf class="aufgabe" data-aufgabe="B1 Erst beweisen, dann fertig">
-<h3>B1 · Erst beweisen, dann fertig</h3>
-<p>Im <a href="https://github.com/BoP-haeger/agentic-coding-schule-staffel-1" target="_blank" rel="noopener">Teilnehmer-Repo</a> liegt unter <a href="https://github.com/BoP-haeger/agentic-coding-schule-staffel-1/tree/main/trail-2/meme-generator" target="_blank" rel="noopener"><code>trail-2/meme-generator/</code></a> ein Meme Generator: Bild hochladen, Top text und Bottom text eingeben, Meme ansehen. Ein langer Text läuft heute über den Bildrand. Dein Agent soll das beheben: F3 „Lange Captions“ in der README. Du schaust dabei nicht in den Code, auch nicht in Diffs. Ob F3 stimmt, weißt du also nur, wenn dein Agent es beweist.</p>
+<section data-abruf class="aufgabe" data-aufgabe="B1 Bist du sicher?">
+<h3>B1 · Bist du sicher?</h3>
+<p>Dein Kunde ist die Social-Media-Agentur des ZDF. Sie nutzt einen eigenen <strong>Meme-Generator</strong>, damit Bilder und Texte nicht auf fremden Meme-Seiten landen. Viele Bilder sind nur für die eigenen Kanäle lizenziert. Sie ist also auf ihn angewiesen.</p>
+<p>Du arbeitest bereits für sie und sollst heute kurz beim Meme-Generator aushelfen. Er wurde nie richtig ausgebaut. Der letzte Entwickler hat priorisierte Issues im Repo hinterlegt. Die Agentur braucht die am höchsten priorisierten Issues bis zum Abgabetermin. Du vermutest, dass danach auch die anderen Issues folgen werden.</p>
+<hr />
+<p>Deine Aufgabe ist es, für die Umsetzung deiner Issues Verantwortung übernehmen zu können.</p>
 <ol class="schritte">
-<li>Klon das Teilnehmer-Repo, wechsle nach <code>trail-2/meme-generator/</code> und starte deinen Agenten dort. Aufsetzen wie in der README.</li>
-<li>Sorg dafür, dass dein Agent nicht „fertig“ melden kann, ohne es zu beweisen. Wie, entscheidest du.</li>
-<li>Lass F3 Anforderung für Anforderung umsetzen, die Prüffälle der README gehören dazu. Als Beweis zählt ein automatisierter Test, der vor der Umsetzung rot war und danach grün ist, z. B. ein Approval Test für das Bild oder ein Playwright-Test für die Seite. „Passt“ und „habe es mir angesehen“ zählen nicht.</li>
-<li>Bilder aus Approval Tests nimmst du selbst ab: <code>*.received.png</code> ansehen und, wenn das Bild stimmt, in <code>*.approved.png</code> umbenennen. Diese Tests kann dein Agent nicht allein grün machen.</li>
-<li>Zum Schluss lässt du einen Browser-Test die Prüffälle auf der Seite durchspielen und nimmst ihn als Video auf: <code>uv run pytest e2e --video on --output videos --slowmo 500</code>. Lade das Video zusammen mit deinen Antworten über den Upload-Link hoch.</li>
+<li>Forke das <a href="https://github.com/BoP-haeger/meme-generator-kata" target="_blank" rel="noopener">Meme-Generator-Repo</a> und bearbeite die Tickets mit der höchsten Prio. Pushe deinen Stand in deinen Fork.</li>
+<li>Visualisiere deinen Prozess für die Umsetzung der Tickets und lade ihn als <code>&lt;vorname&gt;-&lt;nachname&gt;-workflow.png</code> <a href="https://kein.tropfenderkessel.de/index.php/s/RYyBXTGXzTKZ9Sm" target="_blank" rel="noopener">hier hoch</a>.</li>
+<li>(optional) Erstelle <code>&lt;vorname&gt;-&lt;nachname&gt;-workflow-vision.png</code>, worin du deinen Prozess noch autonomer machen könntest, und lade es ebenfalls hoch. Du brauchst es nicht umzusetzen.</li>
 </ol>
-<label for="b1">Womit hast du verhindert, dass dein Agent ohne Beweis „fertig“ meldet, und hat es gegriffen? Dazu je Anforderung der Test, der sie beweist.</label>
+<p>Anmerkungen:</p>
+<ul>
+<li>
+<p>Dein Prozess muss nicht autonom sein. Ein Beispiel wäre:</p>
+<blockquote>
+<ol class="schritte">
+<li>Prompt: „Bearbeite Ticket, erstelle PR“ -&gt;</li>
+<li>Human Review von PR.</li>
+</ol>
+</blockquote>
+</li>
+<li>
+<p>Verantwortung für die Umsetzung bedingt auch eine Verhältnismäßigkeit. Es geht nicht um Raumfahrt.</p>
+</li>
+<li>
+<p>Der Diagrammtyp ist egal, z. B. Mermaid, PlantUML, Excalidraw, Draw.io, ASCII-Art.</p>
+</li>
+<li>
+<p>Die Umsetzung wird nicht gewertet. Du brauchst kein besonders sauberes Setup oder eine Software Factory.</p>
+</li>
+</ul>
+<label for="b1">Warum reicht dir dein Prozess, um die Verantwortung für die Umsetzung zu übernehmen? Nenn auch den Link zu deinem Fork.</label>
 <textarea id="b1" data-teil="frage" data-feld></textarea>
 <button type="button" data-pruefen>Festlegen und auflösen</button>
 <div class="rueckmeldung" aria-live="polite"></div>
 <div class="aufloesung" hidden>
-<p><strong>Auflösung.</strong> Ohne in den Code zu schauen, weißt du nur durch Tests, ob F3 stimmt. In unseren Probeläufen hat jedes Modell F3 richtig umgesetzt, auch ohne Hook und mit eiligem Prompt. Belegt war trotzdem nicht alles: Ein Agent schrieb, die Seite zeige die Meldung, ohne das im Browser getestet zu haben. Es stimmte, aber das wusste niemand (Unvalidated Leaps). Ob der nächste Lauf wieder gelingt, ist offen (Non-Determinism).</p>
-<ul>
-<li><strong>Bitten reichen nicht.</strong> „Melde erst fertig, wenn alle Tests grün sind“ im Prompt oder in der <code>AGENTS.md</code> wirkt oft, als Reminder an jedem Schritt noch öfter. Aber es bleibt eine Bitte, und sie konkurriert mit der eigentlichen Aufgabe. Je tiefer der Agent in der Umsetzung steckt, desto eher filtert er sie heraus (Selective Hearing). Großbuchstaben und „WICHTIG“ ändern daran nichts.</li>
-<li><strong>Ein Skript ist der Mittelweg.</strong> Ein <code>beweis.sh</code> führt alle Tests aus und meldet je Anforderung grün oder rot (Offload Deterministic). Was es meldet, stimmt. Ob der Agent es aufruft, bevor er „fertig“ sagt, hängt aber wieder an einer Bitte. Ein Git-Hook <code>pre-commit</code> mit denselben Tests geht mit jedem Agenten, hält aber nur Commits auf, nicht die Meldung.</li>
-<li><strong>Ein Hook macht den Beweis zur Pflicht.</strong> Ein Stop-Hook läuft jedes Mal, wenn der Agent aufhören will. Sind Tests rot, endet das Skript mit Exit-Code 2, und der Agent bekommt die Ausgabe als Grund, weiterzumachen. Er muss sich an nichts erinnern.</li>
-</ul>
-<p>Beispiel für Claude Code, beide Dateien in <code>trail-2/meme-generator/</code>:</p>
-<p><code>.claude/settings.json</code></p>
-<pre><code class="language-json">{
-  &quot;hooks&quot;: {
-    &quot;Stop&quot;: [
-      {
-        &quot;hooks&quot;: [
-          {
-            &quot;type&quot;: &quot;command&quot;,
-            &quot;command&quot;: &quot;\&quot;$CLAUDE_PROJECT_DIR\&quot;/.claude/hooks/tests-gruen.sh&quot;,
-            &quot;timeout&quot;: 300
-          }
-        ]
-      }
-    ]
-  }
-}
-</code></pre>
-<p><code>.claude/hooks/tests-gruen.sh</code>, ausführbar mit <code>chmod +x</code>:</p>
-<pre><code class="language-bash">#!/usr/bin/env bash
-# Stop-Hook: Der Agent darf erst aufhören, wenn alle Tests grün sind.
-cd &quot;$CLAUDE_PROJECT_DIR&quot; || exit 1
-if ! out=$(uv run pytest -q 2&gt;&amp;1 &amp;&amp; uv run pytest e2e -q --output test-results 2&gt;&amp;1); then
-  echo &quot;Tests sind rot. Du bist nicht fertig: Bring sie zum Laufen, ohne Tests abzuschwächen.&quot; &gt;&amp;2
-  echo &quot;$out&quot; | tail -40 &gt;&amp;2
-  exit 2
-fi
-</code></pre>
-<p>Was du dabei merkst:</p>
-<ul>
-<li>Claude Code liest <code>.claude/settings.json</code> nur im Startordner. Startest du im Wurzelordner des Repos, ist der Hook ohne Warnung aus.</li>
-<li>Der Hook prüft, ob die Tests grün sind, nicht, ob sie die Anforderung treffen. Das prüfst du selbst oder ein zweiter Agent (Feedback Flip): Jeder Test war vor seiner Anforderung rot, und die Bilder hast du abgenommen.</li>
-<li>Bis du die Bilder abgenommen hast, sind die Approval Tests rot, und der Hook schickt den Agenten immer wieder los. Drück Esc, denn nach einer Unterbrechung läuft kein Stop-Hook. Nimm die Bilder ab und lass ihn weitermachen. Aus demselben Grund geht „zeig mir den roten Test und warte“ nicht. Rot, Umsetzung und grün laufen in einem Schritt, den roten Test siehst du in der Ausgabe.</li>
-<li>Nach 8 Blockaden in Folge lässt Claude Code das Ende trotzdem zu (<code>CLAUDE_CODE_STOP_HOOK_BLOCK_CAP</code>).</li>
-<li>Jeder pytest-Lauf leert zuerst sein Ausgabeverzeichnis. Deshalb schreibt der Hook nach <code>test-results/</code> und nie nach <code>videos/</code>.</li>
-</ul>
-<p class="klein"><strong>Codex:</strong> hat Stop-Hooks mit derselben Regel (Exit-Code 2, Grund auf stderr), z. B. in <code>trail-2/meme-generator/.codex/hooks.json</code>. Sie laufen erst, wenn du dem Projekt vertraust und den Hook unter <code>/hooks</code> freigibst. <code>$CLAUDE_PROJECT_DIR</code> gibt es dort nicht, der Hook läuft im Startordner. <strong>Pi:</strong> hat keine Hooks in den Einstellungen, aber Erweiterungen. Eine Erweiterung in <code>.pi/extensions/</code> im Startordner kann bei <code>agent_before_settle</code> die Tests mit <code>pi.exec</code> ausführen und bei Rot mit <code>continue: true</code> weitermachen lassen. Eine Grenze für Fortsetzungen in Folge nennt keine der beiden Dokus, zähl selbst mit.</p>
-<p class="klein">Siehe auch: Claude Code <a href="https://code.claude.com/docs/en/hooks#stop" target="_blank" rel="noopener">Stop-Hook</a> · Codex <a href="https://learn.chatgpt.com/docs/hooks" target="_blank" rel="noopener">Hooks</a> · Pi <a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/extensions.md" target="_blank" rel="noopener">Erweiterungen</a>.</p>
+<p><strong>Auflösung.</strong> TODO.</p>
 </div>
 </section>
 </div>
