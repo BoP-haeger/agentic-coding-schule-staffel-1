@@ -11,4 +11,4 @@ Hier liegen Hausaufgabe und Vortrag zu jedem Trail der Staffel 1. Du öffnest si
 
 ## Abgabe
 
-Dein Stand bleibt im Browser gespeichert. Am Ende lädst du auf der Seite deine Antwortdatei herunter (mit deinem Namen; zu zweit tragt ihr beide Namen ein und gebt eine Datei ab) und lädst sie über den Upload-Link des Trails hoch: [Trail 1](https://kein.tropfenderkessel.de/index.php/s/gswbPWzDmQPF7wS), [Trail 2](https://kein.tropfenderkessel.de/index.php/s/RYyBXTGXzTKZ9Sm). Zum Nachbessern einfach neu herunterladen und noch einmal hochladen.
+Dein Stand bleibt im Browser gespeichert. Am Ende lädst du auf der Seite deine Antwortdatei herunter (mit deinem Namen; in Trail 1 tragt ihr zu zweit beide Namen ein und gebt eine Datei ab, ab Trail 2 gibt jeder einzeln ab, auch in der Gruppe) und lädst sie über den Upload-Link des Trails hoch: [Trail 1](https://kein.tropfenderkessel.de/index.php/s/gswbPWzDmQPF7wS), [Trail 2](https://kein.tropfenderkessel.de/index.php/s/RYyBXTGXzTKZ9Sm). Zum Nachbessern einfach neu herunterladen und noch einmal hochladen.
