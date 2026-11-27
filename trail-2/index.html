@@ -402,7 +402,7 @@ function TEXT(k, werte) {
 <p><strong>Auflösung.</strong> TODO.</p>
 </div>
 </section>
-<section data-abruf class="aufgabe" data-aufgabe="D3 Auch dieses Ticket? (optional)">
+<section data-abruf class="aufgabe" data-aufgabe="D3 Auch dieses Ticket? (optional)" data-optional>
 <h3>D3 · Auch dieses Ticket? (optional)</h3>
 <p>Schau dir das Ticket <a href="https://github.com/BoP-haeger/meme-generator-kata/issues/6" target="_blank" rel="noopener">Uploads nie auf der Platte</a> an.</p>
 <label for="d3">Würde dein Prozess auch dieses Ticket umsetzen können? Falls du hier keine Verantwortung mehr übernimmst, warum?</label>
@@ -1497,6 +1497,7 @@ var ABRUF = (function () {
      <button data-download>, <button data-kopieren>, <button data-loeschen>, <textarea data-vorschau>
    Arbeitet mit TAGFELD (Tags) und ABRUF (Ablauf, gesperrte geprüfte Aufgaben) zusammen.
    Jede Antwort: { aufgabe, antwort (Freitext, darf leer sein), tags: { teil: [Name | "eigen: Text"] } }.
+   Mehrere Textfelder oder Felder aus einer Liste (frage-1, frage-2 …) stehen in antwort als „teil: Text“.
    Die Tags stehen je Tag-Feld (data-teil, z. B. "dahinter", "hilft"), damit erkennbar bleibt, was wo eingetragen wurde.
    Namen kommagetrennt, eine Datei für alle. Sie stehen in der Datei und im Dateinamen
    (antworten-trail-1-erika-mustermann_max-muster.json), damit Abgaben im Upload-Ordner sich nicht
@@ -1565,10 +1566,11 @@ var ABGABE = (function () {
     return el ? el.value.trim() : "";
   }
 
-  function antworten() {
-    return Array.prototype.map.call(document.querySelectorAll("[data-aufgabe]"), function (a) {
+  function antworten(auswahl) {
+    return Array.prototype.map.call(document.querySelectorAll(auswahl || "[data-aufgabe]"), function (a) {
       var teile = a.querySelectorAll("textarea[data-feld], input[type=text][data-feld]");
-      var text = teile.length === 1 ? teile[0].value.trim() :
+      // Ein einzelnes Textfeld ohne Präfix. Felder aus einer Liste (frage-1, frage-2 …) tragen ihn immer, wie ihre Tags.
+      var text = teile.length === 1 && !/-\d+$/.test(teile[0].dataset.teil) ? teile[0].value.trim() :
         Array.prototype.map.call(teile, function (f) { return f.dataset.teil + ": " + f.value.trim(); }).join("\n\n");
       var tags = {};
       a.querySelectorAll("[data-tagfeld]").forEach(function (f) { tags[f.dataset.teil] = TAGFELD.werte(f).map(TAGFELD.alsText); });
@@ -1588,12 +1590,14 @@ var ABGABE = (function () {
 
   function json() {
     var dauer = parseInt(wert("dauer"), 10);
+    var bestaetigung = document.querySelector("[data-studiert]");
     var daten = {
       trail: Number(document.body.dataset.trail),
       namen: namen(),
       zeitpunkt: jetzt(),
       dauer_minuten: isNaN(dauer) ? null : dauer,
-      studiert: (document.getElementById("phase") || {}).value === "abruf",
+      // Ohne Bestätigung (bestaetigung: false) fehlt das Feld: JSON.stringify lässt undefined weg.
+      studiert: bestaetigung ? (document.getElementById("phase") || {}).value === "abruf" : undefined,
       antworten: antworten(),
       feedback: wert("feedback")
     };
@@ -1606,8 +1610,8 @@ var ABGABE = (function () {
       document.getElementById("name").focus();
       return false;
     }
-    // Geprüfte Aufgaben zählen nicht als leer: Wer leer festlegt, hat das schon bestätigt.
-    var leer = antworten().filter(function (a) {
+    // Geprüfte Aufgaben zählen nicht als leer: Wer leer festlegt, hat das schon bestätigt. Optionale zählen nicht mit.
+    var leer = antworten("[data-aufgabe]:not([data-optional])").filter(function (a) {
       if (a.geprueft) return false;
       var ohneTags = Object.keys(a.tags).every(function (t) { return !a.tags[t].length; });
       return ohneTags && !a.antwort.replace(/^[^:]*:\s*$/gm, "").trim();
