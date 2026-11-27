@@ -2,6 +2,8 @@
 
 [Hausaufgabe öffnen](https://bop-haeger.github.io/agentic-coding-schule-staffel-1/trail-2/)
 
-Projekt für Teil B der Hausaufgabe:
+[Vortrag (PDF)](vortrag.pdf)
 
-- [`meme-generator/`](meme-generator/): Meme Generator
+Projekt für Teil D der Hausaufgabe:
+
+- [Meme Generator](https://github.com/BoP-haeger/meme-generator-kata)
